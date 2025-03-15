@@ -7,27 +7,57 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _burgerComponents;
     [SerializeField] private Transform _burgerDown;
     [SerializeField] private Transform _burgerTop;
-    [SerializeField] private float _speed;
 
+    [SerializeField] private float _speed;
+    [SerializeField] private float _sensitivityMouse;
+    [SerializeField] private float _sensitivityTouch;
+
+    private List<InteractableItem> _interactables = new List<InteractableItem>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
 
-    private List<InteractableItem> _interactables = new List<InteractableItem>();
-
+    private float horizontal;
+    
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-
         _burgerDownCollider = _burgerDown.GetComponent<BoxCollider>();
+    }
+
+    private void Update()
+    {
+        //if(!GameManager.Instance.GameLaunch)
+        //    return;
+
+        print(1);
+
+        horizontal = Input.GetAxis("Horizontal");
+
+        if(Input.GetMouseButton(0))
+        {
+            horizontal = Input.GetAxis("Mouse X") * _sensitivityMouse;
+        }
+
+        if(Input.touchCount > 0)
+        {
+            foreach(Touch touch in Input.touches)
+            {
+                if(touch.phase == TouchPhase.Moved)
+                {
+                    horizontal = touch.deltaPosition.x * _sensitivityTouch;
+                }
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = 1;
+        //if(!GameManager.Instance.GameLaunch)
+        //    return;
 
-        Vector3 movement = new Vector3(horizontal, 0f, vertical);
+        float vertical = 1f;
 
+        Vector3 movement = new Vector3(horizontal , 0f, vertical);
         Vector3 newPosition = _rb.position + movement * _speed * Time.fixedDeltaTime;
 
         _rb.MovePosition(newPosition);
