@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
+    [field: SerializeField] public Transform BurgerTop { get; private set; }
+    [field: SerializeField] public Transform BurgerDown { get; private set; }
     [SerializeField] private Transform _burgerComponents;
-    [SerializeField] private Transform _burgerDown;
-    [SerializeField] private Transform _burgerTop;
 
     [SerializeField] private float _speed;
     [SerializeField] private float _sensitivityMouse;
@@ -21,15 +21,13 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _burgerDownCollider = _burgerDown.GetComponent<BoxCollider>();
+        _burgerDownCollider = BurgerDown.GetComponent<BoxCollider>();
     }
 
     private void Update()
     {
         //if(!GameManager.Instance.GameLaunch)
         //    return;
-
-        print(1);
 
         horizontal = Input.GetAxis("Horizontal");
 
@@ -80,10 +78,11 @@ public class Player : MonoBehaviour
         interactableItem.transform.localPosition = Vector3.zero;
 
         Vector3 newPos = CalculateItemPosition();
+
         interactableItem.transform.localPosition = newPos;
+        BurgerTop.transform.localPosition = newPos;
 
-        _burgerTop.transform.localPosition = newPos;
-
+        interactableItem.Player = this;
         _interactables.Add(interactableItem);
     }
 

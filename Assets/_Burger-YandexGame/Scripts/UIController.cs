@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private Transform _pointerPos1;
     [SerializeField] private Transform _pointerPos2;
     [SerializeField] private float _pointerSpeed;
+
+    [Header("MusicSlider")]
+    [SerializeField] private Slider _musicSlider;
 
     private Tween _moveTween;
 
@@ -35,4 +39,8 @@ public class UIController : MonoBehaviour
         _startPanel.SetActive(false);
         StopAnimation();
     }
+
+    public void ShowMusicSlider() => _musicSlider.gameObject.SetActive(!_musicSlider.gameObject.activeSelf);
+
+    public void SetGameMusic() => GameManager.Instance.GameMusic = _musicSlider.value;
 }

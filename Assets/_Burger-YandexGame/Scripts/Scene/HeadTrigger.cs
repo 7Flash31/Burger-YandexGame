@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class KillZone : MonoBehaviour
+public class HeadTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
