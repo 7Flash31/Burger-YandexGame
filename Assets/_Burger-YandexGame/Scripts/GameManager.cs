@@ -7,13 +7,7 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public UIController UIController { get; private set; }
 
     [field: Header("Head")]
-    [SerializeField] private GameObject _head;
-    [SerializeField] private GameObject _playerCamera;
-    [SerializeField] private GameObject _feedPosition;
-    [SerializeField] private Transform[] _cameraPositions;
-    [SerializeField] private Transform[] _headPositions;
-    [SerializeField] private float _headRotateSpeed;
-    [SerializeField] private float _sequenceSpeed;
+    [SerializeField] private HeadSettings headSettings;
 
     public float GameMusic { get;  set; }
     public bool GameLaunch { get; private set; }
@@ -25,11 +19,11 @@ public class GameManager : MonoBehaviour
         DOTween.Init();
         Player.enabled = false;
 
-        Vector3 newPos = new Vector3(0, 3, 64);
-        Vector3 newRot = new Vector3(-30, 0, 0);
+        var headTransform = headSettings.Head.transform;
+        var idleAnim = headSettings.HeadAnimations.Idle;
 
-        _head.transform.DOMove(newPos, _headRotateSpeed);
-        _head.transform.DORotate(newRot, _headRotateSpeed);
+        headTransform.DOMove(idleAnim.position, headSettings.HeadRotateSpeed);
+        headTransform.DORotate(idleAnim.eulerAngles, headSettings.HeadRotateSpeed);
 
         if(Instance == null)
         {
@@ -52,38 +46,95 @@ public class GameManager : MonoBehaviour
     public void StopGame()
     {
         Player.enabled = false;
-        _playerCamera.transform.SetParent(null);
+        headSettings.PlayerCamera.transform.SetParent(null);
+
+        var headTransform = headSettings.Head.transform;
+        var cameraTransform = headSettings.PlayerCamera.transform;
+        var eatHead = headSettings.HeadAnimations.Eat;
+        var eatCamera = headSettings.CameraAnimations.Eat;
 
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(_head.transform.DOMove(_headPositions[0].transform.position, _sequenceSpeed));
-        sequence.Join(_head.transform.DORotate(_headPositions[0].transform.eulerAngles, _sequenceSpeed));
-
-        sequence.Append(_playerCamera.transform.DOMove(_cameraPositions[0].transform.position, _sequenceSpeed));
-        sequence.Join(_playerCamera.transform.DORotate(_cameraPositions[0].transform.eulerAngles, _sequenceSpeed));
-
-        sequence.OnComplete(() =>
-        {
-            FeetHead();
-        });       
+        sequence.Append(headTransform.DOMove(eatHead.position, headSettings.SequenceSpeed))
+                .Join(headTransform.DORotate(eatHead.eulerAngles, headSettings.SequenceSpeed))
+                .Append(cameraTransform.DOMove(eatCamera.position, headSettings.SequenceSpeed))
+                .Join(cameraTransform.DORotate(eatCamera.eulerAngles, headSettings.SequenceSpeed))
+                .OnComplete(() => FeetHead());
     }
+
+    private bool feetHeadTriggered;
 
     private void FeetHead()
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(Player.transform.DOMove(_feedPosition.transform.position, _sequenceSpeed));
+        if(feetHeadTriggered) 
+            return;
+        feetHeadTriggered = true;
 
-        Player.gameObject.GetComponent<Rigidbody>().drag = 4;
+        Player.transform.DOMove(headSettings.FoodPosition.transform.position, headSettings.SequenceSpeed);
+        Player.GetComponent<Rigidbody>().drag = 4;
     }
 
-    private void LookHead()
+    public void LookHead()
     {
+        var cameraTransform = headSettings.PlayerCamera.transform;
+        var headTransform = headSettings.Head.transform;
+        var angryCamera = headSettings.CameraAnimations.Angry;
+        var angryHead = headSettings.HeadAnimations.Angry;
+
         Sequence sequence = DOTween.Sequence();
+        Debug.Log("Angry");
+        sequence.Append(cameraTransform.DOMove(angryCamera.position, headSettings.SequenceSpeed))
+                .Join(cameraTransform.DORotate(angryCamera.eulerAngles, headSettings.SequenceSpeed))
+                .Join(headTransform.DOMove(angryHead.position, headSettings.SequenceSpeed))
+                .Join(headTransform.DORotate(angryHead.eulerAngles, headSettings.SequenceSpeed))
+                .OnComplete(() => RotateHead());
+    }
 
-        sequence.Append(_head.transform.DOMove(_headPositions[1].transform.position, _sequenceSpeed));
-        sequence.Join(_head.transform.DORotate(_headPositions[1].transform.eulerAngles, _sequenceSpeed));
+    private void RotateHead()
+    {
+        headSettings.Head.transform
+            .DORotate(headSettings.HeadAnimations.RotatePos1.eulerAngles, headSettings.HeadRotateSpeed)
+            .OnComplete(() =>
+            {
+                headSettings.Head.transform
+                    .DORotate(headSettings.HeadAnimations.RotatePos2.eulerAngles, headSettings.HeadRotateSpeed)
+                    .SetEase(Ease.Linear)
+                    .SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+}
 
-        sequence.Append(_playerCamera.transform.DOMove(_cameraPositions[1].transform.position, _sequenceSpeed));
-        sequence.Join(_playerCamera.transform.DORotate(_cameraPositions[1].transform.eulerAngles, _sequenceSpeed));
+[System.Serializable]
+public class HeadSettings
+{
+    [Header("Reference")]
+    public GameObject Head;
+    public GameObject PlayerCamera;
+    public GameObject FoodPosition;
+
+    [Header("Animation Options")]
+    public HeadAnimationOptions HeadAnimations;
+    public CameraAnimationOptions CameraAnimations;
+
+    [Header("Settings")]
+    public float HeadRotateSpeed;
+    public float SequenceSpeed;
+
+    [System.Serializable]
+    public class HeadAnimationOptions
+    {
+        public Transform Idle;
+        public Transform Eat;
+        public Transform Angry;
+
+        public Transform RotatePos1;
+        public Transform RotatePos2;
+    }
+
+    [System.Serializable]
+    public class CameraAnimationOptions
+    {
+        public Transform Eat;
+        public Transform Angry;
     }
 }

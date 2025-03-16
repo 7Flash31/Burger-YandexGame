@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
-    private List<InteractableItem> _interactables = new List<InteractableItem>();
+    private List<Ingredient> _ingredient = new List<Ingredient>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
 
@@ -63,15 +63,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(collider.transform.TryGetComponent(out InteractableItem interactableItem))
+        if(collider.transform.TryGetComponent(out Ingredient interactableItem))
         {
             InteractWithItem(interactableItem);
         }
     }
 
-    private void InteractWithItem(InteractableItem interactableItem)
+    private void InteractWithItem(Ingredient interactableItem)
     {
-        if(_interactables.Contains(interactableItem))
+        if(_ingredient.Contains(interactableItem))
             return;
 
         interactableItem.transform.SetParent(_burgerComponents);
@@ -83,14 +83,14 @@ public class Player : MonoBehaviour
         BurgerTop.transform.localPosition = newPos;
 
         interactableItem.Player = this;
-        _interactables.Add(interactableItem);
+        _ingredient.Add(interactableItem);
     }
 
     private Vector3 CalculateItemPosition()
     {
         float yPos = _burgerDownCollider.size.y;
 
-        foreach(var item in _interactables)
+        foreach(var item in _ingredient)
         {
             BoxCollider itemCollider = item.GetComponent<BoxCollider>();
             if(itemCollider != null)
@@ -99,5 +99,18 @@ public class Player : MonoBehaviour
             }
         }
         return new Vector3(0, yPos, 0);
+    }
+
+    public void DeleteIngredient(Ingredient ingredient)
+    {
+        if(ingredient != null && _ingredient.Contains(ingredient))
+        {
+            _ingredient.Remove(ingredient);
+
+            if(_ingredient.Count == 0)
+            {
+                GameManager.Instance.LookHead();
+            }
+        }
     }
 }

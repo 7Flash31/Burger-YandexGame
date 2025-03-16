@@ -987,7 +987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 176586390}
   m_Layer: 0
-  m_Name: FinalCameraPos2
+  m_Name: CameraAngryPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6643,37 +6643,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695265896}
   m_Mesh: {fileID: 8824972753341642249, guid: e3b0495727d04c4da96f92f45140e503, type: 3}
---- !u!1 &700293455
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 700293456}
-  m_Layer: 0
-  m_Name: FinalCameraPos3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &700293456
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 700293455}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 20, z: 65}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1274794649}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!1 &715049778
 GameObject:
   m_ObjectHideFlags: 0
@@ -8239,19 +8208,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Player>k__BackingField: {fileID: 1843542549}
   <UIController>k__BackingField: {fileID: 1846406154}
-  _head: {fileID: 1962548967}
-  _playerCamera: {fileID: 314205701}
-  _feedPosition: {fileID: 1424851168}
-  _cameraPositions:
-  - {fileID: 1208035791}
-  - {fileID: 176586390}
-  - {fileID: 700293456}
-  _headPositions:
-  - {fileID: 2107813403}
-  - {fileID: 1173408965}
-  - {fileID: 1351122657}
-  _headRotateSpeed: 1
-  _sequenceSpeed: 1
+  headSettings:
+    Head: {fileID: 1962548967}
+    PlayerCamera: {fileID: 314205701}
+    FoodPosition: {fileID: 1424851168}
+    HeadAnimations:
+      Idle: {fileID: 1351122657}
+      Eat: {fileID: 2107813403}
+      Angry: {fileID: 1173408965}
+    CameraAnimations:
+      Eat: {fileID: 1208035791}
+      Angry: {fileID: 176586390}
+    HeadRotateSpeed: 1
+    SequenceSpeed: 1
 --- !u!4 &1010298258
 Transform:
   m_ObjectHideFlags: 0
@@ -9497,9 +9466,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1351122657}
   - {fileID: 2107813403}
   - {fileID: 1173408965}
-  - {fileID: 1351122657}
+  - {fileID: 1382446617}
+  - {fileID: 1263030589}
   m_Father: {fileID: 1426015903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1149554612
@@ -9617,7 +9588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1173408965}
   m_Layer: 0
-  m_Name: HeadPos2
+  m_Name: HeadAngryPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9633,8 +9604,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 3, z: 64}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1128837742}
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
@@ -9782,7 +9753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1208035791}
   m_Layer: 0
-  m_Name: FinalCameraPos1
+  m_Name: CameraEatPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10345,6 +10316,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247043753}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1263030588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1263030589}
+  m_Layer: 0
+  m_Name: HeadRotatePos2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1263030589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263030588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.25216672, y: 0.21759073, z: 0.05830328, w: 0.9410988}
+  m_LocalPosition: {x: 0, y: 3, z: 64}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1128837742}
+  m_LocalEulerAnglesHint: {x: 26.696, y: 29.428, z: 14.221}
 --- !u!1 &1270137328
 GameObject:
   m_ObjectHideFlags: 0
@@ -10409,7 +10411,6 @@ Transform:
   m_Children:
   - {fileID: 1208035791}
   - {fileID: 176586390}
-  - {fileID: 700293456}
   m_Father: {fileID: 1426015903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279495435
@@ -11038,7 +11039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1351122657}
   m_Layer: 0
-  m_Name: HeadPos3
+  m_Name: HeadIdlePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11052,13 +11053,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1351122656}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
+  m_LocalPosition: {x: 0, y: 3, z: 64}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1128837742}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
 --- !u!1 &1354207872
 GameObject:
   m_ObjectHideFlags: 0
@@ -11360,6 +11361,37 @@ RectTransform:
   m_AnchoredPosition: {x: -5.0000153, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1382446616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1382446617}
+  m_Layer: 0
+  m_Name: HeadRotatePos1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1382446617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382446616}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.24523407, y: -0.3088276, z: -0.082750134, w: 0.9152258}
+  m_LocalPosition: {x: 0, y: 3, z: 64}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1128837742}
+  m_LocalEulerAnglesHint: {x: 23.439, y: -41.328, z: -19.28}
 --- !u!1 &1424851168
 GameObject:
   m_ObjectHideFlags: 0
@@ -11370,7 +11402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424851169}
   m_Layer: 0
-  m_Name: FeedPosition
+  m_Name: FoodPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12077,7 +12109,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1495446288}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: f77ffa398e048bb4dab3ba48a0e77525, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -16074,7 +16106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962548967}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
+  m_LocalRotation: {x: 0.25216672, y: 0.21759073, z: 0.05830328, w: 0.9410988}
   m_LocalPosition: {x: 0, y: 3, z: 64}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
@@ -16087,7 +16119,7 @@ Transform:
   - {fileID: 2084857761}
   - {fileID: 1424851169}
   m_Father: {fileID: 1426015903}
-  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.696, y: 29.428, z: 14.221}
 --- !u!1 &1972328106
 GameObject:
   m_ObjectHideFlags: 0
@@ -17545,7 +17577,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2107813403}
   m_Layer: 0
-  m_Name: HeadPos1
+  m_Name: HeadEatPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
