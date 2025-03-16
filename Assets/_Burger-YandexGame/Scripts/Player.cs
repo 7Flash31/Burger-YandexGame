@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
-    private List<Ingredient> _ingredient = new List<Ingredient>();
+    private List<Ingredient> _ingredients = new List<Ingredient>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
 
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
 
     private void InteractWithItem(Ingredient interactableItem)
     {
-        if(_ingredient.Contains(interactableItem))
+        if(_ingredients.Contains(interactableItem))
             return;
 
         interactableItem.transform.SetParent(_burgerComponents);
@@ -82,15 +82,14 @@ public class Player : MonoBehaviour
         interactableItem.transform.localPosition = newPos;
         BurgerTop.transform.localPosition = newPos;
 
-        interactableItem.Player = this;
-        _ingredient.Add(interactableItem);
+        _ingredients.Add(interactableItem);
     }
 
     private Vector3 CalculateItemPosition()
     {
         float yPos = _burgerDownCollider.size.y;
 
-        foreach(var item in _ingredient)
+        foreach(var item in _ingredients)
         {
             BoxCollider itemCollider = item.GetComponent<BoxCollider>();
             if(itemCollider != null)
@@ -103,14 +102,19 @@ public class Player : MonoBehaviour
 
     public void DeleteIngredient(Ingredient ingredient)
     {
-        if(ingredient != null && _ingredient.Contains(ingredient))
+        if(ingredient != null && _ingredients.Contains(ingredient))
         {
-            _ingredient.Remove(ingredient);
+            _ingredients.Remove(ingredient);
 
-            if(_ingredient.Count == 0)
+            if(_ingredients.Count == 0)
             {
                 GameManager.Instance.LookHead();
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.FinalIngredients = _ingredients;
     }
 }

@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class Ingredient : MonoBehaviour
 {
-    public Player Player {  get;  set; }
+    public IngredientType IngredientType { get; private set; }
 }
