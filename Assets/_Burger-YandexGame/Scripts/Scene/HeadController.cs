@@ -6,8 +6,8 @@ public class HeadController : MonoBehaviour
     [Header("Reference")]
     public GameObject PlayerCamera;
     public GameObject FoodPosition;
-    public MeshRenderer HeadMesh;
     public GameObject FireParticle;
+    public MeshRenderer HeadMesh;
 
     [Header("Animation Options")]
     public HeadAnimationOptions HeadAnimations;

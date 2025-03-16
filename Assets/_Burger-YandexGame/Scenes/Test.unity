@@ -9030,7 +9030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Player>k__BackingField: {fileID: 1843542549}
   <UIController>k__BackingField: {fileID: 1846406154}
-  _headController: {fileID: 0}
+  _headController: {fileID: 1962548969}
 --- !u!4 &1010298258
 Transform:
   m_ObjectHideFlags: 0
@@ -15897,12 +15897,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08718e585202944f921d9c3f8824be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startPanel: {fileID: 2104286807}
+  _finalPanel: {fileID: 0}
   _helpPointer:
-    _startPanel: {fileID: 2104286807}
     _helpPointer: {fileID: 1328810322}
     _pointerPos1: {fileID: 1748049065}
     _pointerPos2: {fileID: 1470121905}
-    _pointerSpeed: 0.1
+    _pointerSpeed: 0.7
+  foodText: {fileID: 0}
   _musicSlider: {fileID: 1241918176}
 --- !u!114 &1846406155
 MonoBehaviour:
@@ -17408,8 +17410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 314205701}
   FoodPosition: {fileID: 1424851168}
-  HeadMesh: {fileID: 822293827}
   FireParticle: {fileID: 2927636630749388004}
+  HeadMesh: {fileID: 822293827}
   HeadAnimations:
     Idle: {fileID: 1351122657}
     Eat: {fileID: 2107813403}

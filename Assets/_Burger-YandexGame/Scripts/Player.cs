@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
-    private List<Ingredient> _ingredients = new List<Ingredient>();
+    public List<Ingredient> _ingredients = new List<Ingredient>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
 
@@ -26,9 +26,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //if(!GameManager.Instance.GameLaunch)
-        //    return;
-
         horizontal = Input.GetAxis("Horizontal");
 
         if(Input.GetMouseButton(0))
@@ -50,9 +47,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if(!GameManager.Instance.GameLaunch)
-        //    return;
-
         float vertical = 1f;
 
         Vector3 movement = new Vector3(horizontal , 0f, vertical);
@@ -108,13 +102,15 @@ public class Player : MonoBehaviour
 
             if(_ingredients.Count == 0)
             {
-                GameManager.Instance.LookHead();
+                GameManager.Instance.FinalGame();
+
             }
         }
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.FinalIngredients = _ingredients;
+        GameManager.Instance.FinalIngredients.Clear();
+        GameManager.Instance.FinalIngredients.AddRange(_ingredients);
     }
 }

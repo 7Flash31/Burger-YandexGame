@@ -7,7 +7,6 @@ public class HeadTrigger : MonoBehaviour
         if(other.TryGetComponent(out Ingredient ingredient))
         {
             GameManager.Instance.Player.DeleteIngredient(ingredient);
-
         }
 
         Destroy(other.gameObject);
