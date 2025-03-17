@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public float GameMusic { get; set; }
     public bool GameLaunch { get; private set; }
+    public int TotalIngredientsCount { get; private set; }
+
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
     public static GameManager Instance { get; private set; }
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
         DOTween.Init();
         Player.enabled = false;
 
+        TotalIngredientsCount = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Length;
 
         if(Instance == null)
         {
@@ -29,11 +32,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Update()
-    {
-        print(FinalIngredients.Count);
     }
 
     public void LaunchGame()
@@ -54,21 +52,6 @@ public class GameManager : MonoBehaviour
         _headController.PlayAngryAnimation();
         UIController.ShowFinalPanel();
     }
-
-    //public Dictionary<IngredientType, int> CalculateRecipe()
-    //{
-    //    var ingredientCounts = new Dictionary<IngredientType, int>();
-
-    //    foreach(var ingredient in FinalIngredients)
-    //    {
-    //        if(ingredientCounts.ContainsKey(ingredient.IngredientInfo.IngredientType))
-    //            ingredientCounts[ingredient.IngredientInfo.IngredientType]++;
-    //        else
-    //            ingredientCounts[ingredient.IngredientInfo.IngredientType] = 1;
-    //    }
-    //    print(ingredientCounts.Count);
-    //    return ingredientCounts;
-    //}
 }
 
 public enum IngredientType
@@ -83,4 +66,5 @@ public enum IngredientType
     Bacon,
     Cutlet,
     Salad,
+    None,
 }

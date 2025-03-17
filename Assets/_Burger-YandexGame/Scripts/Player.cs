@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
-    public List<Ingredient> _ingredients = new List<Ingredient>();
+    private List<Ingredient> _ingredients = new List<Ingredient>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
 
@@ -63,20 +63,90 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void InteractWithItem(Ingredient interactableItem)
+    //private void InteractWithItem(Ingredient ingredient)
+    //{
+    //    if(_ingredients.Contains(ingredient))
+    //        return;
+
+    //    Vector3 newPos = CalculateItemPosition();
+
+    //    ingredient.transform.SetParent(_burgerComponents);
+
+    //    ingredient.transform.localPosition = Vector3.zero;
+    //    ingredient.transform.localEulerAngles = Vector3.zero;
+    //    ingredient.transform.localScale = Vector3.one;
+
+    //    ingredient.StopAnimation();
+
+    //    ingredient.transform.localPosition = newPos;
+
+    //    BurgerTop.transform.localPosition = newPos;
+    //    _ingredients.Add(ingredient);
+
+    //}
+
+    //private void InteractWithItem(Ingredient ingredient)
+    //{
+    //    if(_ingredients.Contains(ingredient))
+    //        return;
+
+    //    Vector3 newPos = CalculateItemPosition();
+
+    //    ingredient.transform.SetParent(_burgerComponents);
+
+    //    ingredient.transform.localPosition = Vector3.zero;
+    //    ingredient.transform.localEulerAngles = Vector3.zero;
+    //    ingredient.transform.localScale = Vector3.one;
+
+    //    ingredient.StopAnimation();
+
+    //    ingredient.transform.localPosition = newPos;
+
+    //    BurgerTop.transform.localPosition = newPos;
+    //    _ingredients.Add(ingredient);
+    //}
+
+    //private Vector3 CalculateItemPosition()
+    //{
+    //    float yPos = _burgerDownCollider.size.y;
+
+    //    foreach(var item in _ingredients)
+    //    {
+    //        if(item.BoxCollider != null)
+    //        {
+    //            yPos += item.BoxCollider.size.y;
+    //        }
+    //    }
+    //    return new Vector3(0, yPos, 0);
+    //}
+
+    private void InteractWithItem(Ingredient ingredient)
     {
-        if(_ingredients.Contains(interactableItem))
+        if(_ingredients.Contains(ingredient))
             return;
 
-        interactableItem.transform.SetParent(_burgerComponents);
-        interactableItem.transform.localPosition = Vector3.zero;
-
+        // Вычисляем позицию для нового ингредиента
         Vector3 newPos = CalculateItemPosition();
 
-        interactableItem.transform.localPosition = newPos;
-        BurgerTop.transform.localPosition = newPos;
+        ingredient.transform.SetParent(_burgerComponents);
+        ingredient.transform.localPosition = Vector3.zero;
+        ingredient.transform.localEulerAngles = Vector3.zero;
+        ingredient.transform.localScale = Vector3.one;
+        ingredient.StopAnimation();
 
-        _ingredients.Add(interactableItem);
+        // Располагаем ингредиент в стеке
+        ingredient.transform.localPosition = newPos;
+
+        // Добавляем ингредиент в список, чтобы он учитывался при расчётах будущих позиций
+        _ingredients.Add(ingredient);
+
+        // Если у ингредиента есть BoxCollider, используем его высоту,
+        // иначе высота считается равной нулю
+        float ingredientHeight = ingredient.BoxCollider != null ? ingredient.BoxCollider.size.y : 0;
+
+        // Устанавливаем позицию BurgerTop с учётом высоты нового ингредиента,
+        // чтобы он располагался поверх стека
+        BurgerTop.transform.localPosition = new Vector3(0, newPos.y + ingredientHeight, 0);
     }
 
     private Vector3 CalculateItemPosition()
@@ -85,25 +155,26 @@ public class Player : MonoBehaviour
 
         foreach(var item in _ingredients)
         {
-            BoxCollider itemCollider = item.GetComponent<BoxCollider>();
-            if(itemCollider != null)
+            if(item.BoxCollider != null)
             {
-                yPos += itemCollider.size.y;
+                yPos += item.BoxCollider.size.y;
             }
         }
         return new Vector3(0, yPos, 0);
     }
 
+
     public void DeleteIngredient(Ingredient ingredient)
     {
         if(ingredient != null && _ingredients.Contains(ingredient))
         {
+            // Проверка на Top Burger, не удалять из _ingredients
+
             _ingredients.Remove(ingredient);
 
             if(_ingredients.Count == 0)
             {
                 GameManager.Instance.FinalGame();
-
             }
         }
     }

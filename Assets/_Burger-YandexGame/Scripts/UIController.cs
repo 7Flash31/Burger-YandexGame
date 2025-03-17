@@ -1,6 +1,4 @@
 ﻿using DG.Tweening;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +7,9 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _finalPanel;
-
     [SerializeField] private HelpPointer _helpPointer;
-
+    [SerializeField] private StarSystem _starSystem;
     [SerializeField] private TMP_Text _foodText;
-
     [SerializeField] private Slider _musicSlider;
 
     private void Start()
@@ -43,32 +39,33 @@ public class UIController : MonoBehaviour
 
         int ingredient = GameManager.Instance.FinalIngredients.Count;
 
-        if(ingredient != null)
-        {
-            int totalCount = ingredient;
-            string result = "";
+        int totalCount = ingredient;
+        string result = "";
 
-            if(totalCount >= 1 && totalCount <= 3)
-            {
-                result = "Стейк";
-            }
-            else if(totalCount >= 4 && totalCount <= 15)
-            {
-                result = "Мега стейк";
-            }
-            else if(totalCount >= 16)
-            {
-                result = "Супер Мега стейк";
-            }
-            else
-            {
-                result = "Нет ингредиентов";
-            }
-            _foodText.text = result;
-            Debug.Log(result);
-        }        //Stars
+        if(totalCount >= 1 && totalCount <= 3)
+        {
+            result = "Стейк";
+        }
+        else if(totalCount >= 4 && totalCount <= 15)
+        {
+            result = "Мега стейк";
+        }
+        else if(totalCount >= 16)
+        {
+            result = "Супер Мега стейк";
+        }
+        else
+        {
+            result = "Нет ингредиентов";
+        }
+
+        _foodText.text = result;
+
+        //Stars
+        _starSystem.ActivateStars();
 
         //Recipe
+
     }
 }
 
@@ -105,6 +102,46 @@ public class HelpPointer
         if(moveTween != null && moveTween.IsActive())
         {
             moveTween.Kill();
+        }
+    }
+}
+
+[System.Serializable]
+public class StarSystem
+{
+    [SerializeField] private GameObject[] _stars;
+
+    [SerializeField] private float _threshold1 = 0.33f;
+    [SerializeField] private float _threshold2 = 0.66f;
+    [SerializeField] private float _threshold3 = 1f;
+
+    [SerializeField] private float _starsSpeed = 1f;
+
+    private void ShowStar(GameObject star)
+    {
+        Vector3 startScale = star.transform.localScale;
+
+        star.SetActive(true);
+
+        star.transform.localScale = Vector3.zero;
+        star.transform.DOScale(startScale, _starsSpeed).SetEase(Ease.OutBack);
+    }
+
+    public void ActivateStars()
+    {
+        float collectedPercentage = (float)GameManager.Instance.FinalIngredients.Count / GameManager.Instance.TotalIngredientsCount;
+
+        if(collectedPercentage >= _threshold1 && !_stars[0].activeSelf)
+        {
+            ShowStar(_stars[0]);
+        }
+        if(collectedPercentage >= _threshold2 && !_stars[1].activeSelf)
+        {
+            ShowStar(_stars[1]);
+        }
+        if(collectedPercentage >= _threshold3 && !_stars[2].activeSelf)
+        {
+            ShowStar(_stars[2]);
         }
     }
 }
