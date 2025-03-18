@@ -153,11 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IngredientType>k__BackingField: 10
-  <Name>k__BackingField: 
-  <SpawnIngredient>k__BackingField: {fileID: 8915863417670645687, guid: ce361255ab997e54b8349eb4b9e041b6, type: 3}
-  IsSpawn: 0
-  <BoxCollider>k__BackingField: {fileID: 0}
-  _rotateSpeed: 1
+  <Icon>k__BackingField: {fileID: 21300000, guid: 21c7f914c802514489aa52d531a4091e, type: 3}
+  _rotateSpeed: 2
 --- !u!1 &7714168919510421350
 GameObject:
   m_ObjectHideFlags: 0

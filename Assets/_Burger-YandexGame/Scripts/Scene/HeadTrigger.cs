@@ -9,6 +9,6 @@ public class HeadTrigger : MonoBehaviour
             GameManager.Instance.Player.DeleteIngredient(ingredient);
         }
 
-        Destroy(other.gameObject);
+        other.gameObject.SetActive(false);
     }
 }

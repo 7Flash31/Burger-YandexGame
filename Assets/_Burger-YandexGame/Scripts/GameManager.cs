@@ -1,5 +1,7 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -51,6 +53,26 @@ public class GameManager : MonoBehaviour
     {
         _headController.PlayAngryAnimation();
         UIController.ShowFinalPanel();
+    }
+
+    public Dictionary<Ingredient, int> CalculateIngredientCount()
+    {
+        Dictionary<Ingredient, int> ingredient = new Dictionary<Ingredient, int>();
+
+        foreach(var item in FinalIngredients)
+        {
+            if(ingredient.TryGetValue(item, out int value))
+            {
+                ingredient.Add(item, value++);
+                print(item);
+            }
+            else
+            {
+                ingredient.Add(item, 1);
+            }
+        }
+
+        return ingredient;
     }
 }
 

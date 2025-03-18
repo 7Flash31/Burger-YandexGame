@@ -4,6 +4,7 @@ using UnityEngine;
 public class Ingredient : MonoBehaviour
 {
     [field: SerializeField] public IngredientType IngredientType { get; private set; } = IngredientType.None;
+    [field: SerializeField] public Sprite Icon{ get; private set; } 
     [SerializeField] private float _rotateSpeed;
 
     public BoxCollider BoxCollider { get; private set; }
@@ -14,10 +15,6 @@ public class Ingredient : MonoBehaviour
     private void Start()
     {
         BoxCollider = GetComponent<BoxCollider>();
-        if(BoxCollider == null)
-        {
-            BoxCollider = GetComponentInChildren<BoxCollider>();
-        }
 
         _tween = transform.DORotate(new Vector3(90, 360, 0), _rotateSpeed, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)

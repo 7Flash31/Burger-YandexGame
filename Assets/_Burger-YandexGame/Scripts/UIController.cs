@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private StarSystem _starSystem;
     [SerializeField] private TMP_Text _foodText;
     [SerializeField] private Slider _musicSlider;
+    [SerializeField] private Transform _recipeContent;
+    [SerializeField] private Image _recipeImage;
 
     private void Start()
     {
@@ -62,10 +65,17 @@ public class UIController : MonoBehaviour
         _foodText.text = result;
 
         //Stars
+
         _starSystem.ActivateStars();
 
         //Recipe
+        Dictionary<Ingredient, int> ingredientCount = GameManager.Instance.CalculateIngredientCount();
 
+        foreach(var item in ingredientCount)
+        {
+            Image recipeImage = Instantiate(_recipeImage, _recipeContent);
+            recipeImage.sprite = item.Key.Icon;
+        }
     }
 }
 
@@ -108,7 +118,7 @@ public class HelpPointer
 
 [System.Serializable]
 public class StarSystem
-{
+{   
     [SerializeField] private GameObject[] _stars;
 
     [SerializeField] private float _threshold1 = 0.33f;
