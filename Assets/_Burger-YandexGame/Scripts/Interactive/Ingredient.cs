@@ -8,6 +8,7 @@ public class Ingredient : MonoBehaviour
     [SerializeField] private float _rotateSpeed;
 
     public BoxCollider BoxCollider { get; private set; }
+    public bool IsDropped { get; set; }
 
 
     private Tween _tween;
