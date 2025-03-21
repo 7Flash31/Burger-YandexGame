@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7228304650580425426}
   - component: {fileID: 405785524997968153}
   m_Layer: 0
-  m_Name: Obstacle
+  m_Name: TrapObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64dda7d36f616447824d30efa08a7a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RemoveIngredient>k__BackingField: 0
+  <RemoveIngredient>k__BackingField: 5
+  <IsActive>k__BackingField: 1
   rotateSpeed: 1
 --- !u!65 &7228304650580425426
 BoxCollider:
