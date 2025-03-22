@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     private List<Ingredient> _ingredients = new List<Ingredient>();
     private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
-    private BoxCollider _burgerTopCollider;
 
     private float _horizontal;
 
@@ -31,7 +30,6 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _burgerDownCollider = BurgerDown.GetComponent<BoxCollider>();
-        _burgerTopCollider = BurgerTop.GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -127,18 +125,18 @@ public class Player : MonoBehaviour
         BurgerTop.localPosition = new Vector3(0, currentY, 0);
     }
 
-    public void DeleteIngredient(Ingredient ingredient)
-    {
-        if(ingredient != null && _ingredients.Contains(ingredient))
-        {
-            _ingredients.Remove(ingredient);
+    //public void DeleteIngredient(Ingredient ingredient)
+    //{
+    //    if(ingredient != null && _ingredients.Contains(ingredient))
+    //    {
+    //        _ingredients.Remove(ingredient);
 
-            if(_ingredients.Count == 0)
-            {
-                GameManager.Instance.FinalGame();
-            }
-        }
-    }
+    //        if(_ingredients.Count == 0)
+    //        {
+    //            //GameManager.Instance.FinalGame();
+    //        }
+    //    }
+    //}
 
     public void DeleteRandomIngredient(int count)
     {

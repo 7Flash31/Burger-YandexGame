@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [field: SerializeField] public Player Player { get; private set; }
-    [field: SerializeField] public UIController UIController { get; private set; }
+    [SerializeField] private UIController _uiController;
 
     [SerializeField] private HeadController _headController;
 
     public float GameMusic { get; set; }
     public bool GameLaunch { get; private set; }
     public int TotalIngredientsCount { get; private set; }
+    public int Money { get; private set; }
 
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
     public static GameManager Instance { get; private set; }
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
     {
         GameLaunch = true;
         Player.enabled = true;
-        UIController.HideHelpPanel();
+        _uiController.HideHelpPanel();
     }
 
     public void StopGame()
@@ -52,27 +53,21 @@ public class GameManager : MonoBehaviour
     public void FinalGame()
     {
         _headController.PlayAngryAnimation();
-        UIController.ShowFinalPanel();
+        _uiController.ShowFinalPanel();
     }
 
-    public Dictionary<Ingredient, int> CalculateIngredientCount()
+    public void UpdateMoney(int newValue)
     {
-        Dictionary<Ingredient, int> ingredient = new Dictionary<Ingredient, int>();
-
-        foreach(var item in FinalIngredients)
+        if(newValue >= 0)
         {
-            if(ingredient.TryGetValue(item, out int value))
-            {
-                ingredient.Add(item, value++);
-                print(item);
-            }
-            else
-            {
-                ingredient.Add(item, 1);
-            }
+            Money = newValue;
+        }
+        else
+        {
+            Money = 0;
         }
 
-        return ingredient;
+        _uiController.UpdateMoneyText(Money);
     }
 }
 
