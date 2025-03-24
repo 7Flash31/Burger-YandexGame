@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HeadController : MonoBehaviour
@@ -40,7 +41,7 @@ public class HeadController : MonoBehaviour
         var eatHead = HeadAnimations.Eat;
         var eatCamera = CameraAnimations.Eat;
 
-        Sequence sequence = DOTween.Sequence();
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
         sequence.Append(headTransform.DOMove(eatHead.position, SequenceSpeed))
                 .Join(headTransform.DORotate(eatHead.eulerAngles, SequenceSpeed))
                 .Append(cameraTransform.DOMove(eatCamera.position, SequenceSpeed))
@@ -55,7 +56,7 @@ public class HeadController : MonoBehaviour
         var angryCamera = CameraAnimations.Angry;
         var angryHead = HeadAnimations.Angry;
 
-        Sequence sequence = DOTween.Sequence();
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
         sequence.Append(cameraTransform.DOMove(angryCamera.position, SequenceSpeed))
                 .Join(cameraTransform.DORotate(angryCamera.eulerAngles, SequenceSpeed))
                 .Join(headTransform.DOMove(angryHead.position, SequenceSpeed))
@@ -86,7 +87,11 @@ public class HeadController : MonoBehaviour
 
         feetHeadTriggered = true;
         GameManager.Instance.Player.transform.DOMove(FoodPosition.transform.position, SequenceSpeed);
-        GameManager.Instance.Player.GetComponent<Rigidbody>().drag = 4;
+
+        //GameManager.Instance.Player.StopPlayer = true;
+        Rigidbody rigidbody = GameManager.Instance.Player.AddComponent<Rigidbody>();
+        rigidbody.drag = 4;
+        GameManager.Instance.Player.GetComponent<CharacterController>().enabled = false;
     }
 
 }

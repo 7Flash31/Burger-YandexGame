@@ -189,7 +189,7 @@ namespace TMPro.Examples
                 Vector3 originPosition = m_Transform.TransformPoint(new Vector3(origin, baseline, 0));
                 DrawCrosshair(originPosition, 0.05f / m_ScaleMultiplier, Color.cyan);
 
-                // Draw Horizontal Advance
+                // Draw Vertical Advance
                 Vector3 advancePosition = m_Transform.TransformPoint(new Vector3(advance, baseline, 0));
                 DrawSquare(advancePosition, 0.025f / m_ScaleMultiplier, Color.yellow);
                 DrawCrosshair(advancePosition, 0.0125f / m_ScaleMultiplier, Color.yellow);

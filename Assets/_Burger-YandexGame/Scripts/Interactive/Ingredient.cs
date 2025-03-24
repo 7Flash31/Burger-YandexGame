@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Ingredient : MonoBehaviour
 {
-    [field: SerializeField] public IngredientType IngredientType { get; private set; } = IngredientType.None;
-    [field: SerializeField] public string IngredientName { get; private set; } = "None";
     [field: SerializeField] public Sprite Icon{ get; private set; } 
     [SerializeField] private float _rotateSpeed;
 
@@ -17,7 +15,6 @@ public class Ingredient : MonoBehaviour
     private void Start()
     {
         BoxCollider = GetComponent<BoxCollider>();
-        IngredientName = gameObject.name;
 
         _tween = transform.DORotate(new Vector3(90, 360, 0), _rotateSpeed, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
@@ -33,16 +30,4 @@ public class Ingredient : MonoBehaviour
     {
         _tween.Kill();
     }
-}
-
-public class IngredientContainer
-{
-    public int IngredientCount { get; set; }
-    public Ingredient Ingredient { get; set; }
-}
-
-public struct IngredientContainerStruct
-{
-    public int IngredientCount { get; set; }
-    public IngredientType IngredientType { get; set; }
 }

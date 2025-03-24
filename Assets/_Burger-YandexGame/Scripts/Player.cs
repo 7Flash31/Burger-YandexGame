@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
     [field: SerializeField] public Transform BurgerTop { get; private set; }
     [field: SerializeField] public Transform BurgerDown { get; private set; }
+                            
     [SerializeField] private Transform _burgerComponents;
-
     [SerializeField] private float _speed;
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
-    [SerializeField] private float _maxRockingAngle = 15f;
-    [SerializeField] private float _rockingSmooth = 5f;
-
     private List<Ingredient> _ingredients = new List<Ingredient>();
-    private Rigidbody _rb;
     private BoxCollider _burgerDownCollider;
-
     private float _horizontal;
 
-    private float _currentRockingAngle = 0f;
+    public float Vertical { get; set; }
 
-    private bool _hasTriggered = false;
+    private float _gravity = 9.81f;
+    private bool _hasTriggered;
+
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController controller;
+    private float verticalVelocity = 0f;
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
         _burgerDownCollider = BurgerDown.GetComponent<BoxCollider>();
+        controller = GetComponent<CharacterController>();
+        Vertical = 1f;
     }
 
     private void Update()
@@ -52,18 +52,34 @@ public class Player : MonoBehaviour
             }
         }
 
-        float targetAngle = -_horizontal * _maxRockingAngle;
-        _currentRockingAngle = Mathf.Lerp(_currentRockingAngle, targetAngle, Time.deltaTime * _rockingSmooth);
-        _burgerComponents.localRotation = Quaternion.Euler(0, 0, _currentRockingAngle);
-    }
+        if(controller.isGrounded)
+        {
+            verticalVelocity = 0f;
+        }
+        else
+        {
+            verticalVelocity -= _gravity * Time.deltaTime;
+        }
 
-    private void FixedUpdate()
-    {
-        float vertical = 1f;
-        Vector3 movement = new Vector3(_horizontal, 0f, vertical);
+        //if(StopPlayer)
+        //{
+        //    _horizontal = 0;
+        //    Vertical = 0;
+        //    _speed = 1;
+        //}
+            
 
-        Vector3 newPosition = _rb.position + movement * _speed * Time.fixedDeltaTime;
-        _rb.MovePosition(newPosition);
+        // Формирование итогового вектора движения
+        moveDirection = new Vector3(_horizontal, verticalVelocity, Vertical);
+        moveDirection = transform.TransformDirection(moveDirection);
+        moveDirection *= _speed;
+
+        controller.Move(moveDirection * Time.deltaTime);
+
+
+        //float targetAngle = -_horizontal * _maxRockingAngle;
+        //_currentRockingAngle = Mathf.Lerp(_currentRockingAngle, targetAngle, Time.deltaTime * _rockingSmooth);
+        //_burgerComponents.localRotation = Quaternion.Euler(0, 0, _currentRockingAngle);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -124,19 +140,6 @@ public class Player : MonoBehaviour
 
         BurgerTop.localPosition = new Vector3(0, currentY, 0);
     }
-
-    //public void DeleteIngredient(Ingredient ingredient)
-    //{
-    //    if(ingredient != null && _ingredients.Contains(ingredient))
-    //    {
-    //        _ingredients.Remove(ingredient);
-
-    //        if(_ingredients.Count == 0)
-    //        {
-    //            //GameManager.Instance.FinalGame();
-    //        }
-    //    }
-    //}
 
     public void DeleteRandomIngredient(int count)
     {

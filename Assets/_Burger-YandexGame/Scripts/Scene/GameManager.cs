@@ -1,30 +1,43 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [field: SerializeField] public Player Player { get; private set; }
-    [SerializeField] private UIController _uiController;
-
-    [SerializeField] private HeadController _headController;
+    [field: SerializeField] public List<RecipeIngredient> Recipe { get; private set; }
 
     public float GameMusic { get; set; }
     public bool GameLaunch { get; private set; }
     public int TotalIngredientsCount { get; private set; }
     public int Money { get; private set; }
+    public Player Player { get; private set; }
 
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
     public static GameManager Instance { get; private set; }
 
+    private UIController _uiController;
+    private HeadController _headController;
+
+    private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        Player = FindAnyObjectByType<Player>();
+        _uiController = FindAnyObjectByType<UIController>();
+        _headController = FindAnyObjectByType<HeadController>();
+        TotalIngredientsCount = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Length;
+
+        _uiController.UpdateSceneText((scene.buildIndex + 1).ToString());
+        _uiController.SetRecipe();
+
+        Player.enabled = false;
+    }
+
     private void Awake()
     {
-        DOTween.Init();
-        Player.enabled = false;
+        SceneManager.sceneLoaded += OnSceneLoad;
 
-        TotalIngredientsCount = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Length;
+        DOTween.Init();
 
         if(Instance == null)
         {
@@ -71,17 +84,11 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public enum IngredientType
+[Serializable]
+public class RecipeIngredient
 {
-    Meat,
-    Pepper,
-    Cheese,
-    Tomato,
-    Fish,
-    Avocado,
-    Egg,
-    Bacon,
-    Cutlet,
-    Salad,
-    None,
+    [field: SerializeField] public Ingredient Ingredient { get; private set; }
+    [field: SerializeField] public int Count { get; private set; }
+
+
 }

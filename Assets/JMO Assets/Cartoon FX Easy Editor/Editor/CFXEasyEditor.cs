@@ -96,14 +96,14 @@ namespace CartoonFX
 			{ "Velocity", "Velocity over Lifetime" },
 			{ "ClampVelocity", "Limit Velocity over Lifetime" },
 			{ "InheritVelocity", "Inherit Velocity" },
-			{ "LifetimeByEmitterSpeed", "Lifetime by Emitter Speed" },
+			{ "LifetimeByEmitterSpeed", "Lifetime by Emitter Horizontal" },
 			{ "Force", "Force over Lifetime" },
 			{ "Color", "Color over Lifetime" },
-			{ "ColorBySpeed", "Color by Speed" },
+			{ "ColorBySpeed", "Color by Horizontal" },
 			{ "Size", "Size over Lifetime" },
-			{ "SizeBySpeed", "Size by Speed" },
+			{ "SizeBySpeed", "Size by Horizontal" },
 			{ "Rotation", "Rotation over Lifetime" },
-			{ "RotationBySpeed", "Rotation By Speed" },
+			{ "RotationBySpeed", "Rotation By Horizontal" },
 			{ "ExternalForces", "External Forces" },
 			{ "Trigger", "Triggers" },
 			{ "Sub", "Sub Emitters" },
@@ -356,12 +356,12 @@ namespace CartoonFX
 				//----------------------------------------------------------------
 
 				GUILayout.BeginHorizontal();
-				if (GUILayout.Button(new GUIContent("Set Speed", "Changes the simulation speed of the Particle System(s)\n1 = default speed"), GUILayout.Width(120)))
+				if (GUILayout.Button(new GUIContent("Set Horizontal", "Changes the simulation speed of the Particle System(s)\n1 = default speed"), GUILayout.Width(120)))
 				{
 					applySpeed();
 				}
 
-				GUILayout.Label("Speed:", GUILayout.Width(110));
+				GUILayout.Label("Horizontal:", GUILayout.Width(110));
 				LTScalingValue = EditorGUILayout.FloatField(LTScalingValue, GUILayout.Width(50));
 				if (LTScalingValue < 0.0f) LTScalingValue = 0.0f;
 				else if (LTScalingValue > 9999) LTScalingValue = 9999;
@@ -566,7 +566,7 @@ namespace CartoonFX
 				GUILayout.Space(4);
 				TintedToggle(ref TintStartColor, new GUIContent("Start Color", "If checked, the \"Start Color\" value(s) will be affected."));
 				TintedToggle(ref TintColorModule, new GUIContent("Color over Lifetime", "If checked, the \"Color over Lifetime\" value(s) will be affected."));
-				TintedToggle(ref TintColorSpeedModule, new GUIContent("Color by Speed", "If checked, the \"Color by Speed\" value(s) will be affected."));
+				TintedToggle(ref TintColorSpeedModule, new GUIContent("Color by Horizontal", "If checked, the \"Color by Horizontal\" value(s) will be affected."));
 				GUILayout.Space(4);
 				GUILayout.EndHorizontal();
 				GUILayout.BeginHorizontal();
@@ -1746,7 +1746,7 @@ namespace CartoonFX
 			"InitialModule.startSizeZ.scalar",
 			"InitialModule.startSizeZ.minScalar",
 #endif
-			//Size by Speed
+			//Size by Vertical
 			"SizeBySpeedModule.range.x",
 			"SizeBySpeedModule.range.y",
 			//Velocity over Lifetime

@@ -1,27 +1,37 @@
 ﻿using DG.Tweening;
 using System;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class UIController : MonoBehaviour
 {
+    [Header("Panels")]
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _finalPanel;
     [SerializeField] private GameObject _dailyGiftPanel;
     [SerializeField] private GameObject _MinuteGiftPanel;
 
+    [Header("Controllers")]
     [SerializeField] private HelpPointer _helpPointer;
     [SerializeField] private StarSystem _starSystem;
     [SerializeField] private DailyRewards _dailyRewards;
     [SerializeField] private MinuteGift _minuteGift;
+    [SerializeField] private FinalReward _finalReward;
 
+    [Header("Reference")]
     [SerializeField] private TMP_Text _foodText;
+    [SerializeField] private TMP_Text _levelText;
     [SerializeField] private Slider _musicSlider;
-    [SerializeField] private Image _recipeImage;
+    [SerializeField] private GameObject _recipeImage;
     [SerializeField] private Transform _recipeContent;
+    [SerializeField] private Transform _recipeContainer;
 
     private void Start()
     {
@@ -33,7 +43,7 @@ public class UIController : MonoBehaviour
         _minuteGift.ResetTimer();
     }
 
-    void Update()
+    private void Update()
     {
         _minuteGift.UpdateTimer();
     }
@@ -89,13 +99,94 @@ public class UIController : MonoBehaviour
 
         foreach(var group in groupedIngredients)
         {
-            print($"Имя: {group.Key}, Количество: {group.Count()}");
-
-            // Используем первый элемент группы для получения спрайта
             var representativeIngredient = group.First();
-            Image image = Instantiate(_recipeImage, _recipeContent);
-            image.sprite = representativeIngredient.Icon;
+            GameObject image = Instantiate(_recipeImage, _recipeContent);
+
+            foreach(Transform child in image.transform)
+            {
+                if(child.CompareTag("UIIngredientImage"))
+                {
+                    child.GetComponent<Image>().sprite = representativeIngredient.Icon;
+                    break;
+                }
+                
+                if(child.CompareTag("UIBackground"))
+                {
+                    foreach(var item in GameManager.Instance.Recipe)
+                    {
+                        if(group.Count() >= item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
+                        {
+                            child.GetComponent<Image>().color = Color.green;
+                        }
+                        //else if(group.Count() == 0 && representativeIngredient.Icon == item.Ingredient.Icon)
+                        //{
+                        //    child.GetComponent<Image>().color = Color.red;
+                        //}
+                        else if (group.Count() < item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
+                        {
+                            child.GetComponent<Image>().color = Color.yellow;
+                        }
+                    }
+
+                }
+            }
+
             image.GetComponentInChildren<TMP_Text>().text = group.Count().ToString();
+        }
+
+        foreach(var j in groupedIngredients)
+        {
+            foreach(var i in GameManager.Instance.Recipe)
+            {
+                var representativeIngredient = j.First();
+                if(i.Ingredient.Icon != representativeIngredient.Icon)
+                {
+                }
+            }
+        }
+
+        var repice = new List<Sprite>();
+        var grouped = new List<Sprite>();
+
+        foreach(var item in GameManager.Instance.Recipe)
+        {
+            repice.Add(item.Ingredient.Icon);
+        }
+        
+        foreach(var item in groupedIngredients)
+        {
+            grouped.Add(item.First().Icon);
+        }
+
+        foreach(var item in grouped)
+        {
+            repice.Remove(item);
+        }
+
+        var total = repice;
+
+        if(total.Count > 0 && total != null)
+        {
+            foreach(var item in total)
+            {
+                GameObject image = Instantiate(_recipeImage, _recipeContent);
+
+                foreach(Transform child in image.transform)
+                {
+                    if(child.CompareTag("UIIngredientImage"))
+                    {
+                        child.GetComponent<Image>().sprite = item;
+                        break;
+                    }
+
+                    if(child.CompareTag("UIBackground"))
+                    {
+                        child.GetComponent<Image>().color = Color.red;
+                    }
+                }
+                image.GetComponentInChildren<TMP_Text>().text = "0";
+
+            }
         }
     }
 
@@ -114,6 +205,65 @@ public class UIController : MonoBehaviour
             print(123);
         }
     }
+
+    public void LoadNextScene()
+    {
+        DOTween.KillAll();
+        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextIndex);
+    }
+
+    public void ReloadScene()
+    {
+        DOTween.KillAll();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ShowFinalRewardPanel()
+    {
+        _finalPanel.SetActive(false);
+        _finalReward.Initialize();
+    }
+
+    public void GetRewardMultiply() => _finalReward.GetRewardMultiply();
+
+    public void UpdateSceneText(string newLevel)
+    {
+        //Localization
+
+        if(true)
+        {
+            _levelText.text = "Level:" + newLevel;
+        }
+    }
+
+    public void SetRecipe()
+    {
+        foreach(var item in GameManager.Instance.Recipe)
+        {
+            GameObject image = Instantiate(_recipeImage, _recipeContainer);
+
+            //foreach(Transform child in image.transform)
+            //{
+            //    if(child.CompareTag("UIBackground"))
+            //    {
+            //        child.GetComponent<Image>().sprite = item.Ingredient.Icon;
+            //        break;
+            //    }
+            //}
+
+            foreach(Transform child in image.transform)
+            {
+                if(child.CompareTag("UIIngredientImage"))
+                {
+                    child.GetComponent<Image>().sprite = item.Ingredient.Icon;
+                    break;
+                }
+            }
+
+            image.GetComponentInChildren<TMP_Text>().text = item.Count.ToString();
+        }
+    }
 }
 
 [System.Serializable]
@@ -125,7 +275,7 @@ public class HelpPointer
     [SerializeField] private Transform _pointerPos2;
     [SerializeField] private float _pointerSpeed;
 
-    private Tween moveTween;
+    private Tween _moveTween;
 
     public void Initialize()
     {
@@ -139,23 +289,23 @@ public class HelpPointer
         _helpPointer.position = _pointerPos1.position;
 
 
-        moveTween = _helpPointer.DOMove(_pointerPos2.position, _pointerSpeed)
+        _moveTween = _helpPointer.DOMove(_pointerPos2.position, _pointerSpeed)
                                .SetEase(Ease.Linear)
                                .SetLoops(-1, LoopType.Yoyo);
     }
 
     public void StopAnimation()
     {
-        if(moveTween != null && moveTween.IsActive())
+        if(_moveTween != null && _moveTween.IsActive())
         {
-            moveTween.Kill();
+            _moveTween.Kill();
         }
     }
 }
 
 [System.Serializable]
 public class StarSystem
-{   
+{
     [SerializeField] private GameObject[] _stars;
 
     [SerializeField] private float _threshold1 = 0.33f;
@@ -197,7 +347,7 @@ public class StarSystem
 public class DailyRewards
 {
     [SerializeField] private Transform _giftContainer;
-    
+
     private GameObject _dailyGiftPanel;
 
     private DateTime _lastLoginDate;
@@ -219,7 +369,7 @@ public class DailyRewards
 
         if(string.IsNullOrEmpty(lastLoginStr))
         {
-            _lastLoginDate = _today; 
+            _lastLoginDate = _today;
             _currentStreak = 1;
             PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
             PlayerPrefs.SetInt("LoginStreak", _currentStreak);
@@ -250,10 +400,6 @@ public class DailyRewards
                         PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
                         GiveReward(_currentStreak);
                     }
-                }
-                else
-                {
-                    Debug.Log("Сегодня уже выполнен вход.");
                 }
             }
             else
@@ -289,12 +435,12 @@ public class MinuteGift
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private Button _getButton;
     [SerializeField] private float _maxTimeRemaining = 600f;
-    [field: SerializeField] public int GiftMoney { get; private set; } 
-    
+    [field: SerializeField] public int GiftMoney { get; private set; }
+
     [HideInInspector] public bool TimerIsRunning { get; private set; } = true;
 
     private float _timeRemaining;
-    
+
     public void UpdateTimer()
     {
         if(TimerIsRunning)
@@ -326,5 +472,90 @@ public class MinuteGift
         int minutes = Mathf.FloorToInt(timeToDisplay / 60);
         int seconds = Mathf.FloorToInt(timeToDisplay % 60);
         _timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+}
+
+[System.Serializable]
+public class FinalReward
+{
+    [SerializeField] private GameObject _rewardPanel;
+    [SerializeField] private Transform _arrowPivot;
+
+    [SerializeField] private float _speed = 1f;
+    [SerializeField] private Vector3 _startPoint;
+    [SerializeField] private Vector3 _endPoint;
+
+    [SerializeField] private List<RewardMultiply> _rewardMultiply;
+
+    private Tween _moveTween;
+
+    public void Initialize()
+    {
+        _rewardPanel.SetActive(true);
+
+        _arrowPivot.eulerAngles = _startPoint;
+
+        _moveTween = _arrowPivot
+            .DORotate(_endPoint, _speed)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void GetRewardMultiply()
+    {
+        StopAnimation();
+
+        int chosenMultiply = 1;
+
+        chosenMultiply = GetAngleBasedMultiply();
+
+        Debug.Log($"Выбран множитель: x{chosenMultiply}");
+
+    }
+
+    private void StopAnimation()
+    {
+        if(_moveTween != null && _moveTween.IsActive())
+        {
+            _moveTween.Kill();
+        }
+    }
+
+    private float NormalizeAngle(float angle)
+    {
+        angle = (angle + 180f) % 360f - 180f;
+        return angle;
+    }
+
+    private int GetAngleBasedMultiply()
+    {
+        float currentAngle = NormalizeAngle(_arrowPivot.eulerAngles.z);
+
+        float minAngle = _startPoint.z;
+        float maxAngle = _endPoint.z;
+
+        if(minAngle > maxAngle)
+        {
+            float temp = minAngle;
+            minAngle = maxAngle;
+            maxAngle = temp;
+        }
+
+        currentAngle = Mathf.Clamp(currentAngle, minAngle, maxAngle);
+
+        float t = (currentAngle - minAngle) / (maxAngle - minAngle);
+
+        int index = Mathf.FloorToInt(t * _rewardMultiply.Count);
+        if(index >= _rewardMultiply.Count)
+            index = _rewardMultiply.Count - 1;
+
+        return _rewardMultiply[index].Multiply;
+    }
+
+    [System.Serializable]
+    private struct RewardMultiply
+    {
+        [field: SerializeField]
+        public int Multiply { get; private set; }
     }
 }
