@@ -2,6 +2,7 @@
 using UnityEditor;
 using System;
 
+#if UNITY_EDITOR
 public class IconDropdownWindow : EditorWindow
 {
     private GUIContent[] items;
@@ -41,3 +42,4 @@ public class IconDropdownWindow : EditorWindow
         }
     }
 }
+#endif

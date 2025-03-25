@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 
 public class RecipeCreatorWindow : EditorWindow
@@ -252,3 +253,4 @@ public class RecipeCreatorWindow : EditorWindow
         }
     }
 }
+#endif
