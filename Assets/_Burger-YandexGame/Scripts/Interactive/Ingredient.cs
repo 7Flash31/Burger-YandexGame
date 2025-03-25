@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class Ingredient : MonoBehaviour
 {
-    [field: SerializeField] public Sprite Icon{ get; private set; } 
+    [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public int Price { get; private set; }
+
     [SerializeField] private float _rotateSpeed;
 
     public BoxCollider BoxCollider { get; private set; }
     public bool IsDropped { get; set; }
-
 
     private Tween _tween;
 

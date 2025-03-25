@@ -3319,7 +3319,7 @@ MonoBehaviour:
   _foodText: {fileID: 5145332370674084580}
   _levelText: {fileID: 8312033311845233653}
   _musicSlider: {fileID: 2399313618681449402}
-  _recipeImage: {fileID: 5667993026563081388, guid: 56469e2622aad904887d4e24a53aee34, type: 3}
+  _recipeImage: {fileID: 179449863530660926, guid: 56469e2622aad904887d4e24a53aee34, type: 3}
   _recipeContent: {fileID: 6182188872620440169}
   _recipeContainer: {fileID: 6624116277507248773}
 --- !u!1 &3283330609240174790

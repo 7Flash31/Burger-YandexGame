@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Burger-YandexGame/Scenes/Levels/Level 6.unity
     guid: 2924383a6515a374d8a8f089d8c3595a
+  - enabled: 1
+    path: Assets/_Burger-YandexGame/Scenes/Levels/Level 7.unity
+    guid: a66303378cb91b441b543049e284f70e
   m_configObjects: {}

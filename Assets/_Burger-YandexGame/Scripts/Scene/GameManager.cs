@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [field: SerializeField] public List<RecipeIngredient> Recipe { get; private set; }
+    //[field: SerializeField] public List<RecipeIngredient> Recipe { get; private set; }
+
+    private RecipeData _recipeData;
+
+    public List<RecipeIngredient> Recipe;
 
     public float GameMusic { get; set; }
     public bool GameLaunch { get; private set; }
@@ -22,6 +26,18 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
+        if(scene.buildIndex == 0)
+        {
+            _recipeData = Resources.Load<RecipeData>($"Recipe/Level");
+        }
+        else
+        {
+            _recipeData = Resources.Load<RecipeData>($"Recipe/Level {scene.buildIndex}");
+        }
+
+        Recipe = _recipeData.RecipeIngredients;
+
+
         Player = FindAnyObjectByType<Player>();
         _uiController = FindAnyObjectByType<UIController>();
         _headController = FindAnyObjectByType<HeadController>();
@@ -31,6 +47,7 @@ public class GameManager : MonoBehaviour
         _uiController.SetRecipe();
 
         Player.enabled = false;
+
     }
 
     private void Awake()
@@ -84,11 +101,25 @@ public class GameManager : MonoBehaviour
     }
 }
 
-[Serializable]
+//[Serializable]
+//public class RecipeIngredient
+//{
+//    [field: SerializeField] public Ingredient Ingredient { get; private set; }
+//    [field: SerializeField] public int Count { get; private set; }
+//}
+
+[System.Serializable]
 public class RecipeIngredient
 {
-    [field: SerializeField] public Ingredient Ingredient { get; private set; }
-    [field: SerializeField] public int Count { get; private set; }
+    [SerializeField] private Ingredient ingredient;
+    [SerializeField] private int count;
 
+    public Ingredient Ingredient => ingredient;
+    public int Count => count;
 
+    public RecipeIngredient(Ingredient ingredient, int count)
+    {
+        this.ingredient = ingredient;
+        this.count = count;
+    }
 }

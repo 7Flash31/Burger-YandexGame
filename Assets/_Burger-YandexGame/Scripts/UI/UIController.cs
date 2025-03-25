@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class UIController : MonoBehaviour
 {
@@ -32,6 +31,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _recipeImage;
     [SerializeField] private Transform _recipeContent;
     [SerializeField] private Transform _recipeContainer;
+
+    private bool setAlreadyRecipe;
 
     private void Start()
     {
@@ -60,133 +61,241 @@ public class UIController : MonoBehaviour
 
     public void ShowDailyPanel() => _dailyGiftPanel.SetActive(!_dailyGiftPanel.activeSelf);
 
+    //public void ShowFinalPanel()
+    //{
+    //    _finalPanel.SetActive(true);
+
+    //    //FoodText
+
+    //    int totalCount = GameManager.Instance.FinalIngredients.Count;
+    //    string result = "";
+
+    //    if(totalCount >= 1 && totalCount <= 3)
+    //    {
+    //        result = "Стейк";
+    //    }
+    //    else if(totalCount >= 4 && totalCount <= 15)
+    //    {
+    //        result = "Мега стейк";
+    //    }
+    //    else if(totalCount >= 16)
+    //    {
+    //        result = "Супер Мега стейк";
+    //    }
+    //    else
+    //    {
+    //        result = "Нет ингредиентов";
+    //    }
+
+    //    _foodText.text = result;
+
+    //    //Stars
+
+    //    _starSystem.ActivateStars();
+
+    //    //Recipe
+    //    var groupedIngredients = GameManager.Instance.FinalIngredients
+    //        .GroupBy(ingredient => Regex.Replace(ingredient.name, @"\s*\(\d+\)$", ""))
+    //        .OrderBy(group => group.Key);
+
+    //    foreach(var group in groupedIngredients)
+    //    {
+    //        var representativeIngredient = group.First();
+    //        GameObject image = Instantiate(_recipeImage, _recipeContent);
+
+    //        foreach(Transform child in image.transform)
+    //        {
+    //            if(child.CompareTag("UIIngredientImage"))
+    //            {
+    //                child.GetComponent<Image>().sprite = representativeIngredient.Icon;
+    //                break;
+    //            }
+
+    //            if(child.CompareTag("UIBackground"))
+    //            {
+    //                foreach(var item in GameManager.Instance.Recipe)
+    //                {
+    //                    if(group.Count() >= item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
+    //                    {
+    //                        child.GetComponent<Image>().color = Color.green;
+    //                    }
+    //                    else if (group.Count() < item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
+    //                    {
+    //                        child.GetComponent<Image>().color = Color.yellow;
+    //                    }
+    //                }
+
+    //            }
+    //        }
+
+    //        image.GetComponentInChildren<TMP_Text>().text = group.Count().ToString();
+    //    }
+
+    //    foreach(var j in groupedIngredients)
+    //    {
+    //        foreach(var i in GameManager.Instance.Recipe)
+    //        {
+    //            var representativeIngredient = j.First();
+    //            if(i.Ingredient.Icon != representativeIngredient.Icon)
+    //            {
+    //            }
+    //        }
+    //    }
+
+    //    var repice = new List<Sprite>();
+    //    var grouped = new List<Sprite>();
+
+    //    foreach(var item in GameManager.Instance.Recipe)
+    //    {
+    //        repice.Add(item.Ingredient.Icon);
+    //    }
+
+    //    foreach(var item in groupedIngredients)
+    //    {
+    //        grouped.Add(item.First().Icon);
+    //    }
+
+    //    foreach(var item in grouped)
+    //    {
+    //        repice.Remove(item);
+    //    }
+
+    //    var total = repice;
+
+    //    if(total.Count > 0 && total != null)
+    //    {
+    //        foreach(var item in total)
+    //        {
+    //            GameObject image = Instantiate(_recipeImage, _recipeContent);
+
+    //            foreach(Transform child in image.transform)
+    //            {
+    //                if(child.CompareTag("UIIngredientImage"))
+    //                {
+    //                    child.GetComponent<Image>().sprite = item;
+    //                    break;
+    //                }
+
+    //                if(child.CompareTag("UIBackground"))
+    //                {
+    //                    child.GetComponent<Image>().color = Color.red;
+    //                }
+    //            }
+    //            image.GetComponentInChildren<TMP_Text>().text = "0";
+
+    //        }
+    //    }
+    //}
+
     public void ShowFinalPanel()
     {
+        // Отображаем финальную панель
         _finalPanel.SetActive(true);
 
-        //FoodText
-
+        // Обновление текста блюда
         int totalCount = GameManager.Instance.FinalIngredients.Count;
-        string result = "";
-
-        if(totalCount >= 1 && totalCount <= 3)
-        {
-            result = "Стейк";
-        }
-        else if(totalCount >= 4 && totalCount <= 15)
-        {
-            result = "Мега стейк";
-        }
-        else if(totalCount >= 16)
-        {
-            result = "Супер Мега стейк";
-        }
-        else
-        {
+        string result;
+        if(totalCount == 0)
             result = "Нет ингредиентов";
-        }
-
+        else if(totalCount <= 3)
+            result = "Стейк";
+        else if(totalCount <= 15)
+            result = "Мега стейк";
+        else
+            result = "Супер Мега стейк";
         _foodText.text = result;
 
-        //Stars
-
+        // Активация звёзд
         _starSystem.ActivateStars();
 
-        //Recipe
-        var groupedIngredients = GameManager.Instance.FinalIngredients
+        // Группировка ингредиентов с удалением числовых суффиксов
+        var finalIngredients = GameManager.Instance.FinalIngredients;
+        var groupedIngredients = finalIngredients
             .GroupBy(ingredient => Regex.Replace(ingredient.name, @"\s*\(\d+\)$", ""))
-            .OrderBy(group => group.Key);
+            .OrderBy(group => group.Key)
+            .ToList();
 
+        // Создаем элементы рецепта для найденных ингредиентов
         foreach(var group in groupedIngredients)
         {
             var representativeIngredient = group.First();
             GameObject image = Instantiate(_recipeImage, _recipeContent);
 
+            // Извлекаем необходимые компоненты из дочерних объектов
+            Image uiIngredientImage = null;
+            Image uiBackground = null;
+            TMP_Text countText = image.GetComponentInChildren<TMP_Text>();
+
             foreach(Transform child in image.transform)
             {
                 if(child.CompareTag("UIIngredientImage"))
                 {
-                    child.GetComponent<Image>().sprite = representativeIngredient.Icon;
-                    break;
+                    uiIngredientImage = child.GetComponent<Image>();
                 }
-                
-                if(child.CompareTag("UIBackground"))
+                else if(child.CompareTag("UIBackground"))
                 {
-                    foreach(var item in GameManager.Instance.Recipe)
-                    {
-                        if(group.Count() >= item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
-                        {
-                            child.GetComponent<Image>().color = Color.green;
-                        }
-                        //else if(group.Count() == 0 && representativeIngredient.Icon == item.Ingredient.Icon)
-                        //{
-                        //    child.GetComponent<Image>().color = Color.red;
-                        //}
-                        else if (group.Count() < item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
-                        {
-                            child.GetComponent<Image>().color = Color.yellow;
-                        }
-                    }
-
+                    uiBackground = child.GetComponent<Image>();
                 }
             }
 
-            image.GetComponentInChildren<TMP_Text>().text = group.Count().ToString();
-        }
+            if(uiIngredientImage != null)
+                uiIngredientImage.sprite = representativeIngredient.Icon;
 
-        foreach(var j in groupedIngredients)
-        {
-            foreach(var i in GameManager.Instance.Recipe)
+            // Назначаем цвет фона в зависимости от соответствия рецепту
+            if(uiBackground != null)
             {
-                var representativeIngredient = j.First();
-                if(i.Ingredient.Icon != representativeIngredient.Icon)
+                foreach(var recipeItem in GameManager.Instance.Recipe)
                 {
-                }
-            }
-        }
-
-        var repice = new List<Sprite>();
-        var grouped = new List<Sprite>();
-
-        foreach(var item in GameManager.Instance.Recipe)
-        {
-            repice.Add(item.Ingredient.Icon);
-        }
-        
-        foreach(var item in groupedIngredients)
-        {
-            grouped.Add(item.First().Icon);
-        }
-
-        foreach(var item in grouped)
-        {
-            repice.Remove(item);
-        }
-
-        var total = repice;
-
-        if(total.Count > 0 && total != null)
-        {
-            foreach(var item in total)
-            {
-                GameObject image = Instantiate(_recipeImage, _recipeContent);
-
-                foreach(Transform child in image.transform)
-                {
-                    if(child.CompareTag("UIIngredientImage"))
+                    if(representativeIngredient.Icon == recipeItem.Ingredient.Icon)
                     {
-                        child.GetComponent<Image>().sprite = item;
+                        if(group.Count() >= recipeItem.Count)
+                            uiBackground.color = Color.green;
+                        else
+                            uiBackground.color = Color.yellow;
+
                         break;
                     }
-
-                    if(child.CompareTag("UIBackground"))
-                    {
-                        child.GetComponent<Image>().color = Color.red;
-                    }
                 }
-                image.GetComponentInChildren<TMP_Text>().text = "0";
-
             }
+
+            if(countText != null)
+                countText.text = group.Count().ToString();
+        }
+
+        // Определяем отсутствующие в финальном наборе ингредиенты
+        var requiredIcons = GameManager.Instance.Recipe.Select(item => item.Ingredient.Icon).ToList();
+        var addedIcons = groupedIngredients.Select(g => g.First().Icon).Distinct().ToList();
+        var missingIcons = requiredIcons.Except(addedIcons).ToList();
+
+        // Создаем элементы рецепта для отсутствующих ингредиентов
+        foreach(var icon in missingIcons)
+        {
+            GameObject image = Instantiate(_recipeImage, _recipeContent);
+
+            Image uiIngredientImage = null;
+            Image uiBackground = null;
+            TMP_Text countText = image.GetComponentInChildren<TMP_Text>();
+
+            foreach(Transform child in image.transform)
+            {
+                if(child.CompareTag("UIIngredientImage"))
+                {
+                    uiIngredientImage = child.GetComponent<Image>();
+                }
+                else if(child.CompareTag("UIBackground"))
+                {
+                    uiBackground = child.GetComponent<Image>();
+                }
+            }
+
+            if(uiIngredientImage != null)
+                uiIngredientImage.sprite = icon;
+
+            if(uiBackground != null)
+                uiBackground.color = Color.red;
+
+            if(countText != null)
+                countText.text = "0";
         }
     }
 
@@ -233,12 +342,15 @@ public class UIController : MonoBehaviour
 
         if(true)
         {
-            _levelText.text = "Level:" + newLevel;
+            _levelText.text = "Level: " + newLevel;
         }
     }
 
     public void SetRecipe()
     {
+        if(setAlreadyRecipe)
+            return;
+
         foreach(var item in GameManager.Instance.Recipe)
         {
             GameObject image = Instantiate(_recipeImage, _recipeContainer);
@@ -263,6 +375,8 @@ public class UIController : MonoBehaviour
 
             image.GetComponentInChildren<TMP_Text>().text = item.Count.ToString();
         }
+
+        setAlreadyRecipe = true;
     }
 }
 

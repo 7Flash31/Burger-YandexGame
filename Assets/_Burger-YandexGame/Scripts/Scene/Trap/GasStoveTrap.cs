@@ -10,5 +10,9 @@ public class GasStoveTrap : Trap
         {
             _fire.SetActive(true);
         }
+        else 
+        {
+            _fire.SetActive(false);
+        }
     }
 }
