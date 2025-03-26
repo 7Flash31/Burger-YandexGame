@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 public class UIController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _finalPanel;
     [SerializeField] private GameObject _dailyGiftPanel;
-    [SerializeField] private GameObject _MinuteGiftPanel;
+    //[SerializeField] private GameObject _MinuteGiftPanel;
 
     [Header("Controllers")]
     [SerializeField] private HelpPointer _helpPointer;
@@ -24,175 +25,147 @@ public class UIController : MonoBehaviour
     [SerializeField] private MinuteGift _minuteGift;
     [SerializeField] private FinalReward _finalReward;
 
-    [Header("Reference")]
+    [Header("Left Buttons")]
+    [SerializeField] private GameObject _fortuneWheelButton;
+    [SerializeField] private GameObject _minuteGiftButton;
+    [SerializeField] private GameObject _dailyGiftButton;
+
+    [Header("Other Reference")]
+    [SerializeField] private GameObject _shopButton;
+    [SerializeField] private GameObject _recipeImage;
+    [SerializeField] private GameObject _playerHelp;
+
     [SerializeField] private TMP_Text _foodText;
     [SerializeField] private TMP_Text _levelText;
+    [SerializeField] private TMP_Text _fortuneWheel;
+    [SerializeField] private TMP_Text _dailyGiftText;
+    [SerializeField] private TMP_Text _moneyText;
+
     [SerializeField] private Slider _musicSlider;
-    [SerializeField] private GameObject _recipeImage;
+    [SerializeField] private Slider _sensitivitySlider;
+
     [SerializeField] private Transform _recipeContent;
     [SerializeField] private Transform _recipeContainer;
 
     private bool setAlreadyRecipe;
 
+    //private void Start()
+    //{
+    //    _startPanel.SetActive(true);
+    //    _finalPanel.SetActive(false);
+
+    //    _fortuneWheelButton.SetActive(false);
+    //    _dailyGiftButton.SetActive(false);
+    //    _shopButton.SetActive(false);
+
+    //    if(SceneManager.GetActiveScene().buildIndex == 0)
+    //        _helpPointer.Initialize();
+    //    else
+    //        _playerHelp.SetActive(false);
+
+    //    if(SceneManager.GetActiveScene().buildIndex > 0)
+    //    {
+    //        _fortuneWheelButton.SetActive(true);
+    //        _shopButton.SetActive(true);
+
+    //        if(SceneManager.GetActiveScene().buildIndex == 1)
+    //        {
+    //            FocusObject(_fortuneWheelButton.transform);
+    //            FocusObject(_shopButton.transform);
+    //        }
+    //    }
+
+    //    if(SceneManager.GetActiveScene().buildIndex > 2)
+    //    {
+    //        _dailyGiftButton.SetActive(true);
+    //        _dailyRewards.Initialize(_dailyGiftPanel);
+
+    //        if(SceneManager.GetActiveScene().buildIndex == 3)
+    //        {
+    //            FocusObject(_dailyGiftButton.transform);
+    //        }
+    //    }
+
+    //    _minuteGift.ResetTimer();
+    //}
+
     private void Start()
     {
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+
         _startPanel.SetActive(true);
         _finalPanel.SetActive(false);
 
-        _helpPointer.Initialize();
-        _dailyRewards.Initialize(_dailyGiftPanel);
+        _fortuneWheelButton.SetActive(false);
+        _dailyGiftButton.SetActive(false);
+        _shopButton.SetActive(false);
+
+        if(buildIndex == 0)
+        {
+            _helpPointer.Initialize();
+        }
+        else
+        {
+            _playerHelp.SetActive(false);
+        }
+
+        if(buildIndex > 0)
+        {
+            _fortuneWheelButton.SetActive(true);
+            _shopButton.SetActive(true);
+
+            if(buildIndex == 1)
+            {
+                FocusObject(_fortuneWheelButton.transform);
+                FocusObject(_shopButton.transform);
+            }
+        }
+
+        if(buildIndex > 2)
+        {
+            _dailyGiftButton.SetActive(true);
+            _dailyRewards.Initialize(_dailyGiftPanel);
+
+            if(buildIndex == 3)
+            {
+                FocusObject(_dailyGiftButton.transform);
+            }
+        }
+
+        _moneyText.text = PlayerPrefs.GetInt(SaveData.MoneyKey).ToString();
         _minuteGift.ResetTimer();
     }
 
     private void Update()
     {
         _minuteGift.UpdateTimer();
+        _dailyGiftText.text = _dailyRewards.GetTimeUntilNextGift().ToString(@"hh\:mm\:ss");
     }
 
     public void HideHelpPanel()
     {
         _startPanel.SetActive(false);
         _helpPointer.StopAnimation();
+
+        _fortuneWheelButton.SetActive(false);
+        _minuteGiftButton.SetActive(false);
+        _dailyGiftButton.SetActive(false);
     }
 
     public void ShowMusicSlider() => _musicSlider.gameObject.SetActive(!_musicSlider.gameObject.activeSelf);
 
-    public void SetGameMusic() => GameManager.Instance.GameMusic = _musicSlider.value;
+    public void SetGameMusic() => PlayerPrefs.SetFloat(SaveData.MusicKey, _musicSlider.value);
 
-    public void ShowDailyPanel() => _dailyGiftPanel.SetActive(!_dailyGiftPanel.activeSelf);
+    public void SetSensitivity() => PlayerPrefs.SetFloat(SaveData.SensitivityKey, _sensitivitySlider.value);
 
-    //public void ShowFinalPanel()
-    //{
-    //    _finalPanel.SetActive(true);
+    //public void ShowDailyPanel() => _dailyGiftPanel.SetActive(!_dailyGiftPanel.activeSelf);
 
-    //    //FoodText
-
-    //    int totalCount = GameManager.Instance.FinalIngredients.Count;
-    //    string result = "";
-
-    //    if(totalCount >= 1 && totalCount <= 3)
-    //    {
-    //        result = "Стейк";
-    //    }
-    //    else if(totalCount >= 4 && totalCount <= 15)
-    //    {
-    //        result = "Мега стейк";
-    //    }
-    //    else if(totalCount >= 16)
-    //    {
-    //        result = "Супер Мега стейк";
-    //    }
-    //    else
-    //    {
-    //        result = "Нет ингредиентов";
-    //    }
-
-    //    _foodText.text = result;
-
-    //    //Stars
-
-    //    _starSystem.ActivateStars();
-
-    //    //Recipe
-    //    var groupedIngredients = GameManager.Instance.FinalIngredients
-    //        .GroupBy(ingredient => Regex.Replace(ingredient.name, @"\s*\(\d+\)$", ""))
-    //        .OrderBy(group => group.Key);
-
-    //    foreach(var group in groupedIngredients)
-    //    {
-    //        var representativeIngredient = group.First();
-    //        GameObject image = Instantiate(_recipeImage, _recipeContent);
-
-    //        foreach(Transform child in image.transform)
-    //        {
-    //            if(child.CompareTag("UIIngredientImage"))
-    //            {
-    //                child.GetComponent<Image>().sprite = representativeIngredient.Icon;
-    //                break;
-    //            }
-
-    //            if(child.CompareTag("UIBackground"))
-    //            {
-    //                foreach(var item in GameManager.Instance.Recipe)
-    //                {
-    //                    if(group.Count() >= item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
-    //                    {
-    //                        child.GetComponent<Image>().color = Color.green;
-    //                    }
-    //                    else if (group.Count() < item.Count && representativeIngredient.Icon == item.Ingredient.Icon)
-    //                    {
-    //                        child.GetComponent<Image>().color = Color.yellow;
-    //                    }
-    //                }
-
-    //            }
-    //        }
-
-    //        image.GetComponentInChildren<TMP_Text>().text = group.Count().ToString();
-    //    }
-
-    //    foreach(var j in groupedIngredients)
-    //    {
-    //        foreach(var i in GameManager.Instance.Recipe)
-    //        {
-    //            var representativeIngredient = j.First();
-    //            if(i.Ingredient.Icon != representativeIngredient.Icon)
-    //            {
-    //            }
-    //        }
-    //    }
-
-    //    var repice = new List<Sprite>();
-    //    var grouped = new List<Sprite>();
-
-    //    foreach(var item in GameManager.Instance.Recipe)
-    //    {
-    //        repice.Add(item.Ingredient.Icon);
-    //    }
-
-    //    foreach(var item in groupedIngredients)
-    //    {
-    //        grouped.Add(item.First().Icon);
-    //    }
-
-    //    foreach(var item in grouped)
-    //    {
-    //        repice.Remove(item);
-    //    }
-
-    //    var total = repice;
-
-    //    if(total.Count > 0 && total != null)
-    //    {
-    //        foreach(var item in total)
-    //        {
-    //            GameObject image = Instantiate(_recipeImage, _recipeContent);
-
-    //            foreach(Transform child in image.transform)
-    //            {
-    //                if(child.CompareTag("UIIngredientImage"))
-    //                {
-    //                    child.GetComponent<Image>().sprite = item;
-    //                    break;
-    //                }
-
-    //                if(child.CompareTag("UIBackground"))
-    //                {
-    //                    child.GetComponent<Image>().color = Color.red;
-    //                }
-    //            }
-    //            image.GetComponentInChildren<TMP_Text>().text = "0";
-
-    //        }
-    //    }
-    //}
+    public void ShowPanel(GameObject panel) => panel.SetActive(!panel.activeSelf);
 
     public void ShowFinalPanel()
     {
-        // Отображаем финальную панель
         _finalPanel.SetActive(true);
 
-        // Обновление текста блюда
         int totalCount = GameManager.Instance.FinalIngredients.Count;
         string result;
         if(totalCount == 0)
@@ -205,23 +178,19 @@ public class UIController : MonoBehaviour
             result = "Супер Мега стейк";
         _foodText.text = result;
 
-        // Активация звёзд
         _starSystem.ActivateStars();
 
-        // Группировка ингредиентов с удалением числовых суффиксов
         var finalIngredients = GameManager.Instance.FinalIngredients;
         var groupedIngredients = finalIngredients
             .GroupBy(ingredient => Regex.Replace(ingredient.name, @"\s*\(\d+\)$", ""))
             .OrderBy(group => group.Key)
             .ToList();
 
-        // Создаем элементы рецепта для найденных ингредиентов
         foreach(var group in groupedIngredients)
         {
             var representativeIngredient = group.First();
             GameObject image = Instantiate(_recipeImage, _recipeContent);
 
-            // Извлекаем необходимые компоненты из дочерних объектов
             Image uiIngredientImage = null;
             Image uiBackground = null;
             TMP_Text countText = image.GetComponentInChildren<TMP_Text>();
@@ -241,7 +210,6 @@ public class UIController : MonoBehaviour
             if(uiIngredientImage != null)
                 uiIngredientImage.sprite = representativeIngredient.Icon;
 
-            // Назначаем цвет фона в зависимости от соответствия рецепту
             if(uiBackground != null)
             {
                 foreach(var recipeItem in GameManager.Instance.Recipe)
@@ -262,12 +230,10 @@ public class UIController : MonoBehaviour
                 countText.text = group.Count().ToString();
         }
 
-        // Определяем отсутствующие в финальном наборе ингредиенты
         var requiredIcons = GameManager.Instance.Recipe.Select(item => item.Ingredient.Icon).ToList();
         var addedIcons = groupedIngredients.Select(g => g.First().Icon).Distinct().ToList();
         var missingIcons = requiredIcons.Except(addedIcons).ToList();
 
-        // Создаем элементы рецепта для отсутствующих ингредиентов
         foreach(var icon in missingIcons)
         {
             GameObject image = Instantiate(_recipeImage, _recipeContent);
@@ -297,11 +263,25 @@ public class UIController : MonoBehaviour
             if(countText != null)
                 countText.text = "0";
         }
+
+        int totalMoney = 0;
+
+        foreach(var item in GameManager.Instance.FinalIngredients)
+        {
+            totalMoney += item.Price;
+            GameManager.Instance.UpdateMoney(totalMoney);
+        }
     }
 
-    public void UpdateMoneyText(int newManey)
+    public void UpdateMoneyText(int newMoney)
     {
+        int currentMoney = int.Parse(_moneyText.text);
 
+        DOTween.To(() => currentMoney, x =>
+        {
+            currentMoney = x;
+            _moneyText.text = currentMoney.ToString();
+        }, newMoney, 0.5f).SetEase(Ease.OutCubic);
     }
 
     public void GetMinuteGift()
@@ -377,6 +357,34 @@ public class UIController : MonoBehaviour
         }
 
         setAlreadyRecipe = true;
+    }
+
+    public void SpinFortuneWheel()
+    {
+        GameManager.Instance.SpinFortuneWheel();
+    }
+
+    public void UpdateFortuneWheelText(string newFortune) => _fortuneWheel.text = newFortune + "/" + "3";
+
+    private void FocusObject(Transform focusObject)
+    {
+        Sequence sequence = DOTween.Sequence();
+
+        Image image = focusObject.GetComponent<Image>();
+        if(image != null)
+        {
+            Color tempColor = image.color;
+            tempColor.a = 0;
+            image.color = tempColor;
+
+            sequence.Append(image.DOFade(1, 0.5f));
+        }
+
+        focusObject.localScale = Vector3.zero;
+        sequence.Join(focusObject.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        sequence.Append(focusObject.DOScale(1.1f, 0.2f));
+        sequence.Append(focusObject.DOScale(1f, 0.2f));
     }
 }
 
@@ -474,19 +482,23 @@ public class DailyRewards
         _today = DateTime.Now.Date;
         _maxStreak = _giftContainer.childCount;
         _dailyGiftPanel = dailyGiftPanel;
+
+        LoadData();
         CheckDailyLogin();
     }
 
     private void CheckDailyLogin()
     {
-        string lastLoginStr = PlayerPrefs.GetString("LastLoginDate", "");
+        string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey);
 
         if(string.IsNullOrEmpty(lastLoginStr))
         {
             _lastLoginDate = _today;
             _currentStreak = 1;
-            PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
-            PlayerPrefs.SetInt("LoginStreak", _currentStreak);
+            string todayStr = _today.ToString("yyyy-MM-dd");
+            PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
+            PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
+            SaveDate(todayStr, _currentStreak);
             GiveReward(_currentStreak);
         }
         else
@@ -497,21 +509,24 @@ public class DailyRewards
 
                 if(difference.TotalDays >= 1)
                 {
+                    string todayStr = _today.ToString("yyyy-MM-dd");
+
                     if(difference.TotalDays == 1)
                     {
-                        _currentStreak = PlayerPrefs.GetInt("LoginStreak", 1);
-
+                        _currentStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey, 1);
                         _currentStreak = (_currentStreak % _maxStreak) + 1;
-                        PlayerPrefs.SetInt("LoginStreak", _currentStreak);
-                        PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
+                        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
+                        PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
+                        SaveDate(todayStr, _currentStreak);
                         GiveReward(_currentStreak);
                     }
                     else
                     {
                         _currentStreak = 1;
                         _lastLoginDate = _today;
-                        PlayerPrefs.SetInt("LoginStreak", _currentStreak);
-                        PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
+                        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
+                        PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
+                        SaveDate(todayStr, _currentStreak);
                         GiveReward(_currentStreak);
                     }
                 }
@@ -520,8 +535,10 @@ public class DailyRewards
             {
                 _lastLoginDate = _today;
                 _currentStreak = 1;
-                PlayerPrefs.SetString("LastLoginDate", _today.ToString("yyyy-MM-dd"));
-                PlayerPrefs.SetInt("LoginStreak", _currentStreak);
+                string todayStr = _today.ToString("yyyy-MM-dd");
+                PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
+                PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
+                SaveDate(todayStr, _currentStreak);
                 GiveReward(_currentStreak);
             }
         }
@@ -530,16 +547,45 @@ public class DailyRewards
     private void GiveReward(int day)
     {
         _dailyGiftPanel.SetActive(true);
-        Debug.Log("Награда за день " + day);
 
         Reward[] reward = _giftContainer.GetComponentsInChildren<Reward>();
 
         reward[day - 1].ClaimReward();
     }
 
-    public DateTime GetLastLogin()
+    public TimeSpan GetTimeUntilNextGift()
     {
-        return _lastLoginDate;
+        string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey, "");
+        if(string.IsNullOrEmpty(lastLoginStr))
+        {
+            return TimeSpan.Zero;
+        }
+
+        if(!DateTime.TryParse(lastLoginStr, out DateTime lastLogin))
+        {
+            return TimeSpan.Zero;
+        }
+
+        DateTime nextGiftTime = lastLogin.AddDays(1);
+        TimeSpan timeLeft = nextGiftTime - DateTime.Now;
+        return timeLeft.TotalSeconds > 0 ? timeLeft : TimeSpan.Zero;
+    }
+
+    public void SaveDate(string date, int streak)
+    {
+        PlayerPrefs.SetString(SaveData.LastSavedDateKey, date);
+        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, streak);
+
+        YandexGame.savesData.LastSavedDate = date;
+        YandexGame.savesData.LastSavedStreak = streak;
+
+        YandexGame.SaveProgress();
+    }
+
+    public void LoadData()
+    {
+        PlayerPrefs.SetString(SaveData.LastSavedDateKey, YandexGame.savesData.LastSavedDate);
+        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, YandexGame.savesData.LastSavedStreak);
     }
 }
 

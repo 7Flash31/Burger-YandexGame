@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 2ba513825669862498431b1b4e45e9ad, type: 3}
-  <Price>k__BackingField: 0
+  <Price>k__BackingField: 25
   _rotateSpeed: 2
 --- !u!1 &8953918917316839546
 GameObject:

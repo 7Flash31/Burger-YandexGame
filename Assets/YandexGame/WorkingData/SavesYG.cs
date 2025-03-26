@@ -18,6 +18,14 @@ namespace YG
 
         // Ваши сохранения
 
+        public int Money;
+        public int LastLevel;
+        public int FortuneSpins;
+        public int[] UnlockSkinId;
+
+        public string LastSavedDate;
+        public int LastSavedStreak;
+
         // ...
 
         // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны

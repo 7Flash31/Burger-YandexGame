@@ -1,0 +1,19 @@
+{
+  "idSave": 5,
+  "isFirstSession": false,
+  "language": "ru",
+  "promptDone": false,
+  "money": 1,
+  "newPlayerName": "Hello!",
+  "openLevels": [
+    false,
+    true,
+    false
+  ],
+  "Money": 0,
+  "LastLevel": 0,
+  "FortuneSpins": 0,
+  "UnlockSkinId": null,
+  "LastSavedDate": "2025-03-26",
+  "LastSavedStreak": 1
+}

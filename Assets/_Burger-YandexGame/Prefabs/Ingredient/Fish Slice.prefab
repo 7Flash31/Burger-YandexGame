@@ -118,6 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef03cbf4e5039c4fb1ed70cfdaa522f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IngredientType>k__BackingField: 10
   <Icon>k__BackingField: {fileID: 21300000, guid: f0ee4238c7b1c40469afe5fe0145c474, type: 3}
+  <Price>k__BackingField: 25
   _rotateSpeed: 2
