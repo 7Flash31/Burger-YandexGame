@@ -1,24 +1,30 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;
 
 public class GameManager : MonoBehaviour
 {
-    private RecipeData _recipeData;
-    public List<RecipeIngredient> Recipe;
-
-    public bool GameLaunch { get; private set; }
-    public int TotalIngredientsCount { get; private set; }
-    public int Money { get; private set; }
-    public Player Player { get; private set; }
-
-    public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private int _finalReward;
+    [SerializeField] private int _ingredientReward;
+    [SerializeField] private int _recipeReward;
+
+    private RecipeData _recipeData;
     private UIController _uiController;
     private HeadController _headController;
+
+
+    public Player Player { get; private set; }
+    public bool GameLaunch { get; private set; }
+    public int TotalIngredientsCount { get; private set; }
+
+    public List<RecipeIngredient> Recipe;
+    public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
+
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
@@ -93,7 +99,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(SaveData.MoneyKey, 0);
         }
 
-        _uiController.UpdateMoneyText(Money);
+        _uiController.UpdateMoneyText(PlayerPrefs.GetInt(SaveData.MoneyKey, 0));
     }
 
     public void SpinFortuneWheel()
@@ -111,7 +117,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void SaveGame()
     {
         YandexGame.savesData.Money = PlayerPrefs.GetInt(SaveData.MoneyKey);
@@ -123,6 +128,30 @@ public class GameManager : MonoBehaviour
         YandexGame.savesData.LastSavedStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey);
 
         YandexGame.SaveProgress();
+    }
+
+    public void EnableLuckMode()
+    {
+
+    }
+
+    public void EnableIncomeMode(bool reward = false)
+    {
+        int incomeModePrice = 50;
+        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > incomeModePrice || reward)
+        {
+            float multipler = 1;
+            for(int i = 0; i <= SceneManager.GetActiveScene().buildIndex; i++)
+            {
+                multipler += 0.05f;
+            }
+
+            _finalReward *= Mathf.RoundToInt(_finalReward * multipler);
+        }
+        else
+        {
+            YandexGame.RewVideoShow(SaveData.LuckReward);
+        }
     }
 }
 
@@ -153,4 +182,8 @@ public static class SaveData //PlayerPrefs
 
     public static string LastSavedDateKey { get; private set; } = "LastSavedDate";
     public static string LastSavedStreakKey { get; private set; } = "LastSavedStreak";
+
+
+    public static int LuckReward { get; private set; } = 100;
+    public static int IncomeReward { get; private set; } = 101;
 }
