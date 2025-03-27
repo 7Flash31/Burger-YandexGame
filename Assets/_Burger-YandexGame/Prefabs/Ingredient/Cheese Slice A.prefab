@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: d1de759b284158e4d98edab4a8d3a630, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2

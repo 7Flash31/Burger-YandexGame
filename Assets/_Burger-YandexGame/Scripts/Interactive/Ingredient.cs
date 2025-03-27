@@ -30,6 +30,8 @@ public class Ingredient : MonoBehaviour
         {
             Destroy(meshRenderer.gameObject);
         }
+
+        _tween.Kill();
     }
 
     private void OnDestroy()
