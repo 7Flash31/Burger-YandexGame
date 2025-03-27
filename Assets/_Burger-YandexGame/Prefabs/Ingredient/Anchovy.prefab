@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: f3b4954c4c65852478bd80a619b92e21, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2
 --- !u!1 &2242834746198914115
 GameObject:

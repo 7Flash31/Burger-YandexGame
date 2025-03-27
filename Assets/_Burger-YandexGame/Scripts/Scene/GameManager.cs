@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;
@@ -9,22 +8,27 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private int _finalReward;
-    [SerializeField] private int _ingredientReward;
-    [SerializeField] private int _recipeReward;
+    [field: SerializeField] public int GoodIngredientPrice { get; private set; }
+    [field: SerializeField] public int BadIngredientPrice { get; private set; }
+    [field: SerializeField] public int RecipeIngredientPrice { get; private set; }
+
+    [SerializeField] private GameObject _luckTextPrefab;
 
     private RecipeData _recipeData;
     private UIController _uiController;
     private HeadController _headController;
 
-
     public Player Player { get; private set; }
     public bool GameLaunch { get; private set; }
     public int TotalIngredientsCount { get; private set; }
 
+    public float IncomeMultiply { get; private set; }
+    public float LuckMultiply { get; private set; }
+    public bool IncomeModeEnabled { get; private set; }
+    public bool LuckModeEnabled { get; private set; }
+
     public List<RecipeIngredient> Recipe;
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
-
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
@@ -86,6 +90,8 @@ public class GameManager : MonoBehaviour
     {
         _headController.PlayAngryAnimation();
         _uiController.ShowFinalPanel();
+
+        //UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey, 0) + _finalReward);
     }
 
     public void UpdateMoney(int newValue)
@@ -132,7 +138,13 @@ public class GameManager : MonoBehaviour
 
     public void EnableLuckMode()
     {
+        LuckModeEnabled = true;
 
+        foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+        {
+
+            Instantiate(_luckTextPrefab, item.transform);
+        }
     }
 
     public void EnableIncomeMode(bool reward = false)
@@ -141,17 +153,40 @@ public class GameManager : MonoBehaviour
         if(PlayerPrefs.GetInt(SaveData.MoneyKey) > incomeModePrice || reward)
         {
             float multipler = 1;
+            IncomeMultiply = 1;
             for(int i = 0; i <= SceneManager.GetActiveScene().buildIndex; i++)
             {
                 multipler += 0.05f;
             }
 
-            _finalReward *= Mathf.RoundToInt(_finalReward * multipler);
+            IncomeMultiply = multipler;
+            IncomeModeEnabled = true;
+
+            print(IncomeMultiply);
         }
         else
         {
             YandexGame.RewVideoShow(SaveData.LuckReward);
         }
+    }
+
+    private void Rewarded(int id)
+    {
+        if(id == SaveData.LuckReward)
+            EnableLuckMode();
+
+        else if(id == SaveData.IncomeReward)
+            EnableIncomeMode(true);
+    }
+
+    private void OnEnable()
+    {
+        YandexGame.RewardVideoEvent += Rewarded;
+    }
+
+    private void OnDisable()
+    {
+        YandexGame.RewardVideoEvent -= Rewarded;
     }
 }
 

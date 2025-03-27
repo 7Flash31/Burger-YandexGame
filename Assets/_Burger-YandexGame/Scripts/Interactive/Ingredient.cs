@@ -1,10 +1,11 @@
 ﻿using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class Ingredient : MonoBehaviour
 {
     [field: SerializeField] public Sprite Icon { get; private set; }
-    [field: SerializeField] public int Price { get; private set; }
+    [field: SerializeField] public bool IsBadIngredient { get; private set; }
 
     [SerializeField] private float _rotateSpeed;
 
@@ -24,7 +25,11 @@ public class Ingredient : MonoBehaviour
 
     public void StopAnimation()
     {
-        _tween.Kill();
+        TextMeshPro meshRenderer = GetComponentInChildren<TextMeshPro>();
+        if (meshRenderer != null)
+        {
+            Destroy(meshRenderer.gameObject);
+        }
     }
 
     private void OnDestroy()

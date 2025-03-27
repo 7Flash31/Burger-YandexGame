@@ -162,6 +162,18 @@ public class UIController : MonoBehaviour
 
     public void ShowPanel(GameObject panel) => panel.SetActive(!panel.activeSelf);
 
+    public void EnableIncomeMode(Button button)
+    {
+        button.interactable = false;
+        GameManager.Instance.EnableIncomeMode();
+    }
+
+    public void EnableLuckMode(Button button)
+    {
+        button.interactable = false;
+        GameManager.Instance.EnableLuckMode();
+    }
+    
     public void ShowFinalPanel()
     {
         _finalPanel.SetActive(true);
@@ -186,6 +198,11 @@ public class UIController : MonoBehaviour
             .OrderBy(group => group.Key)
             .ToList();
 
+        // Переменные для накопления суммы денег
+        int addedMoneyGood = 0;
+        int addedMoneyBad = 0;
+        int addedMoneyRecipe = 0;
+
         foreach(var group in groupedIngredients)
         {
             var representativeIngredient = group.First();
@@ -198,38 +215,50 @@ public class UIController : MonoBehaviour
             foreach(Transform child in image.transform)
             {
                 if(child.CompareTag("UIIngredientImage"))
-                {
                     uiIngredientImage = child.GetComponent<Image>();
-                }
                 else if(child.CompareTag("UIBackground"))
-                {
                     uiBackground = child.GetComponent<Image>();
-                }
             }
 
             if(uiIngredientImage != null)
                 uiIngredientImage.sprite = representativeIngredient.Icon;
 
-            if(uiBackground != null)
+            // Флаг, показывающий, что ингредиент входит в рецепт
+            bool isInRecipe = false;
+            // Проверяем, присутствует ли ингредиент в рецепте
+            foreach(var recipeItem in GameManager.Instance.Recipe)
             {
-                foreach(var recipeItem in GameManager.Instance.Recipe)
+                if(representativeIngredient.Icon == recipeItem.Ingredient.Icon)
                 {
-                    if(representativeIngredient.Icon == recipeItem.Ingredient.Icon)
-                    {
-                        if(group.Count() >= recipeItem.Count)
-                            uiBackground.color = Color.green;
-                        else
-                            uiBackground.color = Color.yellow;
-
-                        break;
-                    }
+                    isInRecipe = true;
+                    if(group.Count() >= recipeItem.Count)
+                        uiBackground.color = Color.green;
+                    else
+                        uiBackground.color = Color.yellow;
+                    break;
                 }
             }
 
             if(countText != null)
                 countText.text = group.Count().ToString();
+
+            // Расчёт денег для данной группы ингредиентов
+            if(isInRecipe)
+            {
+                // Для ингредиентов, входящих в рецепт, используем RecipeIngredientPrice
+                addedMoneyRecipe += group.Count() * GameManager.Instance.RecipeIngredientPrice;
+            }
+            else
+            {
+                // Определяем, является ли ингредиент плохим через свойство IsBadIngredient
+                if(representativeIngredient.IsBadIngredient)
+                    addedMoneyBad += group.Count() * GameManager.Instance.BadIngredientPrice;
+                else
+                    addedMoneyGood += group.Count() * GameManager.Instance.GoodIngredientPrice;
+            }
         }
 
+        // Обработка недостающих ингредиентов рецепта (вывод с красным фоном и количеством "0")
         var requiredIcons = GameManager.Instance.Recipe.Select(item => item.Ingredient.Icon).ToList();
         var addedIcons = groupedIngredients.Select(g => g.First().Icon).Distinct().ToList();
         var missingIcons = requiredIcons.Except(addedIcons).ToList();
@@ -245,32 +274,28 @@ public class UIController : MonoBehaviour
             foreach(Transform child in image.transform)
             {
                 if(child.CompareTag("UIIngredientImage"))
-                {
                     uiIngredientImage = child.GetComponent<Image>();
-                }
                 else if(child.CompareTag("UIBackground"))
-                {
                     uiBackground = child.GetComponent<Image>();
-                }
             }
 
             if(uiIngredientImage != null)
                 uiIngredientImage.sprite = icon;
-
             if(uiBackground != null)
                 uiBackground.color = Color.red;
-
             if(countText != null)
                 countText.text = "0";
         }
 
-        int totalMoney = 0;
+        int totalMoneyToAdd = addedMoneyGood + addedMoneyBad + addedMoneyRecipe;
+        GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) + totalMoneyToAdd);
 
-        foreach(var item in GameManager.Instance.FinalIngredients)
+        if(GameManager.Instance.IncomeModeEnabled)
         {
-            totalMoney += item.Price;
-            GameManager.Instance.UpdateMoney(totalMoney);
+            totalMoneyToAdd = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.IncomeMultiply);
         }
+
+        Debug.Log($"Деньги за хорошие: {addedMoneyGood}, плохие: {addedMoneyBad}, из рецепта: {addedMoneyRecipe}. Всего: {totalMoneyToAdd}");
     }
 
     public void UpdateMoneyText(int newMoney)
