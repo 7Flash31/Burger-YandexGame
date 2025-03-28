@@ -11,6 +11,7 @@ public class Ingredient : MonoBehaviour
 
     public BoxCollider BoxCollider { get; private set; }
     public bool IsDropped { get; set; }
+    public bool IsLuckIngredient { get; set; }
 
     private Tween _tween;
 
@@ -26,9 +27,15 @@ public class Ingredient : MonoBehaviour
     public void StopAnimation()
     {
         TextMeshPro meshRenderer = GetComponentInChildren<TextMeshPro>();
-        if (meshRenderer != null)
+        ParticleSystem particleSystem = GetComponentInChildren<ParticleSystem>();
+
+        if(meshRenderer != null)
         {
             Destroy(meshRenderer.gameObject);
+        }
+        if(particleSystem != null)
+        {
+            Destroy(particleSystem.gameObject);
         }
 
         _tween.Kill();

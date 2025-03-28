@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public int RecipeIngredientPrice { get; private set; }
 
     [SerializeField] private GameObject _luckTextPrefab;
+    [SerializeField] private GameObject _luckParticlePrefab;
+
+    [SerializeField] private int _incomeModePrice;
+    [SerializeField] private int _luckModePrice;
 
     private RecipeData _recipeData;
     private UIController _uiController;
@@ -22,12 +26,13 @@ public class GameManager : MonoBehaviour
     public bool GameLaunch { get; private set; }
     public int TotalIngredientsCount { get; private set; }
 
-    public float IncomeMultiply { get; private set; }
-    public float LuckMultiply { get; private set; }
+    [field: SerializeField] public float IncomeMultiply { get; private set; }
+    [field: SerializeField] public float LuckMultiply { get; private set; }
+
     public bool IncomeModeEnabled { get; private set; }
     public bool LuckModeEnabled { get; private set; }
 
-    public List<RecipeIngredient> Recipe;
+    public List<RecipeIngredient> Recipe { get; private set; }
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
@@ -42,7 +47,6 @@ public class GameManager : MonoBehaviour
         }
 
         Recipe = _recipeData.RecipeIngredients;
-
 
         Player = FindAnyObjectByType<Player>();
         _uiController = FindAnyObjectByType<UIController>();
@@ -136,22 +140,39 @@ public class GameManager : MonoBehaviour
         YandexGame.SaveProgress();
     }
 
-    public void EnableLuckMode()
+    public void EnableLuckMode(bool reward = false)
     {
-        LuckModeEnabled = true;
-
-        foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _luckModePrice || reward)
         {
+            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _luckModePrice)
+                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - _luckModePrice);
 
-            Instantiate(_luckTextPrefab, item.transform);
+            LuckModeEnabled = true;
+
+            foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+            {
+                if(Random.value < 0.5)
+                {
+                    Instantiate(_luckTextPrefab, item.transform);
+                    Instantiate(_luckParticlePrefab, item.transform);
+
+                    item.IsLuckIngredient = true;
+                }
+            }
+        }
+        else
+        {
+            YandexGame.RewVideoShow(SaveData.LuckReward);
         }
     }
 
     public void EnableIncomeMode(bool reward = false)
     {
-        int incomeModePrice = 50;
-        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > incomeModePrice || reward)
+        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _incomeModePrice || reward)
         {
+            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _incomeModePrice)
+                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - _incomeModePrice);
+
             float multipler = 1;
             IncomeMultiply = 1;
             for(int i = 0; i <= SceneManager.GetActiveScene().buildIndex; i++)
@@ -161,19 +182,17 @@ public class GameManager : MonoBehaviour
 
             IncomeMultiply = multipler;
             IncomeModeEnabled = true;
-
-            print(IncomeMultiply);
         }
         else
         {
-            YandexGame.RewVideoShow(SaveData.LuckReward);
+            YandexGame.RewVideoShow(SaveData.IncomeReward);
         }
     }
 
     private void Rewarded(int id)
     {
         if(id == SaveData.LuckReward)
-            EnableLuckMode();
+            EnableLuckMode(true);
 
         else if(id == SaveData.IncomeReward)
             EnableIncomeMode(true);
