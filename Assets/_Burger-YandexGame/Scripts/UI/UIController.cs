@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _startPanel;
     [SerializeField] private GameObject _finalPanel;
     [SerializeField] private GameObject _dailyGiftPanel;
+    [SerializeField] private GameObject _bonusLevelPanel;
     //[SerializeField] private GameObject _MinuteGiftPanel;
 
     [Header("Controllers")]
@@ -132,6 +133,9 @@ public class UIController : MonoBehaviour
             }
         }
 
+        if(buildIndex % 6 == 0)
+            HideHelpPanel();
+
         _moneyText.text = PlayerPrefs.GetInt(SaveData.MoneyKey).ToString();
         _minuteGift.ResetTimer();
     }
@@ -170,143 +174,10 @@ public class UIController : MonoBehaviour
 
     public void EnableLuckMode(Button button)
     {
-        button.interactable = false;
+        _bonusLevelPanel.SetActive(false);
         GameManager.Instance.EnableLuckMode();
     }
-
-    //public void ShowFinalPanel()
-    //{
-    //    _finalPanel.SetActive(true);
-
-    //    int totalCount = GameManager.Instance.FinalIngredients.Count;
-    //    string result;
-    //    if(totalCount == 0)
-    //        result = "Нет ингредиентов";
-    //    else if(totalCount <= 3)
-    //        result = "Стейк";
-    //    else if(totalCount <= 15)
-    //        result = "Мега стейк";
-    //    else
-    //        result = "Супер Мега стейк";
-    //    _foodText.text = result;
-
-    //    _starSystem.ActivateStars();
-
-    //    var finalIngredients = GameManager.Instance.FinalIngredients;
-    //    var groupedIngredients = finalIngredients
-    //        .GroupBy(ingredient => Regex.Replace(ingredient.name, @"\s*\(\d+\)$", ""))
-    //        .OrderBy(group => group.Key)
-    //        .ToList();
-
-    //    // Переменные для накопления суммы денег
-    //    int addedMoneyGood = 0;
-    //    int addedMoneyBad = 0;
-    //    int addedMoneyRecipe = 0;
-
-    //    foreach(var group in groupedIngredients)
-    //    {
-    //        var representativeIngredient = group.First();
-    //        GameObject image = Instantiate(_recipeImage, _recipeContent);
-
-    //        Image uiIngredientImage = null;
-    //        Image uiBackground = null;
-    //        TMP_Text countText = image.GetComponentInChildren<TMP_Text>();
-
-    //        foreach(Transform child in image.transform)
-    //        {
-    //            if(child.CompareTag("UIIngredientImage"))
-    //                uiIngredientImage = child.GetComponent<Image>();
-    //            else if(child.CompareTag("UIBackground"))
-    //                uiBackground = child.GetComponent<Image>();
-    //        }
-
-    //        if(uiIngredientImage != null)
-    //            uiIngredientImage.sprite = representativeIngredient.Icon;
-
-    //        // Флаг, показывающий, что ингредиент входит в рецепт
-    //        bool isInRecipe = false;
-    //        // Проверяем, присутствует ли ингредиент в рецепте
-    //        foreach(var recipeItem in GameManager.Instance.Recipe)
-    //        {
-    //            if(representativeIngredient.Icon == recipeItem.Ingredient.Icon)
-    //            {
-    //                isInRecipe = true;
-    //                if(group.Count() >= recipeItem.Count)
-    //                    uiBackground.color = Color.green;
-    //                else
-    //                    uiBackground.color = Color.yellow;
-    //                break;
-    //            }
-    //        }
-
-    //        if(countText != null)
-    //            countText.text = group.Count().ToString();
-
-    //        if(isInRecipe)
-    //        {
-    //            addedMoneyRecipe += group.Count() * GameManager.Instance.RecipeIngredientPrice;
-
-    //            if(representativeIngredient.IsLuckIngredient)
-    //                addedMoneyGood += group.Count() * (int)Math.Round(GameManager.Instance.GoodIngredientPrice * GameManager.Instance.LuckMultiply);
-
-    //        }
-    //        else
-    //        {
-    //            if(representativeIngredient.IsBadIngredient)
-    //                addedMoneyBad += group.Count() * GameManager.Instance.BadIngredientPrice;
-    //            else if(representativeIngredient.IsLuckIngredient)
-    //                addedMoneyGood += group.Count() * (int)Math.Round(GameManager.Instance.GoodIngredientPrice * GameManager.Instance.LuckMultiply);
-    //            else
-    //                addedMoneyGood += group.Count() * GameManager.Instance.GoodIngredientPrice;
-    //        }
-    //    }
-
-    //    var requiredIcons = GameManager.Instance.Recipe.Select(item => item.Ingredient.Icon).ToList();
-    //    var addedIcons = groupedIngredients.Select(g => g.First().Icon).Distinct().ToList();
-    //    var missingIcons = requiredIcons.Except(addedIcons).ToList();
-
-    //    foreach(var icon in missingIcons)
-    //    {
-    //        GameObject image = Instantiate(_recipeImage, _recipeContent);
-
-    //        Image uiIngredientImage = null;
-    //        Image uiBackground = null;
-    //        TMP_Text countText = image.GetComponentInChildren<TMP_Text>();
-
-    //        foreach(Transform child in image.transform)
-    //        {
-    //            if(child.CompareTag("UIIngredientImage"))
-    //                uiIngredientImage = child.GetComponent<Image>();
-    //            else if(child.CompareTag("UIBackground"))
-    //                uiBackground = child.GetComponent<Image>();
-    //        }
-
-    //        if(uiIngredientImage != null)
-    //            uiIngredientImage.sprite = icon;
-    //        if(uiBackground != null)
-    //            uiBackground.color = Color.red;
-    //        if(countText != null)
-    //            countText.text = "0";
-    //    }
-
-    //    int totalMoneyToAdd = addedMoneyGood + addedMoneyBad + addedMoneyRecipe;
-    //    GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) + totalMoneyToAdd);
-
-    //    if(GameManager.Instance.IncomeModeEnabled)
-    //    {
-    //        totalMoneyToAdd = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.IncomeMultiply);
-    //    }
-
-    //    if(GameManager.Instance.LuckModeEnabled)
-    //    {
-
-    //        totalMoneyToAdd += (int)Math.Round(totalMoneyToAdd * GameManager.Instance.LuckMultiply);
-    //    }
-
-    //    Debug.Log($"Деньги за хорошие: {addedMoneyGood}, плохие: {addedMoneyBad}, из рецепта: {addedMoneyRecipe}. Всего: {totalMoneyToAdd}");
-    //}
-
-
+    
     public void ShowFinalPanel()
     {
         _finalPanel.SetActive(true);
@@ -430,6 +301,7 @@ public class UIController : MonoBehaviour
         int totalMoneyToAdd = baseMoney;
         int incomeBonus = 0;
         int luckBonus = 0;
+        int bonusLevel = 0;
 
         // Применяем множитель income
         if(GameManager.Instance.IncomeModeEnabled)
@@ -446,10 +318,18 @@ public class UIController : MonoBehaviour
             luckBonus = bonus;
             totalMoneyToAdd += bonus;
         }
+        
+        // Применяем множитель luck
+        if(GameManager.Instance.BonusLevelEnabled)
+        {
+            int bonus = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.BonusLevelMultiply);
+            bonusLevel = bonus;
+            totalMoneyToAdd += bonus;
+        }
 
         // Выводим в debug отдельно базовую сумму, бонусы income и luck, а также итоговую сумму
         Debug.Log($"Деньги за хорошие: {addedMoneyGood}, плохие: {addedMoneyBad}, из рецепта: {addedMoneyRecipe}. " +
-                  $"Базовая сумма: {baseMoney}, бонус дохода: {incomeBonus}, бонус удачи: {luckBonus}. Всего: {totalMoneyToAdd}");
+                  $"Базовая сумма: {baseMoney}, бонус дохода: {incomeBonus}, бонус удачи: {luckBonus}, бонусный уровень: {bonusLevel}. Всего: {totalMoneyToAdd}");
     }
 
     public void UpdateMoneyText(int newMoney)
@@ -544,6 +424,24 @@ public class UIController : MonoBehaviour
     }
 
     public void UpdateFortuneWheelText(string newFortune) => _fortuneWheel.text = newFortune + "/" + "3";
+
+    public void ProposeBonusLevel()
+    {
+        _bonusLevelPanel.SetActive(true);
+        _bonusLevelPanel.transform.localScale = Vector3.zero;
+        _bonusLevelPanel.transform.DOScale(Vector3.one, 0.2f);
+
+        print(_startPanel.activeSelf + " " + _startPanel.name);
+    }
+
+    public void EnableBonusLevel()
+    {
+        YandexGame.RewVideoShow(SaveData.BonusLevelReward);
+    }
+
+    public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
+
+    public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
 
     private void FocusObject(Transform focusObject)
     {

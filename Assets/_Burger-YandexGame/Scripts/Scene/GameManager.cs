@@ -15,6 +15,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _luckTextPrefab;
     [SerializeField] private GameObject _luckParticlePrefab;
 
+    [SerializeField] private Material _roadMaterialOne;
+    [SerializeField] private Material _roadMaterialTwo;
+    [SerializeField] private Color _roadColorDefaultOne;
+    [SerializeField] private Color _roadColorDefaultTwo;
+
+    [SerializeField] private Color _roadColorBonusLevelOne;
+    [SerializeField] private Color _roadColorBonusLevelTwo;
+
     [SerializeField] private int _incomeModePrice;
     [SerializeField] private int _luckModePrice;
 
@@ -28,15 +36,24 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public float IncomeMultiply { get; private set; }
     [field: SerializeField] public float LuckMultiply { get; private set; }
+    [field: SerializeField] public float BonusLevelMultiply { get; private set; }
 
     public bool IncomeModeEnabled { get; private set; }
     public bool LuckModeEnabled { get; private set; }
+    public bool BonusLevelEnabled { get; private set; }
 
     public List<RecipeIngredient> Recipe { get; private set; }
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
+        IncomeModeEnabled = false;
+        LuckModeEnabled = false;
+        BonusLevelEnabled = false;
+
+        _roadMaterialOne.color = _roadColorDefaultOne;
+        _roadMaterialTwo.color = _roadColorDefaultTwo;
+
         if(scene.buildIndex == 0)
         {
             _recipeData = Resources.Load<RecipeData>($"Recipe/Level");
@@ -58,6 +75,10 @@ public class GameManager : MonoBehaviour
 
         Player.enabled = false;
 
+        if(SceneManager.GetActiveScene().buildIndex % 6 == 0)
+        {
+            ProposeBonusLevel();
+        }
     }
 
     private void Awake()
@@ -189,6 +210,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EnableBonusLevel()
+    {
+        _uiController.HideBonusPanel();
+        BonusLevelEnabled = true;
+        LaunchGame();
+    }
+    
+    public void SkipBonusLevelLevel()
+    {
+        _uiController.HideBonusPanel();
+        BonusLevelEnabled = false;
+
+        _roadMaterialOne.color = _roadColorDefaultOne;
+        _roadMaterialTwo.color = _roadColorDefaultTwo;
+
+        foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+        {
+            if(item.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                meshRenderer.material.color = new Color(108f / 255f, 108f / 255f, 108f / 255f);
+
+            }
+        }
+
+        LaunchGame();
+    }
+
     private void Rewarded(int id)
     {
         if(id == SaveData.LuckReward)
@@ -196,6 +244,25 @@ public class GameManager : MonoBehaviour
 
         else if(id == SaveData.IncomeReward)
             EnableIncomeMode(true);
+        
+        else if(id == SaveData.BonusLevelReward)
+            EnableBonusLevel();
+    }
+
+    private void ProposeBonusLevel()
+    {
+        _uiController.ProposeBonusLevel();
+
+        _roadMaterialOne.color = _roadColorBonusLevelOne;
+        _roadMaterialTwo.color = _roadColorBonusLevelTwo;
+
+        foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+        {
+            if(item.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                meshRenderer.material.color = Color.yellow;
+            }
+        }
     }
 
     private void OnEnable()
@@ -240,4 +307,5 @@ public static class SaveData //PlayerPrefs
 
     public static int LuckReward { get; private set; } = 100;
     public static int IncomeReward { get; private set; } = 101;
+    public static int BonusLevelReward { get; private set; } = 102;
 }
