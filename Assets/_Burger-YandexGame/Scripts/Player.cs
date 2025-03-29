@@ -111,11 +111,57 @@ public class Player : MonoBehaviour
         ingredient.transform.SetParent(_burgerComponents);
         ingredient.transform.localPosition = Vector3.zero;
         ingredient.transform.localEulerAngles = Vector3.zero;
-        
+
         ingredient.transform.localScale = Vector3.one;
         ingredient.StopAnimation();
 
         _ingredients.Add(ingredient);
+
+        //Spring
+
+        //ingredient.gameObject.AddComponent<Rigidbody>();
+        //ingredient.gameObject.AddComponent<ConfigurableJoint>();
+
+
+
+        //for(int i = 0; i < _ingredients.Count; i++)
+        //{
+        //    ConfigurableJoint configurableJoint = null;
+        //    if(i == 0)
+        //    {
+        //        configurableJoint = _ingredients[i].GetComponent<ConfigurableJoint>();
+        //        configurableJoint.connectedBody = BurgerDown.GetComponent<Rigidbody>();
+        //    }
+
+        //    else
+        //    {
+        //        configurableJoint = _ingredients[i].GetComponent<ConfigurableJoint>();
+        //        configurableJoint.connectedBody = _ingredients[i - 1].GetComponent<Rigidbody>();
+        //    }
+
+        //    configurableJoint.xMotion = ConfigurableJointMotion.Limited;
+        //    configurableJoint.yMotion = ConfigurableJointMotion.Limited;
+        //    configurableJoint.zMotion = ConfigurableJointMotion.Limited;
+
+        //    configurableJoint.angularXMotion = ConfigurableJointMotion.Limited;
+        //    configurableJoint.angularYMotion = ConfigurableJointMotion.Limited;
+        //    configurableJoint.angularZMotion = ConfigurableJointMotion.Limited;
+        //}
+
+        //
+        //ingredient.GetComponent<BoxCollider>().isTrigger = false;
+
+        //ConfigurableJoint configurableJoint2 = BurgerTop.gameObject.AddComponent<ConfigurableJoint>();
+        //configurableJoint2.connectedBody = _ingredients[_ingredients.Count - 1].GetComponent<Rigidbody>();
+
+        //configurableJoint2.xMotion = ConfigurableJointMotion.Limited;
+        //configurableJoint2.yMotion = ConfigurableJointMotion.Limited;
+        //configurableJoint2.zMotion = ConfigurableJointMotion.Limited;
+
+        //configurableJoint2.angularXMotion = ConfigurableJointMotion.Limited;
+        //configurableJoint2.angularYMotion = ConfigurableJointMotion.Limited;
+        //configurableJoint2.angularZMotion = ConfigurableJointMotion.Limited;
+
 
         SetIngredientPosition();
     }
@@ -140,6 +186,13 @@ public class Player : MonoBehaviour
 
         BurgerTop.localPosition = new Vector3(0, currentY, 0);
     }
+
+
+
+
+
+
+
 
     public void DeleteRandomIngredient(int count)
     {

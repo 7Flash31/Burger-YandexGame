@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         Player.enabled = false;
 
-        if(SceneManager.GetActiveScene().buildIndex % 6 == 0)
+        if(scene.buildIndex % 6 == 0 && scene.buildIndex != 0)
         {
             ProposeBonusLevel();
         }

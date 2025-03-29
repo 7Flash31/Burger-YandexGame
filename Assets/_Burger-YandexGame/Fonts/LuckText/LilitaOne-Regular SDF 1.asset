@@ -62,7 +62,7 @@ Material:
     - _FaceUVSpeedY: 0
     - _GlowInner: 1
     - _GlowOffset: -1
-    - _GlowOuter: 1
+    - _GlowOuter: 0
     - _GlowPower: 1
     - _GradientScale: 6
     - _LightAngle: 3.1416
@@ -71,10 +71,10 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 1
+    - _OutlineWidth: 0.361
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.7017544
+    - _ScaleRatioA: 0.8333333
     - _ScaleRatioB: 0.6770833
     - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
@@ -101,9 +101,9 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0.11320754, g: 0.26415092, b: 0, a: 1}
+    - _GlowColor: {r: 1024, g: 1024, b: 1024, a: 1}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0.10356626, g: 0.3490566, b: 0, a: 1}
+    - _OutlineColor: {r: 0.1228538, g: 0.27391273, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
@@ -167,11 +167,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: LilitaOne-Regular SDF Green2
+  m_Name: LilitaOne-Regular SDF 1
   m_EditorClassIdentifier: 
-  hashCode: 1653389502
+  hashCode: 1706162118
   material: {fileID: -7229575669869296325}
-  materialHashCode: -253862178
+  materialHashCode: -2099322330
   m_Version: 1.1.0
   m_SourceFontFileGUID: 7d0e49f3d984db947bd5d93a4ce3c965
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 7d0e49f3d984db947bd5d93a4ce3c965, type: 3}

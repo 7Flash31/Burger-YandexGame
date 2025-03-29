@@ -133,7 +133,7 @@ public class UIController : MonoBehaviour
             }
         }
 
-        if(buildIndex % 6 == 0)
+        if(buildIndex % 6 == 0 && buildIndex != 0)
             HideHelpPanel();
 
         _moneyText.text = PlayerPrefs.GetInt(SaveData.MoneyKey).ToString();
@@ -174,7 +174,7 @@ public class UIController : MonoBehaviour
 
     public void EnableLuckMode(Button button)
     {
-        _bonusLevelPanel.SetActive(false);
+        button.interactable = false;
         GameManager.Instance.EnableLuckMode();
     }
     
@@ -431,7 +431,6 @@ public class UIController : MonoBehaviour
         _bonusLevelPanel.transform.localScale = Vector3.zero;
         _bonusLevelPanel.transform.DOScale(Vector3.one, 0.2f);
 
-        print(_startPanel.activeSelf + " " + _startPanel.name);
     }
 
     public void EnableBonusLevel()
