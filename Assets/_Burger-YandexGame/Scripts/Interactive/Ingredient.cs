@@ -14,14 +14,18 @@ public class Ingredient : MonoBehaviour
     public bool IsLuckIngredient { get; set; }
 
     private Tween _tween;
+    private bool animationStoped;
 
     private void Start()
     {
         BoxCollider = GetComponent<BoxCollider>();
 
-        _tween = transform.DORotate(new Vector3(90, 360, 0), _rotateSpeed, RotateMode.FastBeyond360)
-            .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Restart);
+        if(!animationStoped)
+        {
+            _tween = transform.DORotate(new Vector3(90, 360, 0), _rotateSpeed, RotateMode.FastBeyond360)
+                .SetEase(Ease.Linear)
+                .SetLoops(-1, LoopType.Restart);
+        }
     }
 
     public void StopAnimation()
@@ -39,6 +43,7 @@ public class Ingredient : MonoBehaviour
         }
 
         _tween.Kill();
+        animationStoped = true;
     }
 
     private void OnDestroy()

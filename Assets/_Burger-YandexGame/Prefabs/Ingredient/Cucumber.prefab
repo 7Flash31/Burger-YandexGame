@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8146831248229932988}
   - component: {fileID: 1741006886035207993}
   - component: {fileID: 7672296849560808025}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cucumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 79088c6cf6ef1cb49b05647429a31563, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2

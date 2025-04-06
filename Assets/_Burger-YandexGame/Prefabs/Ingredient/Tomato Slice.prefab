@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4600280158433825326}
   - component: {fileID: 1317493099646064870}
   - component: {fileID: 7092776131187580046}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tomato Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: cfe4ef239b3192943ad38b7427e6b6a5, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2

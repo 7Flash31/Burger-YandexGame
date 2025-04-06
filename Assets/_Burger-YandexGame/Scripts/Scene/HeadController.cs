@@ -86,12 +86,16 @@ public class HeadController : MonoBehaviour
             return;
 
         feetHeadTriggered = true;
-        GameManager.Instance.Player.transform.DOMove(FoodPosition.transform.position, SequenceSpeed);
+        GameManager.Instance.Player.transform.parent.DOMove(FoodPosition.transform.position, SequenceSpeed);
 
         //GameManager.Instance.Player.StopPlayer = true;
-        Rigidbody rigidbody = GameManager.Instance.Player.AddComponent<Rigidbody>();
+        Rigidbody rigidbody = GameManager.Instance.Player.transform.parent.AddComponent<Rigidbody>();
         rigidbody.drag = 4;
+        rigidbody.isKinematic = false;
+
+        GameManager.Instance.Player.BurgerTop.GetComponent<Rigidbody>().isKinematic = false;
         GameManager.Instance.Player.GetComponent<CharacterController>().enabled = false;
+        GameManager.Instance.Player.DeleteJoint();
     }
 
 }

@@ -17,7 +17,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _finalPanel;
     [SerializeField] private GameObject _dailyGiftPanel;
     [SerializeField] private GameObject _bonusLevelPanel;
-    //[SerializeField] private GameObject _MinuteGiftPanel;
 
     [Header("Controllers")]
     [SerializeField] private HelpPointer _helpPointer;
@@ -161,8 +160,6 @@ public class UIController : MonoBehaviour
     public void SetGameMusic() => PlayerPrefs.SetFloat(SaveData.MusicKey, _musicSlider.value);
 
     public void SetSensitivity() => PlayerPrefs.SetFloat(SaveData.SensitivityKey, _sensitivitySlider.value);
-
-    //public void ShowDailyPanel() => _dailyGiftPanel.SetActive(!_dailyGiftPanel.activeSelf);
 
     public void ShowPanel(GameObject panel) => panel.SetActive(!panel.activeSelf);
 

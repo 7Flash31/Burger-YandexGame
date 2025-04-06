@@ -10,12 +10,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walls
   - Water
   - UI
   - HeadTrigger
   - CharacterController
-  - 
+  - Ingredient
   - 
   - 
   - 

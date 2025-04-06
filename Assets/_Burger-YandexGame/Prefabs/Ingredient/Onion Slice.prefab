@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4765738055660918668}
   - component: {fileID: 5877929160496364529}
   - component: {fileID: 1323126350070977303}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Onion Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 7aaed735f1baf8145b77c84368e3691b, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2

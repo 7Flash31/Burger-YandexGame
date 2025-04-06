@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void StopGame()
-    {        
+    {
         Player.enabled = false;
         _headController.PlayEatAnimation();
     }

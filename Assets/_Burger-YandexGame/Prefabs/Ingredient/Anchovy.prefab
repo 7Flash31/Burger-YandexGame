@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5605560971587341503}
   - component: {fileID: 1841906191033099619}
   - component: {fileID: 1760471897780936795}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 5355425156390606561}
   - component: {fileID: 3267058500584644960}
   - component: {fileID: 5987692851848591152}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 6053805378038487583}
   - component: {fileID: 2530279920608772367}
   - component: {fileID: 4973051084115668097}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 'Anchovy '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 7054586990316290466}
   - component: {fileID: 4561461819132962801}
   - component: {fileID: 1132343818308029681}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4376995226584445962}
   - component: {fileID: 3798777717658722762}
   - component: {fileID: 6083024467463079205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Salad Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: ebce7d62486b3214c8a64cb22b29be93, type: 3}
-  <Price>k__BackingField: 25
+  <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2

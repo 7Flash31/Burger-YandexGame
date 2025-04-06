@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5443827540828397263}
   - component: {fileID: 5095785715641528462}
   - component: {fileID: 3536999056552392685}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bacon Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3251893441888626047}
   - component: {fileID: 8155919571158826148}
   - component: {fileID: 5079065383205667637}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bacon Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,8 +138,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.69620997, y: 0.009959527, z: 0.6927496}
-  m_Center: {x: -0.0017781556, y: 0.0049797483, z: 0.0040100515}
+  m_Size: {x: 0.69620997, y: 0.05048297, z: 0.6927496}
+  m_Center: {x: -0.0017781556, y: 0.005633123, z: 0.0040100515}
 --- !u!114 &5079065383205667637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 6716459449982718030}
   - component: {fileID: 5387415346381552567}
   - component: {fileID: 5334781244127023401}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 'Bacon Slice '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 210774582847764600}
   - component: {fileID: 2984044461680685830}
   - component: {fileID: 5794058970790400546}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bacon Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
