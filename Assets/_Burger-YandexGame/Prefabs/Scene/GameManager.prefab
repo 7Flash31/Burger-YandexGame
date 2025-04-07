@@ -47,6 +47,8 @@ MonoBehaviour:
   <GoodIngredientPrice>k__BackingField: 20
   <BadIngredientPrice>k__BackingField: -10
   <RecipeIngredientPrice>k__BackingField: 40
+  _incomeModePrice: 100
+  _luckModePrice: 100
   _luckTextPrefab: {fileID: 8976199798413858782, guid: caa035a79e164944f8ca3a1b1a5b9da2, type: 3}
   _luckParticlePrefab: {fileID: 191548, guid: 20be6210ca6531f4589bbe7994892f53, type: 3}
   _roadMaterialOne: {fileID: 2100000, guid: 5bead7b9bb4571b47b11a0cf12dae21f, type: 2}
@@ -55,8 +57,11 @@ MonoBehaviour:
   _roadColorDefaultTwo: {r: 1, g: 1, b: 1, a: 0}
   _roadColorBonusLevelOne: {r: 1, g: 0.7137255, b: 0.25882354, a: 1}
   _roadColorBonusLevelTwo: {r: 0.9960785, g: 0.85098046, b: 0.25882354, a: 1}
-  _incomeModePrice: 100
-  _luckModePrice: 100
+  UIController: {fileID: 0}
+  <Skins>k__BackingField:
+  - {fileID: 11400000, guid: f645a9cc67758184093a62180559ec93, type: 2}
+  - {fileID: 11400000, guid: e4ee078ae603fd9499b5a41f78c431db, type: 2}
+  - {fileID: 11400000, guid: eccfce78b61df804daf603e61a6aff75, type: 2}
   <IncomeMultiply>k__BackingField: 0
   <LuckMultiply>k__BackingField: 5
   <BonusLevelMultiply>k__BackingField: 3

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -212,7 +211,8 @@ public class Player : MonoBehaviour
             Destroy(item.GetComponent<Rigidbody>());
 
             item.transform.SetParent(transform.parent);
-            item.transform.localPosition = new Vector3(0, item.transform.localPosition.y, 0);
+            //item.transform.localPosition = new Vector3(0, item.transform.localPosition.y, 0);
+            item.transform.localPosition = item.transform.TransformDirection(item.transform.localPosition);
         }
 
         Destroy(BurgerDown.GetComponent<HingeJoint>());

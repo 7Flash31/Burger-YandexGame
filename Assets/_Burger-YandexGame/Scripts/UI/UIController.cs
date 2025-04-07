@@ -17,6 +17,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _finalPanel;
     [SerializeField] private GameObject _dailyGiftPanel;
     [SerializeField] private GameObject _bonusLevelPanel;
+    [SerializeField] private GameObject _fortuneWheelPanel;
+    [SerializeField] private GameObject _blur;
 
     [Header("Controllers")]
     [SerializeField] private HelpPointer _helpPointer;
@@ -24,28 +26,36 @@ public class UIController : MonoBehaviour
     [SerializeField] private DailyRewards _dailyRewards;
     [SerializeField] private MinuteGift _minuteGift;
     [SerializeField] private FinalReward _finalReward;
+    [SerializeField] private FortuneWheel _fortuneWheel;
 
     [Header("Left Buttons")]
     [SerializeField] private GameObject _fortuneWheelButton;
     [SerializeField] private GameObject _minuteGiftButton;
     [SerializeField] private GameObject _dailyGiftButton;
 
-    [Header("Other Reference")]
+    [Header("Other References")]
     [SerializeField] private GameObject _shopButton;
     [SerializeField] private GameObject _recipeImage;
     [SerializeField] private GameObject _playerHelp;
 
+    [Header("Texts")]
     [SerializeField] private TMP_Text _foodText;
     [SerializeField] private TMP_Text _levelText;
-    [SerializeField] private TMP_Text _fortuneWheel;
+    [SerializeField] private TMP_Text _fortuneWheelText;
     [SerializeField] private TMP_Text _dailyGiftText;
     [SerializeField] private TMP_Text _moneyText;
 
+    [Header("Sliders")]
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _sensitivitySlider;
 
+    [Header("Transforms")]
     [SerializeField] private Transform _recipeContent;
     [SerializeField] private Transform _recipeContainer;
+
+    [field: Header("Buttons")]
+    [field: SerializeField] public Button IncomeButton { get; private set; }
+    [field: SerializeField] public Button LuckButton { get; private set; }
 
     private bool setAlreadyRecipe;
 
@@ -143,6 +153,8 @@ public class UIController : MonoBehaviour
     {
         _minuteGift.UpdateTimer();
         _dailyGiftText.text = _dailyRewards.GetTimeUntilNextGift().ToString(@"hh\:mm\:ss");
+
+        _fortuneWheel.SpinFortuneWheel();
     }
 
     public void HideHelpPanel()
@@ -417,10 +429,23 @@ public class UIController : MonoBehaviour
 
     public void SpinFortuneWheel()
     {
-        GameManager.Instance.SpinFortuneWheel();
+        if(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) > 0)
+        {
+            PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) - 1);
+
+            UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
+            _fortuneWheel.StartSpin();
+        }
+
+        else
+        {
+            UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
+
+            YandexGame.RewVideoShow(SaveData.FortuneWheelReward);
+        }
     }
 
-    public void UpdateFortuneWheelText(string newFortune) => _fortuneWheel.text = newFortune + "/" + "3";
+    public void UpdateFortuneWheelText(string newFortune) => _fortuneWheelText.text = newFortune + "/" + "3";
 
     public void ProposeBonusLevel()
     {
@@ -438,6 +463,7 @@ public class UIController : MonoBehaviour
     public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
 
     public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
+
 
     private void FocusObject(Transform focusObject)
     {
@@ -790,5 +816,39 @@ public class FinalReward
     {
         [field: SerializeField]
         public int Multiply { get; private set; }
+    }
+}
+
+[System.Serializable]
+public class FortuneWheel
+{
+    [SerializeField] private GameObject _wheel;
+    [SerializeField] private FortuneWheelDetector _fortuneWheelDetector;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _currentSpeed;
+
+    private bool _spinStarted;
+
+    public void StartSpin()
+    {
+        _spinStarted = true;
+        _currentSpeed = _speed;
+
+        Debug.Log("spin");
+    }
+
+    public void SpinFortuneWheel()
+    {
+        if(_currentSpeed > 0 && _spinStarted)
+        {
+            _wheel.transform.Rotate(_wheel.transform.forward * -_currentSpeed);
+            _currentSpeed -= Time.deltaTime;
+        }
+
+        else if(_spinStarted)
+        {
+            _fortuneWheelDetector.IsStoped = true;
+            _spinStarted = false;
+        }
     }
 }
