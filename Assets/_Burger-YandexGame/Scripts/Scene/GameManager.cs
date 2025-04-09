@@ -102,6 +102,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        YandexGame.savesData.LastSavedDate = "";
+        YandexGame.savesData.LastSavedStreak = 0;
+
+
         SceneManager.sceneLoaded += OnSceneLoad;
 
         DOTween.Init();

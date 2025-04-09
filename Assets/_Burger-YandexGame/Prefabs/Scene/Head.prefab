@@ -397,8 +397,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8093470932525021469}
-  - {fileID: 595929427090275168}
   - {fileID: 7364737192525741421}
+  - {fileID: 595929427090275168}
+  - {fileID: 3570281745682221018}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4171905662779807935
@@ -469,10 +470,10 @@ Transform:
   m_Children:
   - {fileID: 1247037079111025265}
   - {fileID: 7819827577189414520}
-  - {fileID: 4041578512483296761}
   - {fileID: 6815935128949185965}
   - {fileID: 7220678393881319319}
   - {fileID: 496210144661575888}
+  - {fileID: 4041578512483296761}
   - {fileID: 1226938989102409498}
   - {fileID: 1065137413312681899}
   m_Father: {fileID: 4747881682037442928}
@@ -489,21 +490,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2e3aa3977ed7646918d54b761fa89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCamera: {fileID: 0}
-  FoodPosition: {fileID: 3252238638546444683}
-  FireParticle: {fileID: 4832361689544318161}
-  HeadMesh: {fileID: 369349358877200215}
-  HeadAnimations:
+  _playerCamera: {fileID: 0}
+  _foodPosition: {fileID: 3252238638546444683}
+  _fireParticle: {fileID: 4832361689544318161}
+  _playerContainer: {fileID: 3570281745682221018}
+  _headMesh: {fileID: 369349358877200215}
+  _headAnimations:
     Idle: {fileID: 9054067287717456182}
     Eat: {fileID: 5873292450137639106}
     Angry: {fileID: 1468556119782678612}
     RotatePos1: {fileID: 7088889909932083720}
     RotatePos2: {fileID: 6316057881925529560}
-  CameraAnimations:
+  _cameraAnimations:
     Eat: {fileID: 4114258645018609096}
     Angry: {fileID: 5485969848532733067}
-  HeadRotateSpeed: 1
-  SequenceSpeed: 1
+  _headRotateSpeed: 1
+  _sequenceSpeed: 1
 --- !u!1 &7419434276741317066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,6 +1065,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacefbeafcf44d64388090b17e875c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &9032269253712901651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3570281745682221018}
+  m_Layer: 0
+  m_Name: PlayerContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3570281745682221018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032269253712901651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 53.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4747881682037442928}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4666074572709424974
 PrefabInstance:
   m_ObjectHideFlags: 0

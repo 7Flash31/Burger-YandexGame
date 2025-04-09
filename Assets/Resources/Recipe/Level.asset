@@ -12,8 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3068f48e8eb3a546bf7a4b7ae31b9d8, type: 3}
   m_Name: Level
   m_EditorClassIdentifier: 
-  <RecipeIngredients>k__BackingField:
-  - ingredient: {fileID: 1760471897780936795, guid: 1668cd8571a7d32469095264f23ce1a0, type: 3}
-    count: 3
-  - ingredient: {fileID: 5079065383205667637, guid: 641f62cefad993b4a96baa49288e443c, type: 3}
-    count: 3
+  <RecipeIngredients>k__BackingField: []

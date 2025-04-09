@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668985258211701169}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.252, z: -0.252}
   m_LocalScale: {x: 5.2279243, y: 5.2279234, z: 5.2279234}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4683499719739684066}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5451787139271351481
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4683499719739684066}
-  - component: {fileID: 3568554704152185266}
+  - component: {fileID: 3372682267555169391}
   - component: {fileID: 1683748259836872882}
   m_Layer: 0
   m_Name: Cheese
@@ -109,15 +109,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7859355429919099339}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1384621403494704344}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3568554704152185266
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &3372682267555169391
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.51822853, y: 0.75848925, z: 0.5075693}
-  m_Center: {x: -0.0033226013, y: -0.120755374, z: -0.004704714}
+  m_Size: {x: 0.50769913, y: 0.49868274, z: 0.49792838}
+  m_Center: {x: 0.00090163946, y: -0.0036065578, z: -0.25103587}
 --- !u!114 &1683748259836872882
 MonoBehaviour:
   m_ObjectHideFlags: 0

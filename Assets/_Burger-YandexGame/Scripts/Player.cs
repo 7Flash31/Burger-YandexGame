@@ -17,21 +17,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float _verticalSmoothSpeed;
 
     [SerializeField] private List<Ingredient> _ingredients = new List<Ingredient>();
-    private CharacterController controller;
 
-    private float _gravity = 9.81f;
-    private float _verticalSmooth;
-    private float _verticalVelocity;
-    private float _horizontalSmooth;
+    private Rigidbody _rb;
+
     private float _horizontal;
-
     private bool _hasTriggered;
 
-    private Vector3 moveDirection;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        _rb = GetComponent<Rigidbody>();
         Vertical = 1f;
     }
 
@@ -54,28 +49,14 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
-        if (controller.isGrounded)
-        {
-            _verticalVelocity = 0f;
-        }
-        else
-        {
-            _verticalVelocity -= _gravity * Time.deltaTime;
-        }
-
-        _horizontalSmooth = Mathf.Lerp(_horizontalSmooth, _horizontal, Time.deltaTime * _horizontalSmoothSpeed);
-        _verticalSmooth = Mathf.Lerp(_verticalSmooth, Vertical, Time.deltaTime * _verticalSmoothSpeed);
-
-        moveDirection = new Vector3(_horizontalSmooth, _verticalVelocity, _verticalSmooth);
-        moveDirection = transform.TransformDirection(moveDirection);
-        moveDirection *= _speed;
-
     }
 
     private void FixedUpdate()
     {
-        controller.Move(moveDirection * Time.deltaTime);
+        Vector3 velocity = new Vector3(_horizontal, 0, Vertical) * _speed;
+
+        Vector3 worldVelocity = transform.TransformDirection(velocity);
+        _rb.velocity = worldVelocity;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -203,26 +184,26 @@ public class Player : MonoBehaviour
         BurgerTop.GetComponent<HingeJoint>().connectedMassScale = connectedMassScale;
     }
 
-    public void DeleteJoint()
+    public void DeleteJoint(Transform playerContainer)
     {
         foreach (var item in _ingredients)
         {
             Destroy(item.GetComponent<HingeJoint>());
             Destroy(item.GetComponent<Rigidbody>());
 
-            item.transform.SetParent(transform.parent);
-            //item.transform.localPosition = new Vector3(0, item.transform.localPosition.y, 0);
-            item.transform.localPosition = item.transform.TransformDirection(item.transform.localPosition);
+            item.transform.SetParent(playerContainer);
+            item.transform.localPosition = new Vector3(0, item.transform.localPosition.y, 0);
+
         }
 
         Destroy(BurgerDown.GetComponent<HingeJoint>());
         Destroy(BurgerDown.GetComponent<Rigidbody>());
-        BurgerDown.SetParent(transform.parent);
+        BurgerDown.SetParent(playerContainer);
         BurgerDown.transform.localPosition = new Vector3(0, BurgerDown.transform.localPosition.y, 0);
 
         Destroy(BurgerTop.GetComponent<HingeJoint>());
         Destroy(BurgerTop.GetComponent<Rigidbody>());
-        BurgerTop.SetParent(transform.parent);
+        BurgerTop.SetParent(playerContainer);
         BurgerTop.transform.localPosition = new Vector3(0, BurgerTop.transform.localPosition.y, 0);
 
     }
@@ -286,7 +267,6 @@ public class Player : MonoBehaviour
         BurgerTop.transform.rotation = ingredient.transform.rotation;
 
         Vector3 topNewWorld = GetBoxColliderTopWorldPoint(ingredient.gameObject);
-
         Vector3 bottomTopLocal = GetBoxColliderBottomLocal(BurgerTop.gameObject);
 
         BurgerTop.transform.position = Vector3.zero;
@@ -300,6 +280,8 @@ public class Player : MonoBehaviour
             topHinge.connectedBody = ingredient.GetComponent<Rigidbody>();
         }
 
+        ingredient.GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
+        ingredient.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         UpdateMasses();
         SetMassScale(10, 10);
     }

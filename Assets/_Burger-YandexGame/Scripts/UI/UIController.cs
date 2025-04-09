@@ -402,15 +402,6 @@ public class UIController : MonoBehaviour
         {
             GameObject image = Instantiate(_recipeImage, _recipeContainer);
 
-            //foreach(Transform child in image.transform)
-            //{
-            //    if(child.CompareTag("UIBackground"))
-            //    {
-            //        child.GetComponent<Image>().sprite = item.Ingredient.Icon;
-            //        break;
-            //    }
-            //}
-
             foreach(Transform child in image.transform)
             {
                 if(child.CompareTag("UIIngredientImage"))
@@ -567,124 +558,163 @@ public class DailyRewards
 
     private GameObject _dailyGiftPanel;
 
-    private DateTime _lastLoginDate;
-    private DateTime _today;
+    // Вместо DateTime.Date — храним полное время:
+    private DateTime _lastLoginDateTime;
     private int _maxStreak;
     private int _currentStreak;
 
+    /// <summary>
+    /// Инициализация класса: загрузка сохранённых значений из YandexGame в PlayerPrefs, проверка наград.
+    /// </summary>
     public void Initialize(GameObject dailyGiftPanel)
     {
-        _today = DateTime.Now.Date;
+        // Укажем, сколько всего "дней" (подарков) доступно:
         _maxStreak = _giftContainer.childCount;
         _dailyGiftPanel = dailyGiftPanel;
 
+        // Синхронизация с YandexGame:
         LoadData();
+
+        // Проверка — нужно ли дать награду:
         CheckDailyLogin();
     }
 
+    /// <summary>
+    /// Основная логика выдачи награды (раз в 24 часа).
+    /// </summary>
     private void CheckDailyLogin()
     {
+        // Получаем СТРОКУ даты/времени последнего захода:
         string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey);
 
-        if(string.IsNullOrEmpty(lastLoginStr))
+        // Поскольку она "не может быть пустой" по условию, проверим только парсинг.
+        if(!DateTime.TryParse(lastLoginStr, out _lastLoginDateTime))
         {
-            _lastLoginDate = _today;
+            // Если парсинг не удался => считаем, что это первый вход
+            Debug.Log($"[DailyRewards] Дата из PlayerPrefs невалидна: '{lastLoginStr}'. Считаем, что это первый вход.");
+
             _currentStreak = 1;
-            string todayStr = _today.ToString("yyyy-MM-dd");
-
-            PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
-            PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
-
-            SaveDate(todayStr, _currentStreak);
             GiveReward(_currentStreak);
+
+            // Сохраняем новую дату (текущее время) и стрик:
+            SaveDate(DateTime.Now, _currentStreak);
         }
         else
         {
-            if(DateTime.TryParse(lastLoginStr, out _lastLoginDate))
+            // Парсинг даты прошёл успешно
+            Debug.Log($"[DailyRewards] Последняя сохранённая дата: {_lastLoginDateTime}");
+
+            // Вычисляем, сколько часов прошло с последнего получения награды
+            TimeSpan difference = DateTime.Now - _lastLoginDateTime;
+
+            if(difference.TotalHours >= 24)
             {
-                TimeSpan difference = _today - _lastLoginDate;
+                // Прошло 24 часа — значит можно получить подарок
+                _currentStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey, 1);
 
-                if(difference.TotalDays >= 1)
-                {
-                    string todayStr = _today.ToString("yyyy-MM-dd");
+                // Увеличиваем стрик (по кругу, если хотите возвращать на 1 после maxStreak)
+                _currentStreak = (_currentStreak % _maxStreak) + 1;
 
-                    if(difference.TotalDays == 1)
-                    {
-                        _currentStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey, 1);
-                        _currentStreak = (_currentStreak % _maxStreak) + 1;
-
-                        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
-                        PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
-
-                        SaveDate(todayStr, _currentStreak);
-                        GiveReward(_currentStreak);
-                    }
-                    else
-                    {
-                        _currentStreak = 1;
-                        _lastLoginDate = _today;
-                        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
-                        PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
-                        SaveDate(todayStr, _currentStreak);
-                        GiveReward(_currentStreak);
-                    }
-                }
+                GiveReward(_currentStreak);
+                SaveDate(DateTime.Now, _currentStreak);
             }
             else
             {
-                _lastLoginDate = _today;
-                _currentStreak = 1;
-                string todayStr = _today.ToString("yyyy-MM-dd");
-                PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
-                PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
-                SaveDate(todayStr, _currentStreak);
-                GiveReward(_currentStreak);
+                // Меньше 24 часов — награду ещё рано выдавать
+                Debug.Log("[DailyRewards] Ещё не прошло 24 часа с последнего получения награды!");
             }
         }
     }
 
+    /// <summary>
+    /// Выдача награды за конкретный "день" (стрик).
+    /// </summary>
     private void GiveReward(int day)
     {
-        _dailyGiftPanel.SetActive(true);
+        // Открываем панель награды
+        if(_dailyGiftPanel != null)
+        {
+            _dailyGiftPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[DailyRewards] _dailyGiftPanel не назначен!");
+        }
 
-        Reward[] reward = _giftContainer.GetComponentsInChildren<Reward>();
+        // Получаем все объекты Reward
+        Reward[] rewards = _giftContainer.GetComponentsInChildren<Reward>();
+        if(rewards == null || rewards.Length == 0)
+        {
+            Debug.LogWarning("[DailyRewards] Не найдено ни одного Reward в _giftContainer!");
+            return;
+        }
 
-        reward[day - 1].ClaimReward();
+        int index = day - 1;
+        if(index < 0 || index >= rewards.Length)
+        {
+            Debug.LogWarning($"[DailyRewards] Индекс {index} выходит за границы массива Rewards (длина: {rewards.Length}).");
+            return;
+        }
+
+        // Активируем (Claim) нужную награду
+        rewards[index].ClaimReward();
     }
 
+    /// <summary>
+    /// Возвращаем, сколько осталось до следующей награды, если прошло меньше 24 часов.
+    /// Если время вышло, возвращаем TimeSpan.Zero.
+    /// </summary>
     public TimeSpan GetTimeUntilNextGift()
     {
-        string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey, "");
-        if(string.IsNullOrEmpty(lastLoginStr))
-        {
-            return TimeSpan.Zero;
-        }
+        // Тут также не проверяем IsNullOrEmpty, сразу берём строку
+        string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey);
 
+        // Пробуем парсить
         if(!DateTime.TryParse(lastLoginStr, out DateTime lastLogin))
         {
+            // Если не распарсили — считаем, что можем выдать награду прямо сейчас
             return TimeSpan.Zero;
         }
 
-        DateTime nextGiftTime = lastLogin.AddDays(1);
+        // Следующее получение награды — через 24 часа после последнего
+        DateTime nextGiftTime = lastLogin.AddHours(24);
+
         TimeSpan timeLeft = nextGiftTime - DateTime.Now;
-        return timeLeft.TotalSeconds > 0 ? timeLeft : TimeSpan.Zero;
+        return (timeLeft.TotalSeconds > 0) ? timeLeft : TimeSpan.Zero;
     }
 
-    public void SaveDate(string date, int streak)
+    /// <summary>
+    /// Сохраняем дату последнего входа (полное время) и значение стрика.
+    /// </summary>
+    private void SaveDate(DateTime dateTime, int streak)
     {
-        PlayerPrefs.SetString(SaveData.LastSavedDateKey, date);
+        string dateString = dateTime.ToString("O"); // ISO 8601
+
+        PlayerPrefs.SetString(SaveData.LastSavedDateKey, dateString);
         PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, streak);
 
-        YandexGame.savesData.LastSavedDate = date;
+        // Сохраняем и во внутреннюю систему YandexGame
+        YandexGame.savesData.LastSavedDate = dateString;
         YandexGame.savesData.LastSavedStreak = streak;
 
         YandexGame.SaveProgress();
     }
 
-    public void LoadData()
+    /// <summary>
+    /// Синхронизация данных из YandexGame.savesData в PlayerPrefs при старте.
+    /// </summary>
+    private void LoadData()
     {
-        PlayerPrefs.SetString(SaveData.LastSavedDateKey, YandexGame.savesData.LastSavedDate);
-        PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, YandexGame.savesData.LastSavedStreak);
+        // Если в YandexGame.savesData есть сохранённая строка, пишем её в PlayerPrefs
+        if(!string.IsNullOrEmpty(YandexGame.savesData.LastSavedDate))
+        {
+            PlayerPrefs.SetString(SaveData.LastSavedDateKey, YandexGame.savesData.LastSavedDate);
+        }
+
+        if(YandexGame.savesData.LastSavedStreak > 0)
+        {
+            PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, YandexGame.savesData.LastSavedStreak);
+        }
     }
 }
 

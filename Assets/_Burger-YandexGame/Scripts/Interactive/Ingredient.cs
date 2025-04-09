@@ -22,9 +22,12 @@ public class Ingredient : MonoBehaviour
 
         if(!animationStoped)
         {
-            _tween = transform.DORotate(new Vector3(90, 360, 0), _rotateSpeed, RotateMode.FastBeyond360)
-                .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Restart);
+            var startEuler = transform.eulerAngles;
+            _tween = transform.DORotate(
+                new Vector3(startEuler.x, startEuler.y + 360f, startEuler.z),
+                _rotateSpeed,
+                RotateMode.FastBeyond360)
+                .SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
         }
     }
 
