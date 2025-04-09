@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
         if(scene.buildIndex == 0)
         {
             _recipeData = Resources.Load<RecipeData>($"Recipe/Level");
+
+            PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, 2);
         }
         else
         {
@@ -90,6 +92,11 @@ public class GameManager : MonoBehaviour
         if(scene.buildIndex % 6 == 0 && scene.buildIndex != 0)
         {
             ProposeBonusLevel();
+        }
+        if(scene.buildIndex % 10 == 0 && scene.buildIndex != 0)
+        {
+            PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) + 1);
+            UIController.UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());  
         }
     }
 

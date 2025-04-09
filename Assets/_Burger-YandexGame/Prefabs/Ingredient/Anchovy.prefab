@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &748643502445963025
+--- !u!1 &4055899853562309882
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5605560971587341503}
-  - component: {fileID: 1841906191033099619}
-  - component: {fileID: 1760471897780936795}
+  - component: {fileID: 8799179255541278808}
+  - component: {fileID: 4767050440392873884}
+  - component: {fileID: 4632666301235375565}
   m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
@@ -18,31 +18,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5605560971587341503
+--- !u!4 &8799179255541278808
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748643502445963025}
+  m_GameObject: {fileID: 4055899853562309882}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7054586990316290466}
-  - {fileID: 6053805378038487583}
-  - {fileID: 5355425156390606561}
+  - {fileID: 1188991379319394884}
+  - {fileID: 2797992802762091608}
+  - {fileID: 1613633820404589175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!65 &1841906191033099619
+--- !u!65 &4767050440392873884
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748643502445963025}
+  m_GameObject: {fileID: 4055899853562309882}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -55,15 +55,15 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.71974635, y: 0.120233566, z: 0.7126587}
-  m_Center: {x: 0.00029814243, y: 0.043450452, z: 0.07652491}
---- !u!114 &1760471897780936795
+  m_Size: {x: 0.71974635, y: 0.120233566, z: 0.8432155}
+  m_Center: {x: 0.00029814243, y: 0.043450452, z: 0.14180326}
+--- !u!114 &4632666301235375565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748643502445963025}
+  m_GameObject: {fileID: 4055899853562309882}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eef03cbf4e5039c4fb1ed70cfdaa522f, type: 3}
@@ -72,7 +72,7 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 21300000, guid: f3b4954c4c65852478bd80a619b92e21, type: 3}
   <IsBadIngredient>k__BackingField: 0
   _rotateSpeed: 2
---- !u!1 &2242834746198914115
+--- !u!1 &4425962928874003859
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,9 +80,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5355425156390606561}
-  - component: {fileID: 3267058500584644960}
-  - component: {fileID: 5987692851848591152}
+  - component: {fileID: 1188991379319394884}
+  - component: {fileID: 8722084612506837641}
+  - component: {fileID: 4928494605750233793}
   m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
@@ -90,36 +90,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5355425156390606561
+--- !u!4 &1188991379319394884
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2242834746198914115}
+  m_GameObject: {fileID: 4425962928874003859}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 5605560971587341503}
+  m_Father: {fileID: 8799179255541278808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3267058500584644960
+--- !u!33 &8722084612506837641
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2242834746198914115}
+  m_GameObject: {fileID: 4425962928874003859}
   m_Mesh: {fileID: 1459968397745840662, guid: 2423a0ed20ea45638d88197774e6be83, type: 3}
---- !u!23 &5987692851848591152
+--- !u!23 &4928494605750233793
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2242834746198914115}
+  m_GameObject: {fileID: 4425962928874003859}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -155,7 +155,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6793824453691749775
+--- !u!1 &7821772045236332937
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,9 +163,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6053805378038487583}
-  - component: {fileID: 2530279920608772367}
-  - component: {fileID: 4973051084115668097}
+  - component: {fileID: 2797992802762091608}
+  - component: {fileID: 4331930303466247555}
+  - component: {fileID: 6068346951987226260}
   m_Layer: 8
   m_Name: 'Anchovy '
   m_TagString: Untagged
@@ -173,36 +173,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6053805378038487583
+--- !u!4 &2797992802762091608
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793824453691749775}
+  m_GameObject: {fileID: 7821772045236332937}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000021855694, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 5605560971587341503}
+  m_Father: {fileID: 8799179255541278808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2530279920608772367
+--- !u!33 &4331930303466247555
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793824453691749775}
+  m_GameObject: {fileID: 7821772045236332937}
   m_Mesh: {fileID: 1459968397745840662, guid: 2423a0ed20ea45638d88197774e6be83, type: 3}
---- !u!23 &4973051084115668097
+--- !u!23 &6068346951987226260
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793824453691749775}
+  m_GameObject: {fileID: 7821772045236332937}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -238,7 +238,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &9204601301222922100
+--- !u!1 &8289554094724750696
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,9 +246,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7054586990316290466}
-  - component: {fileID: 4561461819132962801}
-  - component: {fileID: 1132343818308029681}
+  - component: {fileID: 1613633820404589175}
+  - component: {fileID: 2784268530183730072}
+  - component: {fileID: 5479118102265624846}
   m_Layer: 8
   m_Name: Anchovy
   m_TagString: Untagged
@@ -256,36 +256,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7054586990316290466
+--- !u!4 &1613633820404589175
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9204601301222922100}
+  m_GameObject: {fileID: 8289554094724750696}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 5605560971587341503}
+  m_Father: {fileID: 8799179255541278808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4561461819132962801
+--- !u!33 &2784268530183730072
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9204601301222922100}
+  m_GameObject: {fileID: 8289554094724750696}
   m_Mesh: {fileID: 1459968397745840662, guid: 2423a0ed20ea45638d88197774e6be83, type: 3}
---- !u!23 &1132343818308029681
+--- !u!23 &5479118102265624846
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9204601301222922100}
+  m_GameObject: {fileID: 8289554094724750696}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1

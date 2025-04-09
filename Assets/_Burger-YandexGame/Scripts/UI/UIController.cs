@@ -147,6 +147,7 @@ public class UIController : MonoBehaviour
 
         _moneyText.text = PlayerPrefs.GetInt(SaveData.MoneyKey).ToString();
         _minuteGift.ResetTimer();
+        UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
     }
 
     private void Update()
@@ -356,10 +357,8 @@ public class UIController : MonoBehaviour
     {
         if(!_minuteGift.TimerIsRunning)
         {
-            GameManager.Instance.UpdateMoney(_minuteGift.GiftMoney);
+            GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) + _minuteGift.GiftMoney);
             _minuteGift.ResetTimer();
-
-            print(123);
         }
     }
 
@@ -440,8 +439,6 @@ public class UIController : MonoBehaviour
         else
         {
             UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
-
-            YandexGame.RewVideoShow(SaveData.FortuneWheelReward);
         }
     }
 
@@ -463,7 +460,6 @@ public class UIController : MonoBehaviour
     public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
 
     public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
-
 
     private void FocusObject(Transform focusObject)
     {
@@ -595,8 +591,10 @@ public class DailyRewards
             _lastLoginDate = _today;
             _currentStreak = 1;
             string todayStr = _today.ToString("yyyy-MM-dd");
+
             PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
             PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
+
             SaveDate(todayStr, _currentStreak);
             GiveReward(_currentStreak);
         }
@@ -614,8 +612,10 @@ public class DailyRewards
                     {
                         _currentStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey, 1);
                         _currentStreak = (_currentStreak % _maxStreak) + 1;
+
                         PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, _currentStreak);
                         PlayerPrefs.SetString(SaveData.LastSavedDateKey, todayStr);
+
                         SaveDate(todayStr, _currentStreak);
                         GiveReward(_currentStreak);
                     }
@@ -723,7 +723,6 @@ public class MinuteGift
     {
         _timeRemaining = _maxTimeRemaining;
         TimerIsRunning = true;
-        _getButton.interactable = false;
     }
 
     private void DisplayTime(float timeToDisplay)

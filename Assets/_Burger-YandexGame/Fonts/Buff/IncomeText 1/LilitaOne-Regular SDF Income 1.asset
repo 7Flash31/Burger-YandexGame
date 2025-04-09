@@ -56,11 +56,11 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: -0.3
+    - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
-    - _GlowInner: 0.05
-    - _GlowOffset: -1
+    - _GlowInner: 1
+    - _GlowOffset: 1
     - _GlowOuter: 1
     - _GlowPower: 1
     - _GradientScale: 6
@@ -74,8 +74,8 @@ Material:
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.8333333
-    - _ScaleRatioB: 0.9270833
-    - _ScaleRatioC: 0.9270833
+    - _ScaleRatioB: 0.33854166
+    - _ScaleRatioC: 0.33854166
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -88,9 +88,9 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    - _UnderlayDilate: 0
+    - _UnderlayDilate: 1
     - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayOffsetY: -1
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
@@ -100,13 +100,13 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 1, g: 0.029075116, b: 0, a: 1}
+    - _GlowColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0.1228538, g: 0.29685432, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!28 &-7213382580055583403
 Texture2D:
@@ -166,11 +166,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: LilitaOne-Regular SDF 2
+  m_Name: LilitaOne-Regular SDF Income 1
   m_EditorClassIdentifier: 
-  hashCode: 1706162117
+  hashCode: -1787882138
   material: {fileID: -7229575669869296325}
-  materialHashCode: 1221594565
+  materialHashCode: 1673118470
   m_Version: 1.1.0
   m_SourceFontFileGUID: 7d0e49f3d984db947bd5d93a4ce3c965
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 7d0e49f3d984db947bd5d93a4ce3c965, type: 3}

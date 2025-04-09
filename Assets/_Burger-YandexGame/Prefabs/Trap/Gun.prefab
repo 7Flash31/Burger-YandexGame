@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9254c00add4054ca6545ffecd626f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeToSpawn: 0.6
+  _timeToSpawn: 0.83
   _shootPrefab: {fileID: 2427197837457623696, guid: 13359f009f14e234e85d23dedcf5b0ef, type: 3}
   _spawner: {fileID: 4696745574733804645}
 --- !u!1 &6067175321317410379

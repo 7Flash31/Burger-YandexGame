@@ -39,23 +39,23 @@ public class Player : MonoBehaviour
     {
         _horizontal = Input.GetAxis("Horizontal");
 
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             _horizontal = Input.GetAxis("Mouse X") * _sensitivityMouse;
         }
 
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
-            foreach(Touch touch in Input.touches)
+            foreach (Touch touch in Input.touches)
             {
-                if(touch.phase == TouchPhase.Moved)
+                if (touch.phase == TouchPhase.Moved)
                 {
                     _horizontal = touch.deltaPosition.x * _sensitivityTouch;
                 }
             }
         }
 
-        if(controller.isGrounded)
+        if (controller.isGrounded)
         {
             _verticalVelocity = 0f;
         }
@@ -80,15 +80,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(collider.transform.TryGetComponent(out Ingredient interactableItem))
+        if (collider.transform.TryGetComponent(out Ingredient interactableItem))
         {
             AddIngredient(interactableItem);
         }
 
-        if(_hasTriggered)
+        if (_hasTriggered)
             return;
 
-        if(collider.gameObject.TryGetComponent(out Trap trap))
+        if (collider.gameObject.TryGetComponent(out Trap trap))
         {
             DeleteRandomIngredient(trap.RemoveIngredient);
             _hasTriggered = true;
@@ -99,9 +99,9 @@ public class Player : MonoBehaviour
     {
         int a = Mathf.Min(_ingredients.Count, count);
 
-        for(int i = a - 1; i >= 0; i--)
+        for (int i = a - 1; i >= 0; i--)
         {
-            if(_ingredients[i] != null)
+            if (_ingredients[i] != null)
             {
                 _ingredients[i].IsDropped = true;
                 _ingredients[i].transform.SetParent(null);
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(_ingredients.Count == 0)
+        if (_ingredients.Count == 0)
         {
             BurgerTop.transform.rotation = BurgerDown.transform.rotation;
 
@@ -126,15 +126,15 @@ public class Player : MonoBehaviour
             BurgerTop.transform.position = topNewWorld - (bottomTopWorld - BurgerTop.transform.position);
 
             HingeJoint topHinge = BurgerTop.GetComponent<HingeJoint>();
-            if(topHinge)
+            if (topHinge)
             {
                 topHinge.connectedBody = BurgerDown.GetComponent<Rigidbody>();
             }
         }
-        for(int i = 0; i < _ingredients.Count; i++)
+        for (int i = 0; i < _ingredients.Count; i++)
         {
             GameObject previousObject = null;
-            if(i == 0)
+            if (i == 0)
             {
                 // Первый ингредиент «опирается» на нижнюю булку
                 previousObject = BurgerDown.gameObject;
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
             hingeJoint.useSpring = true;
             hingeJoint.useLimits = true;
 
-            if(i == 0)
+            if (i == 0)
             {
                 hingeJoint.connectedBody = BurgerDown.GetComponent<Rigidbody>();
             }
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
             BurgerTop.transform.position = topNewWorld - (bottomTopWorld - BurgerTop.transform.position);
 
             HingeJoint topHinge = BurgerTop.GetComponent<HingeJoint>();
-            if(topHinge)
+            if (topHinge)
             {
                 topHinge.connectedBody = _ingredients[i].GetComponent<Rigidbody>();
             }
@@ -192,7 +192,7 @@ public class Player : MonoBehaviour
 
     public void SetMassScale(float massScale, float connectedMassScale)
     {
-        foreach(var item in _ingredients)
+        foreach (var item in _ingredients)
         {
             HingeJoint hingeJoint = item.GetComponent<HingeJoint>();
             hingeJoint.massScale = massScale;
@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
 
     public void DeleteJoint()
     {
-        foreach(var item in _ingredients)
+        foreach (var item in _ingredients)
         {
             Destroy(item.GetComponent<HingeJoint>());
             Destroy(item.GetComponent<Rigidbody>());
@@ -241,14 +241,14 @@ public class Player : MonoBehaviour
 
     private void AddIngredient(Ingredient ingredient)
     {
-        if(_ingredients.Contains(ingredient))
+        if (_ingredients.Contains(ingredient))
             return;
 
         ingredient.transform.SetParent(_burgerComponents.transform);
         ingredient.StopAnimation();
 
         GameObject previousObject;
-        if(_ingredients.Count == 0)
+        if (_ingredients.Count == 0)
         {
             previousObject = BurgerDown.gameObject;
         }
@@ -274,7 +274,7 @@ public class Player : MonoBehaviour
         hingeJoint.useSpring = true;
         hingeJoint.useLimits = true;
 
-        if(_ingredients.Count == 1)
+        if (_ingredients.Count == 1)
         {
             hingeJoint.connectedBody = BurgerDown.GetComponent<Rigidbody>();
         }
@@ -295,7 +295,7 @@ public class Player : MonoBehaviour
         BurgerTop.transform.position = topNewWorld - (bottomTopWorld - BurgerTop.transform.position);
 
         HingeJoint topHinge = BurgerTop.GetComponent<HingeJoint>();
-        if(topHinge)
+        if (topHinge)
         {
             topHinge.connectedBody = ingredient.GetComponent<Rigidbody>();
         }
@@ -308,10 +308,10 @@ public class Player : MonoBehaviour
     {
         int totalCount = _ingredients.Count + 1;
 
-        for(int i = 0; i < totalCount; i++)
+        for (int i = 0; i < totalCount; i++)
         {
             GameObject current;
-            if(i == 0)
+            if (i == 0)
             {
                 current = BurgerDown.gameObject;
             }
@@ -320,10 +320,10 @@ public class Player : MonoBehaviour
                 current = _ingredients[i - 1].gameObject;
             }
 
-            if(current != null)
+            if (current != null)
             {
                 Rigidbody rb = current.GetComponent<Rigidbody>();
-                if(rb != null)
+                if (rb != null)
                 {
                     rb.mass = totalCount - i;
                 }
@@ -334,7 +334,7 @@ public class Player : MonoBehaviour
     private Vector3 GetBoxColliderTopWorldPoint(GameObject go)
     {
         BoxCollider coll = go.GetComponent<BoxCollider>();
-        if(!coll)
+        if (!coll)
             return go.transform.position;
 
         Vector3 topLocal = coll.center + new Vector3(0, coll.size.y / 2f, 0);
@@ -344,7 +344,7 @@ public class Player : MonoBehaviour
     private Vector3 GetBoxColliderBottomLocal(GameObject go)
     {
         BoxCollider coll = go.GetComponent<BoxCollider>();
-        if(!coll)
+        if (!coll)
             return Vector3.zero;
 
         return coll.center - new Vector3(0, coll.size.y / 2f, 0);

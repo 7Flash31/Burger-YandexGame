@@ -1117,7 +1117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <RemoveIngredient>k__BackingField: 5
   <IsActive>k__BackingField: 1
-  rotateSpeed: 1
+  rotateSpeed: 2
 --- !u!1 &5541037736980850316
 GameObject:
   m_ObjectHideFlags: 0
