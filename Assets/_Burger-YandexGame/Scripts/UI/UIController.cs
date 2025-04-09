@@ -591,7 +591,6 @@ public class DailyRewards
         if(!DateTime.TryParse(lastLoginStr, out _lastLoginDateTime))
         {
             // Если парсинг не удался => считаем, что это первый вход
-            Debug.Log($"[DailyRewards] Дата из PlayerPrefs невалидна: '{lastLoginStr}'. Считаем, что это первый вход.");
 
             _currentStreak = 1;
             GiveReward(_currentStreak);
@@ -602,7 +601,6 @@ public class DailyRewards
         else
         {
             // Парсинг даты прошёл успешно
-            Debug.Log($"[DailyRewards] Последняя сохранённая дата: {_lastLoginDateTime}");
 
             // Вычисляем, сколько часов прошло с последнего получения награды
             TimeSpan difference = DateTime.Now - _lastLoginDateTime;

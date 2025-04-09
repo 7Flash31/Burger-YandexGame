@@ -8,18 +8,16 @@ public class Player : MonoBehaviour
     [field: SerializeField] public Transform BurgerDown { get; private set; }
 
     public float Vertical { get; set; }
+    public bool CanMove { get; set; } = true;
 
     [SerializeField] private Transform _burgerComponents;
     [SerializeField] private float _speed;
     [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
-    [SerializeField] private float _horizontalSmoothSpeed;
-    [SerializeField] private float _verticalSmoothSpeed;
 
     [SerializeField] private List<Ingredient> _ingredients = new List<Ingredient>();
 
     private Rigidbody _rb;
-
     private float _horizontal;
     private bool _hasTriggered;
 
@@ -53,10 +51,13 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 velocity = new Vector3(_horizontal, 0, Vertical) * _speed;
+        if(CanMove)
+        {
+            Vector3 velocity = new Vector3(_horizontal, 0, Vertical) * _speed;
 
-        Vector3 worldVelocity = transform.TransformDirection(velocity);
-        _rb.velocity = worldVelocity;
+            Vector3 worldVelocity = transform.TransformDirection(velocity);
+            _rb.velocity = worldVelocity;
+        }
     }
 
     private void OnTriggerEnter(Collider collider)
