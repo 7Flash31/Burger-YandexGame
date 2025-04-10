@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
     public List<RecipeIngredient> Recipe { get; private set; }
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
 
+    public int CurrentSkinID { get; set; }
+    public List<int> PurchasedSkins { get; set; } = new List<int>();
+
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
         IncomeModeEnabled = false;
@@ -105,6 +108,7 @@ public class GameManager : MonoBehaviour
         YandexGame.savesData.LastSavedDate = "";
         YandexGame.savesData.LastSavedStreak = 0;
 
+        PurchasedSkins.Add(0);
 
         SceneManager.sceneLoaded += OnSceneLoad;
 
@@ -155,8 +159,6 @@ public class GameManager : MonoBehaviour
 
         UIController.UpdateMoneyText(PlayerPrefs.GetInt(SaveData.MoneyKey, 0));
     }
-
-
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void SaveGame()

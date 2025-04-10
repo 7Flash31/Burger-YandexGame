@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -58,46 +59,8 @@ public class UIController : MonoBehaviour
     [field: SerializeField] public Button LuckButton { get; private set; }
 
     private bool setAlreadyRecipe;
+    [SerializeField] private List<ShopCard> _shopCards;
 
-    //private void Start()
-    //{
-    //    _startPanel.SetActive(true);
-    //    _finalPanel.SetActive(false);
-
-    //    _fortuneWheelButton.SetActive(false);
-    //    _dailyGiftButton.SetActive(false);
-    //    _shopButton.SetActive(false);
-
-    //    if(SceneManager.GetActiveScene().buildIndex == 0)
-    //        _helpPointer.Initialize();
-    //    else
-    //        _playerHelp.SetActive(false);
-
-    //    if(SceneManager.GetActiveScene().buildIndex > 0)
-    //    {
-    //        _fortuneWheelButton.SetActive(true);
-    //        _shopButton.SetActive(true);
-
-    //        if(SceneManager.GetActiveScene().buildIndex == 1)
-    //        {
-    //            FocusObject(_fortuneWheelButton.transform);
-    //            FocusObject(_shopButton.transform);
-    //        }
-    //    }
-
-    //    if(SceneManager.GetActiveScene().buildIndex > 2)
-    //    {
-    //        _dailyGiftButton.SetActive(true);
-    //        _dailyRewards.Initialize(_dailyGiftPanel);
-
-    //        if(SceneManager.GetActiveScene().buildIndex == 3)
-    //        {
-    //            FocusObject(_dailyGiftButton.transform);
-    //        }
-    //    }
-
-    //    _minuteGift.ResetTimer();
-    //}
 
     private void Start()
     {
@@ -148,6 +111,10 @@ public class UIController : MonoBehaviour
         _moneyText.text = PlayerPrefs.GetInt(SaveData.MoneyKey).ToString();
         _minuteGift.ResetTimer();
         UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
+
+
+        // Spawn ShopCard for Skins
+        //_shopCards.Add();
     }
 
     private void Update()
@@ -306,7 +273,6 @@ public class UIController : MonoBehaviour
         int baseMoney = addedMoneyGood + addedMoneyBad + addedMoneyRecipe;
 
         // Если нужно обновить деньги до применения множителей, можно это сделать здесь
-        GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) + baseMoney);
 
         int totalMoneyToAdd = baseMoney;
         int incomeBonus = 0;
@@ -340,6 +306,9 @@ public class UIController : MonoBehaviour
         // Выводим в debug отдельно базовую сумму, бонусы income и luck, а также итоговую сумму
         Debug.Log($"Деньги за хорошие: {addedMoneyGood}, плохие: {addedMoneyBad}, из рецепта: {addedMoneyRecipe}. " +
                   $"Базовая сумма: {baseMoney}, бонус дохода: {incomeBonus}, бонус удачи: {luckBonus}, бонусный уровень: {bonusLevel}. Всего: {totalMoneyToAdd}");
+
+        GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) + totalMoneyToAdd);
+
     }
 
     public void UpdateMoneyText(int newMoney)
@@ -451,6 +420,19 @@ public class UIController : MonoBehaviour
     public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
 
     public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
+
+    public void ResetAllButtons()
+    {
+        foreach(var item in _shopCards)
+        {
+            if(GameManager.Instance.PurchasedSkins.Contains(item.SkinID))
+            {
+                item.CardButton.interactable = true;
+                item.CardButtonText.text = "Select";
+            }
+
+        }
+    }
 
     private void FocusObject(Transform focusObject)
     {

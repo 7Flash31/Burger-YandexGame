@@ -359,8 +359,6 @@ MonoBehaviour:
   _speed: 5
   _sensitivityMouse: 5
   _sensitivityTouch: 0
-  _horizontalSmoothSpeed: 10
-  _verticalSmoothSpeed: 10
   _ingredients: []
 --- !u!1 &7847928082951073198
 GameObject:

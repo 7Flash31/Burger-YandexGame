@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d0ef0b050806404786c5f2d22dd02d4, type: 3}
-  m_Name: SkinTwo
+  m_Name: Skin1
   m_EditorClassIdentifier: 
-  <SkinID>k__BackingField: 0
+  <SkinID>k__BackingField: 1
   <BurgerTopMesh>k__BackingField: {fileID: -953746868772381709, guid: 0497c7191aa3483d9bb4d7e6460950b6, type: 3}
-  <BurgerTopMaterial>k__BackingField: {fileID: -876546973899608171, guid: 0497c7191aa3483d9bb4d7e6460950b6, type: 3}
+  <BurgerTopMaterial>k__BackingField: {fileID: 2100000, guid: a61f911e847940148726701782c76223, type: 2}
   <BurgerDownMesh>k__BackingField: {fileID: -8896618722421644649, guid: 986f6b2b3a1b4a369f16ba25d1cbacc3, type: 3}
-  <BurgerDownMaterial>k__BackingField: {fileID: -876546973899608171, guid: 986f6b2b3a1b4a369f16ba25d1cbacc3, type: 3}
+  <BurgerDownMaterial>k__BackingField: {fileID: 2100000, guid: a61f911e847940148726701782c76223, type: 2}
