@@ -5,7 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -30,9 +29,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private FortuneWheel _fortuneWheel;
 
     [Header("Left Buttons")]
-    [SerializeField] private GameObject _fortuneWheelButton;
-    [SerializeField] private GameObject _minuteGiftButton;
-    [SerializeField] private GameObject _dailyGiftButton;
+    [SerializeField] private GameObject _fortuneWheelLeftButton;
+    [SerializeField] private GameObject _minuteGiftLeftButton;
+    [SerializeField] private GameObject _dailyGiftLeftButton;
 
     [Header("Other References")]
     [SerializeField] private GameObject _shopButton;
@@ -48,7 +47,9 @@ public class UIController : MonoBehaviour
 
     [Header("Sliders")]
     [SerializeField] private Slider _musicSlider;
-    [SerializeField] private Slider _sensitivitySlider;
+    [SerializeField] private Slider _soundSlider;
+    [SerializeField] private Slider _mouseSensitivitySlider;
+    [SerializeField] private Slider _keyboardSensitivitySlider;
 
     [Header("Transforms")]
     [SerializeField] private Transform _recipeContent;
@@ -61,7 +62,6 @@ public class UIController : MonoBehaviour
     private bool setAlreadyRecipe;
     [SerializeField] private List<ShopCard> _shopCards;
 
-
     private void Start()
     {
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
@@ -69,8 +69,8 @@ public class UIController : MonoBehaviour
         _startPanel.SetActive(true);
         _finalPanel.SetActive(false);
 
-        _fortuneWheelButton.SetActive(false);
-        _dailyGiftButton.SetActive(false);
+        _fortuneWheelLeftButton.SetActive(false);
+        _dailyGiftLeftButton.SetActive(false);
         _shopButton.SetActive(false);
 
         if(buildIndex == 0)
@@ -84,24 +84,24 @@ public class UIController : MonoBehaviour
 
         if(buildIndex > 0)
         {
-            _fortuneWheelButton.SetActive(true);
+            _fortuneWheelLeftButton.SetActive(true);
             _shopButton.SetActive(true);
 
             if(buildIndex == 1)
             {
-                FocusObject(_fortuneWheelButton.transform);
+                FocusObject(_fortuneWheelLeftButton.transform);
                 FocusObject(_shopButton.transform);
             }
         }
 
         if(buildIndex > 2)
         {
-            _dailyGiftButton.SetActive(true);
+            _dailyGiftLeftButton.SetActive(true);
             _dailyRewards.Initialize(_dailyGiftPanel);
 
             if(buildIndex == 3)
             {
-                FocusObject(_dailyGiftButton.transform);
+                FocusObject(_dailyGiftLeftButton.transform);
             }
         }
 
@@ -112,6 +112,10 @@ public class UIController : MonoBehaviour
         _minuteGift.ResetTimer();
         UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
 
+        _musicSlider.value = PlayerPrefs.GetFloat(SaveData.MusicKey, 0.3f);
+        _soundSlider.value = PlayerPrefs.GetFloat(SaveData.SoundKey, 0.3f);
+        _mouseSensitivitySlider.value = PlayerPrefs.GetFloat(SaveData.MouseSensitivityKey, 1f);
+        _keyboardSensitivitySlider.value = PlayerPrefs.GetFloat(SaveData.KeyboardSensitivityKey, 1f);
 
         // Spawn ShopCard for Skins
         //_shopCards.Add();
@@ -130,16 +134,33 @@ public class UIController : MonoBehaviour
         _startPanel.SetActive(false);
         _helpPointer.StopAnimation();
 
-        _fortuneWheelButton.SetActive(false);
-        _minuteGiftButton.SetActive(false);
-        _dailyGiftButton.SetActive(false);
+        _fortuneWheelLeftButton.SetActive(false);
+        _minuteGiftLeftButton.SetActive(false);
+        _dailyGiftLeftButton.SetActive(false);
     }
 
-    public void ShowMusicSlider() => _musicSlider.gameObject.SetActive(!_musicSlider.gameObject.activeSelf);
+    public void SetMusic()
+    {
+        PlayerPrefs.SetFloat(SaveData.MusicKey, _musicSlider.value);
+        GameManager.Instance.UpdateMusic(_musicSlider.value);
+    }
+    
+    public void SetSound()
+    {
+        PlayerPrefs.SetFloat(SaveData.MusicKey, _soundSlider.value);
+    }
 
-    public void SetGameMusic() => PlayerPrefs.SetFloat(SaveData.MusicKey, _musicSlider.value);
+    public void SetMouseSensitivity()
+    {
+        PlayerPrefs.SetFloat(SaveData.MouseSensitivityKey, _mouseSensitivitySlider.value);
+        GameManager.Instance.Player.UpdateSensitivity(_mouseSensitivitySlider.value, true);
+    }
 
-    public void SetSensitivity() => PlayerPrefs.SetFloat(SaveData.SensitivityKey, _sensitivitySlider.value);
+    public void SetKeyboardSensitivity()
+    {
+        PlayerPrefs.SetFloat(SaveData.KeyboardSensitivityKey, _keyboardSensitivitySlider.value);
+        GameManager.Instance.Player.UpdateSensitivity(_keyboardSensitivitySlider.value, false);
+    }
 
     public void ShowPanel(GameObject panel) => panel.SetActive(!panel.activeSelf);
 
@@ -350,7 +371,7 @@ public class UIController : MonoBehaviour
         _finalReward.Initialize();
     }
 
-    public void GetRewardMultiply() => _finalReward.GetRewardMultiply();
+    //public void GetRewardMultiply() => _finalReward.GetRewardMultiply();
 
     public void UpdateSceneText(string newLevel)
     {
@@ -393,6 +414,7 @@ public class UIController : MonoBehaviour
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) - 1);
 
             UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());
+            
             _fortuneWheel.StartSpin();
         }
 
@@ -409,19 +431,18 @@ public class UIController : MonoBehaviour
         _bonusLevelPanel.SetActive(true);
         _bonusLevelPanel.transform.localScale = Vector3.zero;
         _bonusLevelPanel.transform.DOScale(Vector3.one, 0.2f);
-
     }
 
-    public void EnableBonusLevel()
-    {
-        YandexGame.RewVideoShow(SaveData.BonusLevelReward);
-    }
+    //public void EnableBonusLevel()
+    //{
+    //    YandexGame.RewVideoShow(SaveData.BonusLevelReward);
+    //}
 
     public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
 
     public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
 
-    public void ResetAllButtons()
+    public void ResetAllButtons() // Rename
     {
         foreach(var item in _shopCards)
         {
@@ -430,7 +451,6 @@ public class UIController : MonoBehaviour
                 item.CardButton.interactable = true;
                 item.CardButtonText.text = "Select";
             }
-
         }
     }
 
@@ -714,7 +734,7 @@ public class MinuteGift
     {
         if(TimerIsRunning)
         {
-            if(_timeRemaining > 0)
+            if(_timeRemaining > 1)
             {
                 _timeRemaining -= Time.deltaTime;
                 DisplayTime(_timeRemaining);
@@ -833,6 +853,7 @@ public class FortuneWheel
 {
     [SerializeField] private GameObject _wheel;
     [SerializeField] private FortuneWheelDetector _fortuneWheelDetector;
+    [SerializeField] private Button _spinButton;
     [SerializeField] private float _speed;
     [SerializeField] private float _currentSpeed;
 
@@ -842,8 +863,7 @@ public class FortuneWheel
     {
         _spinStarted = true;
         _currentSpeed = _speed;
-
-        Debug.Log("spin");
+        _spinButton.interactable = false;
     }
 
     public void SpinFortuneWheel()
@@ -858,6 +878,7 @@ public class FortuneWheel
         {
             _fortuneWheelDetector.IsStoped = true;
             _spinStarted = false;
+            _spinButton.interactable = true;
         }
     }
 }

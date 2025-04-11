@@ -5,14 +5,13 @@ using UnityEngine.UI;
 public class ShopCard : MonoBehaviour
 {
     [field: SerializeField] public Button CardButton {  get; set; }
+    [field: SerializeField] public TMP_Text CardButtonText { get; set; }
     [field: SerializeField] public int SkinID { get; set; }
     [SerializeField] private int _price = 100;
 
-    public TMP_Text CardButtonText { get; set; }
 
     private void Start()
     {
-        CardButtonText = CardButton.GetComponentInChildren<TMP_Text>();
         CardButtonText.text = _price.ToString();
         CardButton.onClick.AddListener(ChangeOrBuySkin);
 
@@ -20,6 +19,16 @@ public class ShopCard : MonoBehaviour
         {
             CardButtonText.text = "Selected";
             CardButton.interactable = false;
+        }
+        else if(GameManager.Instance.CurrentSkinID == SkinID)
+        {
+            CardButtonText.text = "Selected";
+            CardButton.interactable = false;
+        }
+        else if(GameManager.Instance.PurchasedSkins.Contains(SkinID))
+        {
+            CardButtonText.text = "Select";
+            CardButton.interactable = true;
         }
     }
 
@@ -38,7 +47,7 @@ public class ShopCard : MonoBehaviour
             {
                 GameManager.Instance.UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - _price);
                 GameManager.Instance.PurchasedSkins.Add(SkinID);
-                CardButtonText.text = "Change";
+                CardButtonText.text = "Select";
             }
         }
     }

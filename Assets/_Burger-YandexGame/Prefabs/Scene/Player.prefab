@@ -355,9 +355,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BurgerTop>k__BackingField: {fileID: 8593702422983704440}
   <BurgerDown>k__BackingField: {fileID: 3558307176831563400}
+  <SensitivityMouse>k__BackingField: 2
+  <SensitivityKeyboard>k__BackingField: 5
   _burgerComponents: {fileID: 2323814362571273577}
   _speed: 5
-  _sensitivityMouse: 5
   _sensitivityTouch: 0
   _ingredients: []
 --- !u!1 &7847928082951073198

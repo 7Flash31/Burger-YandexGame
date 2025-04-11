@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,14 @@ public class Player : MonoBehaviour
 {
     [field: SerializeField] public Transform BurgerTop { get; private set; }
     [field: SerializeField] public Transform BurgerDown { get; private set; }
+    [field: SerializeField] public float SensitivityMouse { get; set; }
+    [field: SerializeField] public float SensitivityKeyboard { get; set; }
 
     public float Vertical { get; set; }
     public bool CanMove { get; set; } = true;
 
     [SerializeField] private Transform _burgerComponents;
     [SerializeField] private float _speed;
-    [SerializeField] private float _sensitivityMouse;
     [SerializeField] private float _sensitivityTouch;
 
     [SerializeField] private List<Ingredient> _ingredients = new List<Ingredient>();
@@ -21,11 +23,16 @@ public class Player : MonoBehaviour
     private float _horizontal;
     private bool _hasTriggered;
 
-
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
         Vertical = 1f;
+        SensitivityMouse = PlayerPrefs.GetFloat(SaveData.MouseSensitivityKey, 1f);
+        SensitivityKeyboard = PlayerPrefs.GetFloat(SaveData.KeyboardSensitivityKey, 1f);
+        _sensitivityTouch = SensitivityMouse;
+
+        GameManager.Instance.ChangeSkin(GameManager.Instance.CurrentSkinID);
+        print(1);
     }
 
     private void Update()
@@ -34,7 +41,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            _horizontal = Input.GetAxis("Mouse X") * _sensitivityMouse;
+            _horizontal = Input.GetAxis("Mouse X") * SensitivityMouse;
         }
 
         if (Input.touchCount > 0)
@@ -75,6 +82,20 @@ public class Player : MonoBehaviour
             DeleteRandomIngredient(trap.RemoveIngredient);
             _hasTriggered = true;
         }
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.FinalIngredients.Clear();
+        GameManager.Instance.FinalIngredients.AddRange(_ingredients);
+    }
+
+    public void UpdateSensitivity(float newSensitivity, bool isMouseSensitivity)
+    {
+        if(isMouseSensitivity)
+            SensitivityMouse = newSensitivity;
+        else
+            SensitivityKeyboard = newSensitivity;
     }
 
     public void DeleteRandomIngredient(int count)
@@ -172,19 +193,6 @@ public class Player : MonoBehaviour
         StartCoroutine(SetHasTrigger());
     }
 
-    public void SetMassScale(float massScale, float connectedMassScale)
-    {
-        foreach (var item in _ingredients)
-        {
-            HingeJoint hingeJoint = item.GetComponent<HingeJoint>();
-            hingeJoint.massScale = massScale;
-            hingeJoint.connectedMassScale = connectedMassScale;
-        }
-
-        BurgerTop.GetComponent<HingeJoint>().massScale = massScale;
-        BurgerTop.GetComponent<HingeJoint>().connectedMassScale = connectedMassScale;
-    }
-
     public void DeleteJoint(Transform playerContainer)
     {
         foreach (var item in _ingredients)
@@ -207,12 +215,6 @@ public class Player : MonoBehaviour
         BurgerTop.SetParent(playerContainer);
         BurgerTop.transform.localPosition = new Vector3(0, BurgerTop.transform.localPosition.y, 0);
 
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.FinalIngredients.Clear();
-        GameManager.Instance.FinalIngredients.AddRange(_ingredients);
     }
 
     private IEnumerator SetHasTrigger()
@@ -284,7 +286,7 @@ public class Player : MonoBehaviour
         ingredient.GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
         ingredient.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         UpdateMasses();
-        SetMassScale(10, 10);
+        SetMassScale(10, 7);
     }
 
     private void UpdateMasses()
@@ -309,9 +311,23 @@ public class Player : MonoBehaviour
                 if (rb != null)
                 {
                     rb.mass = totalCount - i;
+                    //rb.mass = totalCount - i;
                 }
             }
         }
+    }
+
+    public void SetMassScale(float massScale, float connectedMassScale)
+    {
+        foreach(var item in _ingredients)
+        {
+            HingeJoint hingeJoint = item.GetComponent<HingeJoint>();
+            hingeJoint.massScale = massScale;
+            hingeJoint.connectedMassScale = connectedMassScale;
+        }
+
+        BurgerTop.GetComponent<HingeJoint>().massScale = massScale;
+        BurgerTop.GetComponent<HingeJoint>().connectedMassScale = connectedMassScale;
     }
 
     private Vector3 GetBoxColliderTopWorldPoint(GameObject go)

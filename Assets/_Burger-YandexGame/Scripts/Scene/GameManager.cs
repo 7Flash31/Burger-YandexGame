@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
     public int CurrentSkinID { get; set; }
     public List<int> PurchasedSkins { get; set; } = new List<int>();
 
+    private AudioSource _musicSource;
+
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
         IncomeModeEnabled = false;
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
         UIController.UpdateSceneText((scene.buildIndex + 1).ToString());
         UIController.SetRecipe();
 
-        Player.enabled = false;
+        Player.CanMove = false;
 
         if(scene.buildIndex % 6 == 0 && scene.buildIndex != 0)
         {
@@ -101,10 +103,14 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) + 1);
             UIController.UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());  
         }
+
     }
 
     private void Awake()
     {
+        _musicSource = GetComponent<AudioSource>();
+        _musicSource.volume = PlayerPrefs.GetFloat(SaveData.MusicKey, 0.3f);
+
         YandexGame.savesData.LastSavedDate = "";
         YandexGame.savesData.LastSavedStreak = 0;
 
@@ -128,13 +134,13 @@ public class GameManager : MonoBehaviour
     public void LaunchGame()
     {
         GameLaunch = true;
-        Player.enabled = true;
+        Player.CanMove = true;
         UIController.HideHelpPanel();
     }
 
     public void StopGame()
     {
-        Player.enabled = false;
+        Player.CanMove = false;
         _headController.PlayEatAnimation();
     }
 
@@ -299,15 +305,22 @@ public class GameManager : MonoBehaviour
 
         Player.BurgerTop.GetComponent<MeshFilter>().mesh = Skins[skinIndex].BurgerTopMesh;
         Player.BurgerTop.GetComponent<MeshRenderer>().material = Skins[skinIndex].BurgerTopMaterial;
+
+        CurrentSkinID = skinIndex;
+    }
+
+    public void UpdateMusic(float newVolume)
+    {
+        _musicSource.volume = newVolume;
     }
 
     private void Rewarded(int id)
     {
         if(id == SaveData.LuckReward)
-            EnableLuckMode(true);
+            EnableLuckMode(reward: true);
 
         else if(id == SaveData.IncomeReward)
-            EnableIncomeMode(true);
+            EnableIncomeMode(reward: true);
         
         else if(id == SaveData.BonusLevelReward)
             EnableBonusLevel();
@@ -368,7 +381,9 @@ public static class SaveData //PlayerPrefs
     public static string FortuneWheelSpineKey { get; private set; } = "FortuneWheelSpine";
 
     public static string MusicKey { get; private set; } = "Music";
-    public static string SensitivityKey { get; private set; } = "Sensitivity";
+    public static string SoundKey { get; private set; } = "Sound";
+    public static string MouseSensitivityKey { get; private set; } = "MouseSensitivity";
+    public static string KeyboardSensitivityKey { get; private set; } = "KeyboardSensitivity";
 
     public static string LastSavedDateKey { get; private set; } = "LastSavedDate";
     public static string LastSavedStreakKey { get; private set; } = "LastSavedStreak";

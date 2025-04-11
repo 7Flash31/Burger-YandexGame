@@ -52,8 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CardButton>k__BackingField: {fileID: 7217597300519357403}
+  <CardButtonText>k__BackingField: {fileID: 3229773145826826714}
+  <SkinID>k__BackingField: 0
   _price: 100
-  _skinID: 0
 --- !u!1 &2412172465465617331
 GameObject:
   m_ObjectHideFlags: 0
