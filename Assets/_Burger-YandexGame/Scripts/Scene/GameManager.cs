@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public int GoodIngredientPrice { get; private set; }
     [field: SerializeField] public int BadIngredientPrice { get; private set; }
     [field: SerializeField] public int RecipeIngredientPrice { get; private set; }
-    [SerializeField] private int _incomeModePrice;
-    [SerializeField] private int _luckModePrice;
+    [field: SerializeField] public int IncomeModePrice { get; private set; }
+    [field: SerializeField] public int LuckModePrice { get; private set; }
 
     [Header("Prefabs")]
     [SerializeField] private GameObject _luckTextPrefab;
@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
     [field: Header("Skins")]
     [field: SerializeField] public SkinData[] Skins { get; private set; }
 
-    // Game State
     public Player Player { get; private set; }
     public bool GameLaunch { get; private set; }
     public int TotalIngredientsCount { get; private set; }
@@ -49,7 +48,6 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public float LuckMultiply { get; private set; }
     [field: SerializeField] public float BonusLevelMultiply { get; private set; }
 
-    // Mods
     public bool IncomeModeEnabled { get; private set; }
     public bool LuckModeEnabled { get; private set; }
     public bool BonusLevelEnabled { get; private set; }
@@ -103,7 +101,6 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) + 1);
             UIController.UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());  
         }
-
     }
 
     private void Awake()
@@ -148,8 +145,15 @@ public class GameManager : MonoBehaviour
     {
         _headController.PlayAngryAnimation();
         UIController.ShowFinalPanel();
+    }
 
-        //UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey, 0) + _finalReward);
+    public void LoseGame()
+    {
+        Player.CanMove = false;
+        Player.Vertical = 0;
+        Camera.main.transform.SetParent(null);
+        Player.transform.root.gameObject.SetActive(false);
+        UIController.ShowDeathPanel();
     }
 
     public void UpdateMoney(int newValue)
@@ -204,10 +208,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _luckModePrice || reward)
+        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > LuckModePrice || reward)
         {
-            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _luckModePrice)
-                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - _luckModePrice);
+            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > LuckModePrice)
+                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - LuckModePrice);
 
             LuckModeEnabled = true;
 
@@ -247,10 +251,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _incomeModePrice || reward)
+        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > IncomeModePrice || reward)
         {
-            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > _incomeModePrice)
-                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - _incomeModePrice);
+            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > IncomeModePrice)
+                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - IncomeModePrice);
 
             float multipler = 1;
             IncomeMultiply = 1;

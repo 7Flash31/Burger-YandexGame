@@ -202,6 +202,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 994893585712862734}
   - {fileID: 3558307176831563400}
   - {fileID: 8593702422983704440}
   m_Father: {fileID: 0}
@@ -239,8 +240,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 994893585712862734}
+  m_Children: []
   m_Father: {fileID: 2323814362571273577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5081574896206815331
@@ -357,6 +357,7 @@ MonoBehaviour:
   <BurgerDown>k__BackingField: {fileID: 3558307176831563400}
   <SensitivityMouse>k__BackingField: 2
   <SensitivityKeyboard>k__BackingField: 5
+  <Vertical>k__BackingField: 0
   _burgerComponents: {fileID: 2323814362571273577}
   _speed: 5
   _sensitivityTouch: 0
@@ -372,6 +373,7 @@ GameObject:
   - component: {fileID: 994893585712862734}
   - component: {fileID: 5403417793566195254}
   - component: {fileID: 3976080938141240001}
+  - component: {fileID: 3981842793576849267}
   m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -387,12 +389,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7847928082951073198}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15643449, y: -0, z: -0, w: 0.98768836}
-  m_LocalPosition: {x: 0, y: 1.7199999, z: -3.31}
+  m_LocalRotation: {x: 0.1564345, y: -0, z: -0, w: 0.98768836}
+  m_LocalPosition: {x: 0, y: 1.72, z: -3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3558307176831563400}
+  m_Father: {fileID: 2323814362571273577}
   m_LocalEulerAnglesHint: {x: 18, y: 0, z: 0}
 --- !u!20 &5403417793566195254
 Camera:
@@ -453,3 +455,17 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7847928082951073198}
   m_Enabled: 1
+--- !u!114 &3981842793576849267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847928082951073198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d0bdd54b58901542b882ae9420ae2cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 3558307176831563400}
+  _offset: {x: 0, y: 0, z: 0}

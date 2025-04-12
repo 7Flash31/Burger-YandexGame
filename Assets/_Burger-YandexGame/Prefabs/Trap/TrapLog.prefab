@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa5f404d680a8449b098c87b7b5a74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RemoveIngredient>k__BackingField: 5
+  <RemoveIngredient>k__BackingField: 3
   <IsActive>k__BackingField: 1
   rotateSpeed: 2
 --- !u!1 &5541037736980850316

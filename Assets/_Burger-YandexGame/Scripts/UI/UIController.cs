@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _dailyGiftPanel;
     [SerializeField] private GameObject _bonusLevelPanel;
     [SerializeField] private GameObject _fortuneWheelPanel;
+    [SerializeField] private GameObject _deathPanel;
     [SerializeField] private GameObject _blur;
 
     [Header("Controllers")]
@@ -44,6 +45,12 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text _fortuneWheelText;
     [SerializeField] private TMP_Text _dailyGiftText;
     [SerializeField] private TMP_Text _moneyText;
+
+    [Header("Luck & Income")]
+    [SerializeField] private TMP_Text[] _luckPriceText;
+    [SerializeField] private TMP_Text[] _luckLevelText;
+    [SerializeField] private TMP_Text[] _incomePriceText;
+    [SerializeField] private TMP_Text[] _incomeLevelText;
 
     [Header("Sliders")]
     [SerializeField] private Slider _musicSlider;
@@ -117,6 +124,7 @@ public class UIController : MonoBehaviour
         _mouseSensitivitySlider.value = PlayerPrefs.GetFloat(SaveData.MouseSensitivityKey, 1f);
         _keyboardSensitivitySlider.value = PlayerPrefs.GetFloat(SaveData.KeyboardSensitivityKey, 1f);
 
+        UpdateIncomeAndLuckText();
         // Spawn ShopCard for Skins
         //_shopCards.Add();
     }
@@ -162,6 +170,7 @@ public class UIController : MonoBehaviour
         GameManager.Instance.Player.UpdateSensitivity(_keyboardSensitivitySlider.value, false);
     }
 
+    // ToggleUIPanel 
     public void ShowPanel(GameObject panel) => panel.SetActive(!panel.activeSelf);
 
     public void EnableIncomeMode(Button button)
@@ -200,7 +209,6 @@ public class UIController : MonoBehaviour
             .OrderBy(group => group.Key)
             .ToList();
 
-        // Переменные для накопления суммы денег
         int addedMoneyGood = 0;
         int addedMoneyBad = 0;
         int addedMoneyRecipe = 0;
@@ -225,9 +233,8 @@ public class UIController : MonoBehaviour
             if(uiIngredientImage != null)
                 uiIngredientImage.sprite = representativeIngredient.Icon;
 
-            // Флаг, показывающий, что ингредиент входит в рецепт
             bool isInRecipe = false;
-            // Проверяем, присутствует ли ингредиент в рецепте
+
             foreach(var recipeItem in GameManager.Instance.Recipe)
             {
                 if(representativeIngredient.Icon == recipeItem.Ingredient.Icon)
@@ -290,17 +297,14 @@ public class UIController : MonoBehaviour
                 countText.text = "0";
         }
 
-        // Сохраняем базовую сумму до применения множителей
         int baseMoney = addedMoneyGood + addedMoneyBad + addedMoneyRecipe;
 
-        // Если нужно обновить деньги до применения множителей, можно это сделать здесь
 
         int totalMoneyToAdd = baseMoney;
         int incomeBonus = 0;
         int luckBonus = 0;
         int bonusLevel = 0;
 
-        // Применяем множитель income
         if(GameManager.Instance.IncomeModeEnabled)
         {
             int newTotal = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.IncomeMultiply);
@@ -308,7 +312,6 @@ public class UIController : MonoBehaviour
             totalMoneyToAdd = newTotal;
         }
 
-        // Применяем множитель luck
         if(GameManager.Instance.LuckModeEnabled)
         {
             int bonus = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.LuckMultiply);
@@ -316,7 +319,6 @@ public class UIController : MonoBehaviour
             totalMoneyToAdd += bonus;
         }
         
-        // Применяем множитель luck
         if(GameManager.Instance.BonusLevelEnabled)
         {
             int bonus = (int)Math.Round(totalMoneyToAdd * GameManager.Instance.BonusLevelMultiply);
@@ -324,7 +326,6 @@ public class UIController : MonoBehaviour
             totalMoneyToAdd += bonus;
         }
 
-        // Выводим в debug отдельно базовую сумму, бонусы income и luck, а также итоговую сумму
         Debug.Log($"Деньги за хорошие: {addedMoneyGood}, плохие: {addedMoneyBad}, из рецепта: {addedMoneyRecipe}. " +
                   $"Базовая сумма: {baseMoney}, бонус дохода: {incomeBonus}, бонус удачи: {luckBonus}, бонусный уровень: {bonusLevel}. Всего: {totalMoneyToAdd}");
 
@@ -371,7 +372,7 @@ public class UIController : MonoBehaviour
         _finalReward.Initialize();
     }
 
-    //public void GetRewardMultiply() => _finalReward.GetRewardMultiply();
+    public void GetRewardMultiply() => _finalReward.GetRewardMultiply();
 
     public void UpdateSceneText(string newLevel)
     {
@@ -433,14 +434,16 @@ public class UIController : MonoBehaviour
         _bonusLevelPanel.transform.DOScale(Vector3.one, 0.2f);
     }
 
-    //public void EnableBonusLevel()
-    //{
-    //    YandexGame.RewVideoShow(SaveData.BonusLevelReward);
-    //}
+    public void EnableBonusLevel()
+    {
+        YandexGame.RewVideoShow(SaveData.BonusLevelReward);
+    }
 
     public void HideBonusPanel() => _bonusLevelPanel.SetActive(false);
 
     public void SkipBonusLevelLevel() => GameManager.Instance.SkipBonusLevelLevel();
+
+    public void ShowDeathPanel() => _deathPanel.SetActive(!_deathPanel.activeSelf);
 
     public void ResetAllButtons() // Rename
     {
@@ -451,6 +454,19 @@ public class UIController : MonoBehaviour
                 item.CardButton.interactable = true;
                 item.CardButtonText.text = "Select";
             }
+        }
+    }
+
+    public void UpdateIncomeAndLuckText()
+    {
+        for(int i = 0; i < _luckPriceText.Length; i++)
+        {
+            _luckPriceText[i].text = GameManager.Instance.LuckModePrice + "$";
+            _luckLevelText[i].text = "LEVEL " + (SceneManager.GetActiveScene().buildIndex + 1);
+
+            _incomePriceText[i].text = GameManager.Instance.IncomeModePrice + "$";
+            _incomeLevelText[i].text = "LEVEL " + (SceneManager.GetActiveScene().buildIndex + 1);
+
         }
     }
 
@@ -560,59 +576,39 @@ public class DailyRewards
 
     private GameObject _dailyGiftPanel;
 
-    // Вместо DateTime.Date — храним полное время:
     private DateTime _lastLoginDateTime;
     private int _maxStreak;
     private int _currentStreak;
 
-    /// <summary>
-    /// Инициализация класса: загрузка сохранённых значений из YandexGame в PlayerPrefs, проверка наград.
-    /// </summary>
     public void Initialize(GameObject dailyGiftPanel)
     {
-        // Укажем, сколько всего "дней" (подарков) доступно:
         _maxStreak = _giftContainer.childCount;
         _dailyGiftPanel = dailyGiftPanel;
 
-        // Синхронизация с YandexGame:
         LoadData();
 
-        // Проверка — нужно ли дать награду:
         CheckDailyLogin();
     }
 
-    /// <summary>
-    /// Основная логика выдачи награды (раз в 24 часа).
-    /// </summary>
     private void CheckDailyLogin()
     {
-        // Получаем СТРОКУ даты/времени последнего захода:
         string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey);
 
-        // Поскольку она "не может быть пустой" по условию, проверим только парсинг.
         if(!DateTime.TryParse(lastLoginStr, out _lastLoginDateTime))
         {
-            // Если парсинг не удался => считаем, что это первый вход
-
             _currentStreak = 1;
             GiveReward(_currentStreak);
 
-            // Сохраняем новую дату (текущее время) и стрик:
             SaveDate(DateTime.Now, _currentStreak);
         }
         else
         {
-            // Парсинг даты прошёл успешно
-
-            // Вычисляем, сколько часов прошло с последнего получения награды
             TimeSpan difference = DateTime.Now - _lastLoginDateTime;
 
             if(difference.TotalHours >= 24)
             {
-                // Прошло 24 часа — значит можно получить подарок
                 _currentStreak = PlayerPrefs.GetInt(SaveData.LastSavedStreakKey, 1);
 
-                // Увеличиваем стрик (по кругу, если хотите возвращать на 1 после maxStreak)
                 _currentStreak = (_currentStreak % _maxStreak) + 1;
 
                 GiveReward(_currentStreak);
@@ -620,18 +616,13 @@ public class DailyRewards
             }
             else
             {
-                // Меньше 24 часов — награду ещё рано выдавать
                 Debug.Log("[DailyRewards] Ещё не прошло 24 часа с последнего получения награды!");
             }
         }
     }
 
-    /// <summary>
-    /// Выдача награды за конкретный "день" (стрик).
-    /// </summary>
     private void GiveReward(int day)
     {
-        // Открываем панель награды
         if(_dailyGiftPanel != null)
         {
             _dailyGiftPanel.SetActive(true);
@@ -641,7 +632,6 @@ public class DailyRewards
             Debug.LogWarning("[DailyRewards] _dailyGiftPanel не назначен!");
         }
 
-        // Получаем все объекты Reward
         Reward[] rewards = _giftContainer.GetComponentsInChildren<Reward>();
         if(rewards == null || rewards.Length == 0)
         {
@@ -656,56 +646,39 @@ public class DailyRewards
             return;
         }
 
-        // Активируем (Claim) нужную награду
         rewards[index].ClaimReward();
     }
 
-    /// <summary>
-    /// Возвращаем, сколько осталось до следующей награды, если прошло меньше 24 часов.
-    /// Если время вышло, возвращаем TimeSpan.Zero.
-    /// </summary>
     public TimeSpan GetTimeUntilNextGift()
     {
-        // Тут также не проверяем IsNullOrEmpty, сразу берём строку
         string lastLoginStr = PlayerPrefs.GetString(SaveData.LastSavedDateKey);
 
-        // Пробуем парсить
         if(!DateTime.TryParse(lastLoginStr, out DateTime lastLogin))
         {
-            // Если не распарсили — считаем, что можем выдать награду прямо сейчас
             return TimeSpan.Zero;
         }
 
-        // Следующее получение награды — через 24 часа после последнего
         DateTime nextGiftTime = lastLogin.AddHours(24);
 
         TimeSpan timeLeft = nextGiftTime - DateTime.Now;
         return (timeLeft.TotalSeconds > 0) ? timeLeft : TimeSpan.Zero;
     }
 
-    /// <summary>
-    /// Сохраняем дату последнего входа (полное время) и значение стрика.
-    /// </summary>
     private void SaveDate(DateTime dateTime, int streak)
     {
-        string dateString = dateTime.ToString("O"); // ISO 8601
+        string dateString = dateTime.ToString("O"); 
 
         PlayerPrefs.SetString(SaveData.LastSavedDateKey, dateString);
         PlayerPrefs.SetInt(SaveData.LastSavedStreakKey, streak);
 
-        // Сохраняем и во внутреннюю систему YandexGame
         YandexGame.savesData.LastSavedDate = dateString;
         YandexGame.savesData.LastSavedStreak = streak;
 
         YandexGame.SaveProgress();
     }
 
-    /// <summary>
-    /// Синхронизация данных из YandexGame.savesData в PlayerPrefs при старте.
-    /// </summary>
     private void LoadData()
     {
-        // Если в YandexGame.savesData есть сохранённая строка, пишем её в PlayerPrefs
         if(!string.IsNullOrEmpty(YandexGame.savesData.LastSavedDate))
         {
             PlayerPrefs.SetString(SaveData.LastSavedDateKey, YandexGame.savesData.LastSavedDate);

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [field: SerializeField] public float SensitivityMouse { get; set; }
     [field: SerializeField] public float SensitivityKeyboard { get; set; }
 
-    public float Vertical { get; set; }
+    [field: SerializeField] public float Vertical { get; set; }
     public bool CanMove { get; set; } = true;
 
     [SerializeField] private Transform _burgerComponents;
@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
         _sensitivityTouch = SensitivityMouse;
 
         GameManager.Instance.ChangeSkin(GameManager.Instance.CurrentSkinID);
-        print(1);
     }
 
     private void Update()
@@ -61,7 +60,6 @@ public class Player : MonoBehaviour
         if(CanMove)
         {
             Vector3 velocity = new Vector3(_horizontal, 0, Vertical) * _speed;
-
             Vector3 worldVelocity = transform.TransformDirection(velocity);
             _rb.velocity = worldVelocity;
         }
@@ -79,7 +77,7 @@ public class Player : MonoBehaviour
 
         if (collider.gameObject.TryGetComponent(out Trap trap))
         {
-            DeleteRandomIngredient(trap.RemoveIngredient);
+            DeleteIngredient(trap.RemoveIngredient);
             _hasTriggered = true;
         }
     }
@@ -98,7 +96,7 @@ public class Player : MonoBehaviour
             SensitivityKeyboard = newSensitivity;
     }
 
-    public void DeleteRandomIngredient(int count)
+    public void DeleteIngredient(int count)
     {
         int a = Mathf.Min(_ingredients.Count, count);
 
@@ -120,7 +118,6 @@ public class Player : MonoBehaviour
             BurgerTop.transform.rotation = BurgerDown.transform.rotation;
 
             Vector3 topNewWorld = GetBoxColliderTopWorldPoint(BurgerDown.gameObject);
-
             Vector3 bottomTopLocal = GetBoxColliderBottomLocal(BurgerTop.gameObject);
 
             BurgerTop.transform.position = Vector3.zero;
@@ -134,17 +131,16 @@ public class Player : MonoBehaviour
                 topHinge.connectedBody = BurgerDown.GetComponent<Rigidbody>();
             }
         }
+
         for (int i = 0; i < _ingredients.Count; i++)
         {
             GameObject previousObject = null;
             if (i == 0)
             {
-                // Первый ингредиент «опирается» на нижнюю булку
                 previousObject = BurgerDown.gameObject;
             }
             else
             {
-                // Следующие ингредиенты опираются на предыдущий
                 previousObject = _ingredients[i - 1].gameObject;
             }
 
@@ -175,7 +171,6 @@ public class Player : MonoBehaviour
             BurgerTop.transform.rotation = _ingredients[i].transform.rotation;
 
             Vector3 topNewWorld = GetBoxColliderTopWorldPoint(_ingredients[i].gameObject);
-
             Vector3 bottomTopLocal = GetBoxColliderBottomLocal(BurgerTop.gameObject);
 
             BurgerTop.transform.position = Vector3.zero;
@@ -190,7 +185,15 @@ public class Player : MonoBehaviour
             }
         }
 
-        StartCoroutine(SetHasTrigger());
+        if(_ingredients.Count > 0)
+        {
+            StartCoroutine(SetHasTrigger());
+        }
+        else
+        {
+            GameManager.Instance.LoseGame();
+        }
+
     }
 
     public void DeleteJoint(Transform playerContainer)
@@ -311,7 +314,6 @@ public class Player : MonoBehaviour
                 if (rb != null)
                 {
                     rb.mass = totalCount - i;
-                    //rb.mass = totalCount - i;
                 }
             }
         }
