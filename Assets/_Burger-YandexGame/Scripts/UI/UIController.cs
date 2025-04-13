@@ -156,6 +156,7 @@ public class UIController : MonoBehaviour
     public void SetSound()
     {
         PlayerPrefs.SetFloat(SaveData.MusicKey, _soundSlider.value);
+        PlayerPrefs.SetFloat(SaveData.SoundKey, _soundSlider.value);
     }
 
     public void SetMouseSensitivity()

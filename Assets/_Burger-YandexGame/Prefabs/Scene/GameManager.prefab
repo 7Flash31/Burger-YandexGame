@@ -63,7 +63,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f645a9cc67758184093a62180559ec93, type: 2}
   - {fileID: 11400000, guid: e4ee078ae603fd9499b5a41f78c431db, type: 2}
   - {fileID: 11400000, guid: eccfce78b61df804daf603e61a6aff75, type: 2}
-  <IncomeMultiply>k__BackingField: 0
+  <IncomeMultiply>k__BackingField: 2
   <LuckMultiply>k__BackingField: 5
   <BonusLevelMultiply>k__BackingField: 3
 --- !u!82 &5755822476334475613

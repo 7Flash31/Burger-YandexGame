@@ -10,8 +10,6 @@ public class CameraController : MonoBehaviour
 
     private Quaternion _rotationOffset = Quaternion.identity;
 
-    private Tween rotationTween;
-
     private void Start()
     {
         _offset = transform.localPosition;
