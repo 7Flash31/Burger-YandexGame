@@ -469,3 +469,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 3558307176831563400}
   _offset: {x: 0, y: 0, z: 0}
+  rotationTweenDuration: 0.1
