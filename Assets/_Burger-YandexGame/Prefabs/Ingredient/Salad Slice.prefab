@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3451088063690405173}
   - component: {fileID: 3298273433108403520}
   - component: {fileID: 7652792090223550322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Salad Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}

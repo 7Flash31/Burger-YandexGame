@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5271324864482852589}
   - component: {fileID: 3842573050598502356}
   - component: {fileID: 6749566644597670420}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Avocado Slice A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4798194, y: 0.07280621, z: 0.725497}
-  m_Center: {x: 0.02060838, y: 0.032979384, z: -0.051291943}
+  m_Size: {x: 0.4798194, y: 0.07280621, z: 0.94242364}
+  m_Center: {x: 0.02060838, y: 0.032979384, z: 0.057171255}
 --- !u!114 &6749566644597670420
 MonoBehaviour:
   m_ObjectHideFlags: 0

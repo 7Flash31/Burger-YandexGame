@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3200243475169295987}
   - component: {fileID: 6449529360050416245}
   - component: {fileID: 5380545007123955629}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tomato Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.08659491, z: 0.92161745}
-  m_Center: {x: 0, y: 0.029096726, z: 0.0003168881}
+  m_Size: {x: 1, y: 0.08659491, z: 1.1117084}
+  m_Center: {x: 0, y: 0.029096726, z: 0.095362514}
 --- !u!114 &5380545007123955629
 MonoBehaviour:
   m_ObjectHideFlags: 0

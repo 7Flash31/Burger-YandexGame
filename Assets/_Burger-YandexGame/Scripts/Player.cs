@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody _rb;
     private float _horizontal;
-    private bool _hasTriggered;
+    public bool HasTriggered { get; set; }
 
     private void Start()
     {
@@ -67,18 +67,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.transform.TryGetComponent(out Ingredient interactableItem))
+        if(collider.transform.TryGetComponent(out Ingredient interactableItem))
         {
             AddIngredient(interactableItem);
         }
 
-        if (_hasTriggered)
+        if(HasTriggered)
             return;
 
-        if (collider.gameObject.TryGetComponent(out Trap trap))
+        if(collider.gameObject.TryGetComponent(out Trap trap))
         {
             DeleteIngredient(trap.RemoveIngredient);
-            _hasTriggered = true;
+            HasTriggered = true;
         }
     }
 
@@ -223,10 +223,10 @@ public class Player : MonoBehaviour
     private IEnumerator SetHasTrigger()
     {
         yield return new WaitForSeconds(0.1f);
-        _hasTriggered = false;
+        HasTriggered = false;
     }
 
-    private void AddIngredient(Ingredient ingredient)
+    public void AddIngredient(Ingredient ingredient)
     {
         if (_ingredients.Contains(ingredient))
             return;
@@ -289,7 +289,7 @@ public class Player : MonoBehaviour
         ingredient.GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
         ingredient.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         UpdateMasses();
-        SetMassScale(10, 7);
+        SetMassScale(10, 6);
     }
 
     private void UpdateMasses()

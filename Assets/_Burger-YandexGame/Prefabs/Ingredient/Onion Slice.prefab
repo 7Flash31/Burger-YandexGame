@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 7834604661007567146}
   - component: {fileID: 3277797821045907815}
   - component: {fileID: 5485592596159958353}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Onion Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}

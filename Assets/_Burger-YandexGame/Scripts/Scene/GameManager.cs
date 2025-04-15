@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
     {
+        int buildIndex = scene.buildIndex;
+
         IncomeModeEnabled = false;
         LuckModeEnabled = false;
         BonusLevelEnabled = false;
@@ -69,15 +71,14 @@ public class GameManager : MonoBehaviour
         _roadMaterialOne.color = _roadColorDefaultOne;
         _roadMaterialTwo.color = _roadColorDefaultTwo;
 
-        if(scene.buildIndex == 0)
+        if(buildIndex == 0)
         {
             _recipeData = Resources.Load<RecipeData>($"Recipe/Level");
-
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, 2);
         }
         else
         {
-            _recipeData = Resources.Load<RecipeData>($"Recipe/Level {scene.buildIndex}");
+            _recipeData = Resources.Load<RecipeData>($"Recipe/Level {buildIndex}");
         }
 
         Recipe = _recipeData.RecipeIngredients;
@@ -87,16 +88,16 @@ public class GameManager : MonoBehaviour
         _headController = FindAnyObjectByType<HeadController>();
         TotalIngredientsCount = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Length;
 
-        UIController.UpdateSceneText((scene.buildIndex + 1).ToString());
+        UIController.UpdateSceneText((buildIndex + 1).ToString());
         UIController.SetRecipe();
 
         Player.CanMove = false;
 
-        if(scene.buildIndex % 6 == 0 && scene.buildIndex != 0)
+        if(buildIndex % 6 == 0 && buildIndex != 0)
         {
             ProposeBonusLevel();
         }
-        if(scene.buildIndex % 10 == 0 && scene.buildIndex != 0)
+        if(buildIndex % 10 == 0 && buildIndex != 0)
         {
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) + 1);
             UIController.UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());  
@@ -296,6 +297,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        foreach(var item in FindObjectsByType<Trap>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            item.gameObject.SetActive(true);
+        }
+
         LaunchGame();
     }
 
@@ -348,6 +354,11 @@ public class GameManager : MonoBehaviour
             {
                 meshRenderer.material.color = Color.yellow;
             }
+        }
+
+        foreach(var item in FindObjectsByType<Trap>(FindObjectsSortMode.None))
+        {
+            item.gameObject.SetActive(false);
         }
     }
 

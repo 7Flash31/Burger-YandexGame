@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2484971166878173404}
   - component: {fileID: 2515821812953983141}
   - component: {fileID: 5102843171613711034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Arugula Leaf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6027214, y: 0.0620054, z: 1.0003852}
-  m_Center: {x: -0.0037764013, y: 0.0236786, z: 0.08600633}
+  m_Size: {x: 0.6027214, y: 0.0620054, z: 1.109334}
+  m_Center: {x: -0.0037764013, y: 0.0236786, z: 0.1404804}
 --- !u!114 &5102843171613711034
 MonoBehaviour:
   m_ObjectHideFlags: 0

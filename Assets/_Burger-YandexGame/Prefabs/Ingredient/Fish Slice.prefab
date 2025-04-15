@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2361276564685055578}
   - component: {fileID: 1551434242662297724}
   - component: {fileID: 5297633882162488750}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fish Slice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.51560736, y: 0.12534022, z: 0.7974869}
-  m_Center: {x: 0.00000023841858, y: 0.057903666, z: 0.029016227}
+  m_Size: {x: 0.51560736, y: 0.12534022, z: 0.9928341}
+  m_Center: {x: 0.00000023841858, y: 0.057903662, z: 0.12668985}
 --- !u!114 &5297633882162488750
 MonoBehaviour:
   m_ObjectHideFlags: 0

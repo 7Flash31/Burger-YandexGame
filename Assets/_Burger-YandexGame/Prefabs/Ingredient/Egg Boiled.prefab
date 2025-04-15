@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8041390712519105523}
   - component: {fileID: 7977041756864049261}
   - component: {fileID: 2122978707639458236}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Egg Boiled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5699345, y: 0.2909733, z: 0.7303373}
-  m_Center: {x: 0.0034870356, y: 0.026733845, z: -0.011623383}
+  m_Size: {x: 0.5699345, y: 0.2909733, z: 0.9346366}
+  m_Center: {x: 0.0034870505, y: 0.026733845, z: 0.09052628}
 --- !u!114 &2122978707639458236
 MonoBehaviour:
   m_ObjectHideFlags: 0

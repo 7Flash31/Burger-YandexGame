@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8819896904928395877}
   - component: {fileID: 3256836608145612062}
   - component: {fileID: 1019421030829546893}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cheese Slice A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4913025, y: 0.05482605, z: 0.4546868}
-  m_Center: {x: 0.0032467842, y: -0.0012460276, z: 0.0016759783}
+  m_Size: {x: 0.4913025, y: 0.05482605, z: 0.6280046}
+  m_Center: {x: 0.0032467842, y: -0.0012460276, z: 0.08833503}
 --- !u!114 &1019421030829546893
 MonoBehaviour:
   m_ObjectHideFlags: 0

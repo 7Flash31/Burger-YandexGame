@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5435927012695671570}
   - component: {fileID: 2807323512219053079}
   - component: {fileID: 3529375819756067921}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce1a02dafb7d904d9ae409354c030ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RemoveIngredient>k__BackingField: 5
+  <RemoveIngredient>k__BackingField: 3
   <IsActive>k__BackingField: 1
   rotateSpeed: 0
   _spawner: {fileID: 7411306336869470564}
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 3527834329466770156}
   - component: {fileID: 7789712463775220089}
   - component: {fileID: 6613004253154941942}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TrapShovel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5990816184348533992}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.70710576, w: 0.70710784}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -1.3870802, y: 0.5, z: 14.5708}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 6010814935510049834}
   - component: {fileID: 7422776755432791231}
   - component: {fileID: 3231268681767216442}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 2346912978738399864}
   - component: {fileID: 5894381283951566667}
   - component: {fileID: 7484331687810990477}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7411306336869470564}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5142162279143962309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

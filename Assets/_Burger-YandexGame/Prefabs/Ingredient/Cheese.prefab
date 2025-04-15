@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4683499719739684066}
   - component: {fileID: 3372682267555169391}
   - component: {fileID: 1683748259836872882}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cheese
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.50769913, y: 0.49868274, z: 0.49792838}
-  m_Center: {x: 0.00090163946, y: -0.0036065578, z: -0.25103587}
+  m_Size: {x: 0.50769913, y: 0.49868274, z: 0.83570844}
+  m_Center: {x: 0.00090163946, y: -0.0036065578, z: -0.08214581}
 --- !u!114 &1683748259836872882
 MonoBehaviour:
   m_ObjectHideFlags: 0

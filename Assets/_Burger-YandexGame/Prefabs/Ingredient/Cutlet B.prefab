@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4184137403257628106}
   - component: {fileID: 8163772470494273770}
   - component: {fileID: 4618884595039262765}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cutlet B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.7000511, y: 0.09829711, z: 0.7469699}
-  m_Center: {x: 0.001442045, y: 0.039332353, z: 0.032602787}
+  m_Size: {x: 0.7000511, y: 0.09829711, z: 0.97013557}
+  m_Center: {x: 0.001442045, y: 0.039332353, z: 0.14418566}
 --- !u!114 &4618884595039262765
 MonoBehaviour:
   m_ObjectHideFlags: 0
