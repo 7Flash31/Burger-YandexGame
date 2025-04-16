@@ -614,10 +614,6 @@ public class DailyRewards
                 GiveReward(_currentStreak);
                 SaveDate(DateTime.Now, _currentStreak);
             }
-            else
-            {
-                Debug.Log("[DailyRewards] Ещё не прошло 24 часа с последнего получения награды!");
-            }
         }
     }
 
@@ -627,24 +623,10 @@ public class DailyRewards
         {
             _dailyGiftPanel.SetActive(true);
         }
-        else
-        {
-            Debug.LogWarning("[DailyRewards] _dailyGiftPanel не назначен!");
-        }
 
         Reward[] rewards = _giftContainer.GetComponentsInChildren<Reward>();
-        if(rewards == null || rewards.Length == 0)
-        {
-            Debug.LogWarning("[DailyRewards] Не найдено ни одного Reward в _giftContainer!");
-            return;
-        }
 
         int index = day - 1;
-        if(index < 0 || index >= rewards.Length)
-        {
-            Debug.LogWarning($"[DailyRewards] Индекс {index} выходит за границы массива Rewards (длина: {rewards.Length}).");
-            return;
-        }
 
         rewards[index].ClaimReward();
     }

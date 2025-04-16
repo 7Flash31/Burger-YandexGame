@@ -6,6 +6,8 @@ public class Ingredient : MonoBehaviour
 {
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public bool IsBadIngredient { get; private set; }
+    [field: SerializeField] public GameObject LuckParticlePrefab { get; private set; }
+    [field: SerializeField] public GameObject LuckTextPrefab { get; private set; }
 
     [SerializeField] private float _rotateSpeed;
 
@@ -14,13 +16,13 @@ public class Ingredient : MonoBehaviour
     public bool IsLuckIngredient { get; set; }
 
     private Tween _tween;
-    private bool animationStoped;
+    private bool _animationStoped;
 
     private void Start()
     {
         BoxCollider = GetComponent<BoxCollider>();
 
-        if(!animationStoped)
+        if(!_animationStoped)
         {
             var startEuler = transform.eulerAngles;
             _tween = transform.DORotate(
@@ -28,6 +30,11 @@ public class Ingredient : MonoBehaviour
                 _rotateSpeed,
                 RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
+        }
+
+        if(Random.value < GameManager.Instance.LuckModeChance)
+        {
+            IsLuckIngredient = true;
         }
     }
 
@@ -46,7 +53,7 @@ public class Ingredient : MonoBehaviour
         }
 
         _tween.Kill();
-        animationStoped = true;
+        _animationStoped = true;
     }
 
     private void OnDestroy()

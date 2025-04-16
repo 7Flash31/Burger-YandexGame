@@ -152,4 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 48fbe204e6e505e44b1c9f15aaac2d83, type: 3}
   <IsBadIngredient>k__BackingField: 0
+  <LuckParticlePrefab>k__BackingField: {fileID: 191548, guid: 20be6210ca6531f4589bbe7994892f53, type: 3}
+  <LuckTextPrefab>k__BackingField: {fileID: 8976199798413858782, guid: caa035a79e164944f8ca3a1b1a5b9da2, type: 3}
   _rotateSpeed: 2

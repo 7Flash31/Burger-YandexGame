@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -70,6 +72,16 @@ public class Player : MonoBehaviour
         if(collider.transform.TryGetComponent(out Ingredient interactableItem))
         {
             AddIngredient(interactableItem);
+
+            if(interactableItem.IsLuckIngredient)
+            {
+                GameObject luckText = Instantiate(interactableItem.LuckTextPrefab, interactableItem.transform);
+                luckText.transform.rotation = transform.rotation;
+                luckText.transform.DOMoveY(luckText.transform.position.y + 5, 4);
+
+                Destroy(luckText, 5);
+            }
+            //Instantiate(interactableItem.LuckParticlePrefab, interactableItem.transform);
         }
 
         if(HasTriggered)

@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
     public bool LuckModeEnabled { get; private set; }
     public bool BonusLevelEnabled { get; private set; }
 
+    [field: SerializeField] public float LuckModeChance { get; private set; }
+    [field: SerializeField] public float LuckModeBonus { get; private set; } = 0.25f;
+
     public List<RecipeIngredient> Recipe { get; private set; }
     public List<Ingredient> FinalIngredients { get; set; } = new List<Ingredient>();
 
@@ -102,6 +105,8 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(SaveData.FortuneWheelSpineKey, PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey) + 1);
             UIController.UpdateFortuneWheelText(PlayerPrefs.GetInt(SaveData.FortuneWheelSpineKey).ToString());  
         }
+
+        RefreshLuckModeChance(buildIndex);
     }
 
     private void Awake()
@@ -189,47 +194,42 @@ public class GameManager : MonoBehaviour
 
     public void EnableLuckMode(bool reward = false, bool isGift = false)
     {
+        int money = PlayerPrefs.GetInt(SaveData.MoneyKey);
+        bool enableLuckMode = false;
+
         if(isGift)
         {
-            LuckModeEnabled = true;
-
-            foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
-            {
-                if(Random.value < 0.5)
-                {
-                    Instantiate(_luckTextPrefab, item.transform);
-                    Instantiate(_luckParticlePrefab, item.transform);
-
-                    item.IsLuckIngredient = true;
-                }
-            }
-
-            UIController.LuckButton.interactable = false;
-
-            return;
+            enableLuckMode = true;
         }
-
-        if(PlayerPrefs.GetInt(SaveData.MoneyKey) > LuckModePrice || reward)
+        else if(money > LuckModePrice || reward)
         {
-            if(PlayerPrefs.GetInt(SaveData.MoneyKey) > LuckModePrice)
-                UpdateMoney(PlayerPrefs.GetInt(SaveData.MoneyKey) - LuckModePrice);
+            if(money > LuckModePrice)
+                UpdateMoney(money - LuckModePrice);
 
-            LuckModeEnabled = true;
-
-            foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
-            {
-                if(Random.value < 0.5)
-                {
-                    Instantiate(_luckTextPrefab, item.transform);
-                    Instantiate(_luckParticlePrefab, item.transform);
-
-                    item.IsLuckIngredient = true;
-                }
-            }
+            enableLuckMode = true;
         }
         else
         {
             YandexGame.RewVideoShow(SaveData.LuckReward);
+        }
+
+        if(enableLuckMode)
+        {
+            LuckModeEnabled = true;
+            RefreshLuckModeChance(SceneManager.GetActiveScene().buildIndex);
+
+            foreach(var item in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
+            {
+                if(Random.value < LuckModeChance && !item.IsLuckIngredient)
+                {
+                    item.IsLuckIngredient = true;
+                }
+            }
+
+            if(isGift)
+            {
+                UIController.LuckButton.interactable = false;
+            }
         }
     }
 
@@ -362,6 +362,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RefreshLuckModeChance(int luckLevel)
+    {
+        float chance = 0f;
+
+        if(luckLevel > 1)
+        {
+            if(luckLevel <= 10) 
+                chance = (luckLevel - 1) * 0.01f;
+
+            else if(luckLevel <= 20)
+                chance = 9 * 0.01f + (luckLevel - 10) * 0.008f;
+
+            else if(luckLevel <= 50)
+                chance = 9 * 0.01f + 10 * 0.008f + (luckLevel - 20) * 0.005f;
+            else
+                chance = 9 * 0.01f + 10 * 0.008f + 30 * 0.005f + (luckLevel - 50) * 0.001f;
+        }
+
+        if(LuckModeEnabled)
+            chance *= LuckModeBonus;
+
+        LuckModeChance = Mathf.Clamp(chance, 0f, 0.50f);
+    }
+
     private void OnEnable()
     {
         YandexGame.RewardVideoEvent += Rewarded;
@@ -404,6 +428,8 @@ public static class SaveData //PlayerPrefs
     public static string LastSavedStreakKey { get; private set; } = "LastSavedStreak";
 
     public static string SkinIdKey { get; private set; } = "SkinID";
+
+    public static string LuckLevelKey { get; private set; } = "LuckLevel";
 
     public static int LuckReward { get; private set; } = 100;
     public static int IncomeReward { get; private set; } = 101;

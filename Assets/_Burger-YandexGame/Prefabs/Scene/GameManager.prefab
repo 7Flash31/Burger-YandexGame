@@ -66,6 +66,8 @@ MonoBehaviour:
   <IncomeMultiply>k__BackingField: 2
   <LuckMultiply>k__BackingField: 5
   <BonusLevelMultiply>k__BackingField: 3
+  <LuckModeChance>k__BackingField: 0
+  <LuckModeBonus>k__BackingField: 0.5
 --- !u!82 &5755822476334475613
 AudioSource:
   m_ObjectHideFlags: 0
