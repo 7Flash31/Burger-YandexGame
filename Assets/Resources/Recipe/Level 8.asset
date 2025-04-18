@@ -13,9 +13,5 @@ MonoBehaviour:
   m_Name: Level 8
   m_EditorClassIdentifier: 
   <RecipeIngredients>k__BackingField:
-  - ingredient: {fileID: 7092776131187580046, guid: 1bd9bf67cfa29714584f2fd31e17aa39, type: 3}
-    count: 2
-  - ingredient: {fileID: 3927450894775798465, guid: 8bd5745a37b7305429d3e902e7a32674, type: 3}
+  - ingredient: {fileID: 4632666301235375565, guid: 1668cd8571a7d32469095264f23ce1a0, type: 3}
     count: 1
-  - ingredient: {fileID: 7672296849560808025, guid: 97d48799ab4a24740baed1bd841abc23, type: 3}
-    count: 4
